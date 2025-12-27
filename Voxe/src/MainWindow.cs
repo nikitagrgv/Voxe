@@ -197,10 +197,12 @@ public class MainWindow : GameWindow
 			Visualizer.AddLine(Vector3.Zero, Vector3.UnitY, Color.Green, depthTest: false);
 			Visualizer.AddLine(Vector3.Zero, Vector3.UnitZ, Color.Blue, depthTest: false);
 			Visualizer.AddText($"""
-			                    FPS = {1 / UpdateTime:F1}
-			                    Mean FPS = {1 / lastMeanFps:F1}
-			                    Min FPS = {1 / lastMaxDt:F1} ({lastMaxDt * 1000:F1}ms)
-			                    Max FPS = {1 / lastMinDt:F1}
+			                    FPS: {1 / UpdateTime:F1}
+			                    Mean FPS: {1 / lastMeanFps:F1}
+			                    Min FPS: {1 / lastMaxDt:F1} ({lastMaxDt * 1000:F1}ms)
+			                    Max FPS: {1 / lastMinDt:F1}
+
+			                    Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
 			                    """,
 				new Vector2(5, 5),
 				20,
