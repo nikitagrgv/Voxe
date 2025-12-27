@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -8,7 +11,7 @@ using Voxe.Render;
 
 namespace Voxe;
 
-public class MainWindow : GameWindow
+public class MainWindow : NativeWindow
 {
 	private const float CameraBaseMoveSpeed = 4f;
 	private const float CameraRunMultiplier = 2f;
@@ -16,8 +19,11 @@ public class MainWindow : GameWindow
 
 	private float _currentCameraMoveSpeedMultiplier = 1f;
 
-	// TODO: Shit, don't use double for it
-	private double _totalTime;
+	private readonly Stopwatch _timer = new();
+
+	// TODO# Just for convenience, remove
+	private event Action? RenderFrame;
+	private event Action? UpdateFrame;
 
 	private struct Camera
 	{
@@ -61,13 +67,25 @@ public class MainWindow : GameWindow
 
 	private Camera _camera = new();
 
-	public MainWindow() : base(GetGameWindowSettings(), GetNativeWindowSettings())
+	public MainWindow() : base(GetNativeWindowSettings())
 	{
 	}
 
-	protected override void OnLoad()
+	public void Run()
 	{
-		base.OnLoad();
+		Initialize();
+	}
+
+	private void Initialize()
+	{
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+		{
+			// From GameWindow, have no idea if I really need it
+			SetThreadAffinityMask(GetCurrentThread(), new IntPtr(1));
+		}
+
+		Context?.MakeCurrent();
+
 		GLState.Init();
 		GL.ClearColor(Color4.Darkgray);
 
@@ -148,7 +166,7 @@ public class MainWindow : GameWindow
 		double maxDt = 0;
 		const float meanFpsUpdateTime = 0.5f;
 		const float minMaxFpsUpdateTime = 2f;
-		RenderFrame += (args) =>
+		RenderFrame += () =>
 		{
 			if (_totalTime - lastUpdateMeanFpsTime > meanFpsUpdateTime)
 			{
@@ -210,6 +228,8 @@ public class MainWindow : GameWindow
 				Color.DarkRed);
 			Visualizer.RenderAndClear(viewProj, ClientSize);
 		};
+
+		OnResize(new ResizeEventArgs(ClientSize));
 	}
 
 	private Matrix4 CreateProjectionMatrix()
@@ -230,12 +250,9 @@ public class MainWindow : GameWindow
 		GL.Viewport(0, 0, e.Width, e.Height);
 	}
 
-	protected override void OnUpdateFrame(FrameEventArgs args)
+	private void Update()
 	{
-		double dt = args.Time;
-		_totalTime += dt;
-
-		base.OnUpdateFrame(args);
+		UpdateFrame?.Invoke();
 
 		if (KeyboardState.IsKeyDown(Keys.Escape))
 		{
@@ -243,7 +260,7 @@ public class MainWindow : GameWindow
 			return;
 		}
 
-		UpdatePlayer((float)dt);
+		UpdatePlayer((float)Time.DeltaTime);
 	}
 
 	private void UpdatePlayer(float dt)
@@ -290,19 +307,13 @@ public class MainWindow : GameWindow
 		_camera.Position += globalDelta;
 	}
 
-	protected override void OnRenderFrame(FrameEventArgs args)
+	private void Render()
 	{
 		GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
-		base.OnRenderFrame(args);
+		RenderFrame?.Invoke();
 
-		SwapBuffers();
-	}
-
-	private static GameWindowSettings GetGameWindowSettings()
-	{
-		GameWindowSettings settings = new();
-		return settings;
+		Context.SwapBuffers();
 	}
 
 	private static NativeWindowSettings GetNativeWindowSettings()
@@ -319,4 +330,10 @@ public class MainWindow : GameWindow
 
 		return settings;
 	}
+
+	[DllImport("kernel32", SetLastError = true)]
+	private static extern IntPtr SetThreadAffinityMask(IntPtr hThread, IntPtr dwThreadAffinityMask);
+
+	[DllImport("kernel32")]
+	private static extern IntPtr GetCurrentThread();
 }
