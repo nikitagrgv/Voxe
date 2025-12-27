@@ -110,7 +110,7 @@ public static class Visualizer
 		list.Add(v1);
 	}
 
-	public static void AddText(string text, Vector2 position, float height, Color color)
+	public static void AddScreenText(string text, Vector2 position, float height, Color color)
 	{
 		Debug.Assert(_texts.Font != null);
 		float lineSpacing = _texts.Font.GetLineSpacing(height);
