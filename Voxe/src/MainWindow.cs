@@ -10,9 +10,11 @@ namespace Voxe;
 
 public class MainWindow : GameWindow
 {
-	private const float CameraMoveSpeed = 4f;
-	private const float CameraMoveMultiplier = 2f;
+	private const float CameraBaseMoveSpeed = 4f;
+	private const float CameraRunMultiplier = 2f;
 	private const float CameraRotateSpeed = 0.2f;
+
+	private float _currentCameraMoveSpeedMultiplier = 1f;
 
 	// TODO: Shit, don't use double for it
 	private double _totalTime;
@@ -154,7 +156,7 @@ public class MainWindow : GameWindow
 				lastUpdateMeanFpsTime = _totalTime;
 				numFramesForMeanFps = 0;
 			}
-			
+
 			if (_totalTime - lastUpdateMinMaxFpsTime > minMaxFpsUpdateTime)
 			{
 				lastUpdateMinMaxFpsTime = _totalTime;
@@ -197,7 +199,7 @@ public class MainWindow : GameWindow
 			Visualizer.AddText($"""
 			                    FPS = {1 / UpdateTime:F1}
 			                    Mean FPS = {1 / lastMeanFps:F1}
-			                    Min FPS = {1 / lastMaxDt:F1} ({lastMaxDt*1000:F1}ms)
+			                    Min FPS = {1 / lastMaxDt:F1} ({lastMaxDt * 1000:F1}ms)
 			                    Max FPS = {1 / lastMinDt:F1}
 			                    """,
 				new Vector2(5, 5),
@@ -251,8 +253,8 @@ public class MainWindow : GameWindow
 
 		Vector3 localDelta = new();
 
-		float multiplier = isCameraRun ? CameraMoveMultiplier : 1f;
-		float cameraMoveSpeed = CameraMoveSpeed * multiplier;
+		float multiplier = isCameraRun ? CameraRunMultiplier : 1f;
+		float cameraMoveSpeed = CameraBaseMoveSpeed * multiplier;
 		if (KeyboardState.IsKeyDown(Keys.S))
 			localDelta.Z += cameraMoveSpeed * dt;
 		if (KeyboardState.IsKeyDown(Keys.W))
