@@ -201,7 +201,7 @@ public class MainWindow : GameWindow
 			                    Max FPS = {1 / lastMinDt:F1}
 			                    """,
 				new Vector2(5, 5),
-				26,
+				20,
 				Color.DarkRed);
 			Visualizer.RenderAndClear(viewProj, ClientSize);
 		};
