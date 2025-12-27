@@ -253,8 +253,8 @@ public class MainWindow : GameWindow
 
 		Vector3 localDelta = new();
 
-		float multiplier = isCameraRun ? CameraRunMultiplier : 1f;
-		float cameraMoveSpeed = (CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier) * multiplier;
+		float runMultiplier = isCameraRun ? CameraRunMultiplier : 1f;
+		float cameraMoveSpeed = (CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier) * runMultiplier;
 		if (KeyboardState.IsKeyDown(Keys.S))
 			localDelta.Z += cameraMoveSpeed * dt;
 		if (KeyboardState.IsKeyDown(Keys.W))
