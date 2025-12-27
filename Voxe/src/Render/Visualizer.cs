@@ -92,7 +92,7 @@ public static class Visualizer
 		_texts.Font = new Font(fontImage, charWidth: 20, charHeight: 32, columns: 12, rows: 8, firstChar: ' ');
 	}
 
-	public static void AddLine(Vector3 start, Vector3 end, Color color, bool depthTest = true)
+	public static void AddWorldLine(Vector3 start, Vector3 end, Color color, bool depthTest = true)
 	{
 		Vector4 colorVec = color.ToVector4();
 		Lines.Vertex v0 = new()

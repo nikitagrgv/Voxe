@@ -193,9 +193,9 @@ public class MainWindow : GameWindow
 			GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
 			chunkMesh.Render();
 
-			Visualizer.AddLine(Vector3.Zero, Vector3.UnitX, Color.Red, depthTest: false);
-			Visualizer.AddLine(Vector3.Zero, Vector3.UnitY, Color.Green, depthTest: false);
-			Visualizer.AddLine(Vector3.Zero, Vector3.UnitZ, Color.Blue, depthTest: false);
+			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitX, Color.Red, depthTest: false);
+			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitY, Color.Green, depthTest: false);
+			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitZ, Color.Blue, depthTest: false);
 			Visualizer.AddScreenText($"""
 			                          FPS: {1 / UpdateTime:F1}
 			                          Mean FPS: {1 / lastMeanFps:F1}
