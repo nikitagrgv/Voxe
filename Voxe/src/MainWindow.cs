@@ -275,6 +275,13 @@ public class MainWindow : GameWindow
 			Vector2 mouseDelta = MouseState.Delta;
 			_camera.Yaw -= mouseDelta.X * CameraRotateSpeed;
 			_camera.Pitch -= mouseDelta.Y * CameraRotateSpeed;
+
+			if (MouseState.ScrollDelta.Y != 0)
+			{
+				const float step = 1.1f;
+				float mul = MouseState.ScrollDelta.Y > 0 ? step : 1 / step;
+				_currentCameraMoveSpeedMultiplier *= mul;
+			}
 		}
 
 		Matrix3 rot = _camera.GetRotation();
