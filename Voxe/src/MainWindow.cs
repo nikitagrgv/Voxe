@@ -201,7 +201,7 @@ public class MainWindow : GameWindow
 			                          Mean FPS: {1 / lastMeanFps:F1}
 			                          Min FPS: {1 / lastMaxDt:F1} ({lastMaxDt * 1000:F1}ms)
 			                          Max FPS: {1 / lastMinDt:F1}
-
+			                          --------------
 			                          Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
 			                          """,
 				new Vector2(5, 5),
