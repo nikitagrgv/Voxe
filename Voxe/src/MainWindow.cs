@@ -202,6 +202,7 @@ public class MainWindow : GameWindow
 			                          Min FPS: {1 / lastMaxDt:F1} ({lastMaxDt * 1000:F1}ms)
 			                          Max FPS: {1 / lastMinDt:F1}
 			                          --------------
+			                          Pos: {_camera.Position.X} {_camera.Position.Y} {_camera.Position.Z}
 			                          Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
 			                          """,
 				new Vector2(5, 5),
