@@ -170,11 +170,13 @@ public class MainWindow : NativeWindow
 
 		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
 		NoiseMap heightMap = new();
-		NoiseMapBuilderPlane heightMapBuilder = new();
-		heightMapBuilder.SourceModule = perlin;
-		heightMapBuilder.NoiseMap = heightMap;
+		NoiseMapBuilderPlane heightMapBuilder = new()
+		{
+			SourceModule = perlin,
+			NoiseMap = heightMap,
+			Seamless = true,
+		};
 		heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
-		heightMapBuilder.Seamless = true;
 		heightMapBuilder.SetBounds(0, 1, 0, 1);
 		heightMapBuilder.Build();
 
