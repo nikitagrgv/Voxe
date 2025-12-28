@@ -164,29 +164,25 @@ public class MainWindow : NativeWindow
 		int mvpLocation = shader.GetUniformLocation("mvp");
 
 		_camera.Position = new Vector3(0, 0, 8);
+		
+		
 
 		Chunk chunk = new();
 		for (int y = 0; y < Chunk.ChunkHeight; y++)
 		{
 			if (y % 2 == 1)
-			{
 				continue;
-			}
 
 			Block block = y > 5 ? new Block(BasicBlock.Snow) : new Block(BasicBlock.Grass);
 			for (int z = 0; z < Chunk.ChunkWidth; z++)
 			{
 				if (z % 2 == 1)
-				{
 					continue;
-				}
 
 				for (int x = 0; x < Chunk.ChunkWidth; x++)
 				{
 					if (x % 2 == 1)
-					{
 						continue;
-					}
 
 					chunk.SetBlock(x, y, z, block);
 				}
