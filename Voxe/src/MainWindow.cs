@@ -340,8 +340,6 @@ public class MainWindow : NativeWindow
 		GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
 		RenderFrame?.Invoke();
-
-		Context.SwapBuffers();
 	}
 
 	private void Swap()
