@@ -13,7 +13,7 @@ public static class VoxelUtils
 		return new Vector3i(x, y, z);
 	}
 
-	public static ChunkIndex GetChunkIndex(float x, float z)
+	public static ChunkIndex GetChunkIndexByBlock(float x, float z)
 	{
 		int blockX = (int)float.Floor(x);
 		int blockZ = (int)float.Floor(z);
@@ -22,11 +22,18 @@ public static class VoxelUtils
 		return new ChunkIndex(chunkX, chunkZ);
 	}
 
-	public static ChunkIndex GetChunkIndex(int x, int z)
+	public static ChunkIndex GetChunkIndexByBlock(int x, int z)
 	{
 		int chunkX = FloorToWidth(x);
 		int chunkZ = FloorToWidth(z);
 		return new ChunkIndex(chunkX, chunkZ);
+	}
+
+	public static Vector3 GetChunkPosition(int x, int z)
+	{
+		float posX = x * Chunk.ChunkWidth;
+		float posZ = z * Chunk.ChunkWidth;
+		return new Vector3(posX, 0, posZ);
 	}
 
 	private static int FloorToWidth(int value)

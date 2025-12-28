@@ -270,6 +270,9 @@ public class MainWindow : NativeWindow
 
 				if (chunk.Mesh != null)
 				{
+					ChunkIndex index = chunk.Index;
+					
+					// Matrix4 chunksModel = Matrix4.Identity;
 					chunk.Mesh.Render();
 				}
 			}
