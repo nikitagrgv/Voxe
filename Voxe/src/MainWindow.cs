@@ -224,6 +224,7 @@ public class MainWindow : NativeWindow
 		}
 
 		playerStartY += 5;
+		_camera.Position = new Vector3(playerStartX, playerStartY, playerStartZ);
 
 		RenderFrame += () =>
 		{
