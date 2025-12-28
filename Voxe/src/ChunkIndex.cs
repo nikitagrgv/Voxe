@@ -1,6 +1,6 @@
 ﻿namespace Voxe;
 
-public record struct ChunkIndex
+public readonly record struct ChunkIndex
 {
 	public int X { get; }
 	public int Z { get; }
