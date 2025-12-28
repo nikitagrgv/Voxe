@@ -347,7 +347,8 @@ public class MainWindow : NativeWindow
 			{
 				const float step = 1.1f;
 				float mul = MouseState.ScrollDelta.Y > 0 ? step : 1 / step;
-				_currentCameraMoveSpeedMultiplier *= mul;
+				float totalMul = float.Pow(mul, float.Abs(MouseState.ScrollDelta.Y));
+				_currentCameraMoveSpeedMultiplier *= totalMul;
 			}
 		}
 
