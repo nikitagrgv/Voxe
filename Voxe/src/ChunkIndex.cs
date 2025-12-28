@@ -11,6 +11,21 @@ public record struct ChunkIndex
 		Z = z;
 	}
 
+	public ChunkIndex ShiftedX(int dx)
+	{
+		return new ChunkIndex(X + dx, Z);
+	}
+
+	public ChunkIndex ShiftedZ(int dz)
+	{
+		return new ChunkIndex(X, Z + dz);
+	}
+
+	public ChunkIndex Shifted(int dx, int dz)
+	{
+		return new ChunkIndex(X + dx, Z + dz);
+	}
+
 	public bool Equals(ChunkIndex other)
 	{
 		return X == other.X && Z == other.Z;
