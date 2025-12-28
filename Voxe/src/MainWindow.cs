@@ -67,6 +67,17 @@ public class MainWindow : NativeWindow
 
 	private Camera _camera = new();
 
+	private bool WindowShouldClose
+	{
+		get
+		{
+			unsafe
+			{
+				return GLFW.WindowShouldClose(WindowPtr);
+			}
+		}
+	}
+
 	public MainWindow() : base(GetNativeWindowSettings())
 	{
 	}
@@ -74,6 +85,67 @@ public class MainWindow : NativeWindow
 	public void Run()
 	{
 		Initialize();
+
+		_timer.Start();
+		Time.CurrentTime = _timer.Elapsed;
+		while (!WindowShouldClose)
+		{
+			TimeSpan currentTime = _timer.Elapsed;
+			TimeSpan prevTime = Time.CurrentTime;
+			Time.CurrentTime = currentTime;
+
+			TimeSpan delta = currentTime - prevTime;
+			Time.DeltaSpan = delta;
+
+			// Update input state for next frame
+			NewInputFrame();
+
+			// Handle events for this frame
+			ProcessWindowEvents(IsEventDriven);
+
+			UpdateTime = elapsed;
+			OnUpdateFrame(new FrameEventArgs(elapsed));
+			OnRenderFrame(new FrameEventArgs(elapsed));
+
+			const int MaxSlowUpdates = 80;
+			const int SlowUpdatesThreshold = 45;
+
+			double time = _timer.Elapsed.TotalSeconds;
+			if (updatePeriod < time)
+			{
+				_slowUpdates++;
+				if (_slowUpdates > MaxSlowUpdates)
+				{
+					_slowUpdates = MaxSlowUpdates;
+				}
+			}
+			else
+			{
+				_slowUpdates--;
+				if (_slowUpdates < 0)
+				{
+					_slowUpdates = 0;
+				}
+			}
+
+			IsRunningSlowly = _slowUpdates > SlowUpdatesThreshold;
+
+			if (API != ContextAPI.NoAPI)
+			{
+				if (VSync == VSyncMode.Adaptive)
+				{
+					GLFW.SwapInterval(IsRunningSlowly ? 0 : 1);
+				}
+			}
+
+			// The time we have left to the next update.
+			double timeToNextUpdate = updatePeriod - _timer.Elapsed.TotalSeconds;
+
+			if (timeToNextUpdate > 0)
+			{
+				Utils.AccurateSleep(timeToNextUpdate, ExpectedSchedulerPeriod);
+			}
+		}
 	}
 
 	private void Initialize()
@@ -260,7 +332,7 @@ public class MainWindow : NativeWindow
 			return;
 		}
 
-		UpdatePlayer((float)Time.DeltaTime);
+		UpdatePlayer((float)Time.DeltaSpan);
 	}
 
 	private void UpdatePlayer(float dt)
