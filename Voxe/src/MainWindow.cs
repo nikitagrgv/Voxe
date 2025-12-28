@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using LibNoise;
 using LibNoise.Builder;
+using LibNoise.Combiner;
 using LibNoise.Modifier;
 using LibNoise.Primitive;
 using OpenTK.Graphics.OpenGL;
@@ -54,7 +55,8 @@ public class MainWindow : NativeWindow
 			get;
 			set
 			{
-				value = float.Clamp(value, 0.001f, 179.99f);
+				const float MaxAngle = 89.99f;
+				value = float.Clamp(value, -MaxAngle, MaxAngle);
 				field = value.Normalize180();
 			}
 		} = 0f;
