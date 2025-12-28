@@ -6,16 +6,6 @@ public class World
 {
 	private readonly Dictionary<ChunkIndex, Chunk> _chunksMap = new();
 
-	public readonly ref struct ChunksList
-	{
-		public ChunksList(ReadOnlySpan<Chunk> chunks)
-		{
-			Chunks = chunks;
-		}
-
-		public ReadOnlySpan<Chunk> Chunks { get; }
-	}
-
 	public void InitChunk(ChunkIndex index, Chunk chunk)
 	{
 		Debug.Assert(TryGetChunk(index) == null);
@@ -26,5 +16,10 @@ public class World
 	{
 		_chunksMap.TryGetValue(index, out Chunk? chunk);
 		return chunk;
+	}
+
+	public void GetChunks(ChunkIndex index, int radius, List<Chunk> chunks)
+	{
+		
 	}
 }
