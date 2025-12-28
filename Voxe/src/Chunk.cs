@@ -13,7 +13,7 @@ public class Chunk
 
 	private readonly Block[] _blocks;
 
-	private ChunkMesh? _mesh;
+	public ChunkMesh? Mesh { get; }
 
 	public Chunk()
 	{
