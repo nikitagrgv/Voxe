@@ -268,7 +268,11 @@ public class MainWindow : NativeWindow
 					chunk.Mesh = chunkMesh;
 				}
 
-				chunk.Mesh?.Render();
+				if (chunk.Mesh != null)
+				{
+					chunk.
+					chunk.Mesh.Render();
+				}
 			}
 
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitX, Color.Red, depthTest: false);

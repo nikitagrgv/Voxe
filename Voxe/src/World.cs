@@ -8,7 +8,7 @@ public class World
 
 	public void InitChunk(ChunkIndex index, Chunk chunk)
 	{
-		Debug.Assert(TryGetChunk(index) == null);
+		Debug.Assert(!HasChunk(index));
 		_chunksMap.Add(index, chunk);
 	}
 
@@ -18,10 +18,33 @@ public class World
 		return chunk;
 	}
 
-	public void GetChunks(ChunkIndex index, int radius, List<Chunk> chunks)
+	public bool HasChunk(ChunkIndex index)
+	{
+		return _chunksMap.ContainsKey(index);
+	}
+
+	public void GetChunks(ChunkIndex center, int radius, List<Chunk> chunks)
 	{
 		// TODO# Implement normally, use chunks flat map, sort
 		chunks.Clear();
 		chunks.AddRange(_chunksMap.Values);
+	}
+
+	public void GetEmptyChunks(ChunkIndex center, int radius, List<ChunkIndex> chunks)
+	{
+		chunks.Clear();
+		int rad2 = radius * radius;
+		for (int x = center.X - radius; x < center.X + radius; x++)
+		{
+			for (int z = center.Z - radius; z < center.Z + radius; z++)
+			{
+				if (x * x + z * z > rad2)
+					continue;
+				ChunkIndex chunkIndex = new ChunkIndex(x, z);
+				if (HasChunk(chunkIndex))
+					continue;
+				chunks.Add(chunkIndex);
+			}
+		}
 	}
 }
