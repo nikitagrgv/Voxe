@@ -1,10 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
-using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using LibNoise;
 using LibNoise.Builder;
-using LibNoise.Combiner;
 using LibNoise.Modifier;
 using LibNoise.Primitive;
 using OpenTK.Graphics.OpenGL;
@@ -31,6 +29,8 @@ public class MainWindow : NativeWindow
 			field = value;
 		}
 	}
+
+	private World _world = new();
 
 	private float _currentCameraMoveSpeedMultiplier = 1f;
 
@@ -232,6 +232,7 @@ public class MainWindow : NativeWindow
 		playerStartY += 5;
 		_camera.Position = new Vector3(playerStartX, playerStartY, playerStartZ);
 
+		List<Chunk> renderChunks = new();
 		RenderFrame += () =>
 		{
 			TimeSpan curTime = Time.CurrentTime;
@@ -258,6 +259,12 @@ public class MainWindow : NativeWindow
 			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
 			GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
+
+			_world.GetChunks(new ChunkIndex(0, 0), 10, renderChunks);
+			foreach (Chunk ch in renderChunks)
+			{
+				
+			}
 			chunkMesh.Render();
 
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitX, Color.Red, depthTest: false);
