@@ -181,7 +181,7 @@ public class MainWindow : NativeWindow
 		heightMapBuilder.SetBounds(0, 1, 0, 1);
 		heightMapBuilder.Build();
 
-		ScaleBias scaleBias = new(perlin, scale: Chunk.ChunkHeight, bias: 0f);
+		ScaleBias blockScale = new(perlin, scale: 0.1f, bias: 0.5f);
 
 		Chunk chunk = new();
 		for (int y = 0; y < Chunk.ChunkHeight; y++)
