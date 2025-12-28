@@ -174,7 +174,7 @@ public class MainWindow : NativeWindow
 		heightMapBuilder.SourceModule = perlin;
 		heightMapBuilder.NoiseMap = heightMap;
 		heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
-		// heightMapBuilder.Seamless = true;
+		heightMapBuilder.Seamless = true;
 		heightMapBuilder.SetBounds(0, 1, 0, 1);
 		heightMapBuilder.Build();
 
