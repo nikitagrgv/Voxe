@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using LibNoise;
 using LibNoise.Builder;
+using LibNoise.Modifier;
 using LibNoise.Primitive;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -179,6 +180,8 @@ public class MainWindow : NativeWindow
 		heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
 		heightMapBuilder.SetBounds(0, 1, 0, 1);
 		heightMapBuilder.Build();
+
+		ScaleBias scaleBias = new(perlin, scale: Chunk.ChunkHeight, bias: 0f);
 
 		Chunk chunk = new();
 		for (int y = 0; y < Chunk.ChunkHeight; y++)
