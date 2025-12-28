@@ -304,6 +304,11 @@ public class MainWindow : NativeWindow
 			return;
 		}
 
+		if (KeyboardState.IsKeyPressed(Keys.F8))
+		{
+			VSync = !VSync;
+		}
+
 		UpdatePlayer((float)Time.DeltaTime);
 	}
 
