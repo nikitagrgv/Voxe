@@ -273,6 +273,8 @@ public class MainWindow : NativeWindow
 	private string GetDebugText()
 	{
 		double dt = Time.DeltaTime;
+		Vector3i blockPosition = VoxelUtils.ToBlockPosition(_camera.Position);
+		ChunkIndex chunkIndex = VoxelUtils.GetChunkIndex(blockPosition.X, blockPosition.Z);
 
 		return $"""
 		        FPS{(VSync ? "(VSync):" : ":")} {1 / dt:F1}
@@ -281,6 +283,8 @@ public class MainWindow : NativeWindow
 		        Max FPS: {1 / _fpsStat.LastMinDt:F1}
 		        --------------
 		        Pos: {_camera.Position.X:F1} {_camera.Position.Y:F1} {_camera.Position.Z:F1}
+		        Block: {blockPosition.X}{blockPosition.Y}{blockPosition.Z}
+		        Chunk: {chunkIndex.X} {chunkIndex.Z}
 		        Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
 		        """;
 	}
