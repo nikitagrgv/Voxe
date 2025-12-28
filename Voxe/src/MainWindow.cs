@@ -98,48 +98,9 @@ public class MainWindow : NativeWindow
 			NewInputFrame();
 			ProcessWindowEvents(IsEventDriven);
 
-			UpdateTime = elapsed;
-			OnUpdateFrame(new FrameEventArgs(elapsed));
-			OnRenderFrame(new FrameEventArgs(elapsed));
-
-			const int MaxSlowUpdates = 80;
-			const int SlowUpdatesThreshold = 45;
-
-			double time = _timer.Elapsed.TotalSeconds;
-			if (updatePeriod < time)
-			{
-				_slowUpdates++;
-				if (_slowUpdates > MaxSlowUpdates)
-				{
-					_slowUpdates = MaxSlowUpdates;
-				}
-			}
-			else
-			{
-				_slowUpdates--;
-				if (_slowUpdates < 0)
-				{
-					_slowUpdates = 0;
-				}
-			}
-
-			IsRunningSlowly = _slowUpdates > SlowUpdatesThreshold;
-
-			if (API != ContextAPI.NoAPI)
-			{
-				if (VSync == VSyncMode.Adaptive)
-				{
-					GLFW.SwapInterval(IsRunningSlowly ? 0 : 1);
-				}
-			}
-
-			// The time we have left to the next update.
-			double timeToNextUpdate = updatePeriod - _timer.Elapsed.TotalSeconds;
-
-			if (timeToNextUpdate > 0)
-			{
-				Utils.AccurateSleep(timeToNextUpdate, ExpectedSchedulerPeriod);
-			}
+			Update();
+			Render();
+			Swap();
 		}
 	}
 
@@ -380,6 +341,11 @@ public class MainWindow : NativeWindow
 
 		RenderFrame?.Invoke();
 
+		Context.SwapBuffers();
+	}
+
+	private void Swap()
+	{
 		Context.SwapBuffers();
 	}
 
