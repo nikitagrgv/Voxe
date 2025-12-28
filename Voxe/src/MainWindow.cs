@@ -198,6 +198,7 @@ public class MainWindow : NativeWindow
 			heightMapBuilder.Build();
 
 			Chunk spamChunk = new();
+			spamChunk.Index = chunkIndex;
 			_world.InitChunk(chunkIndex, spamChunk);
 			for (int y = 0; y < Chunk.ChunkHeight; y++)
 			{
