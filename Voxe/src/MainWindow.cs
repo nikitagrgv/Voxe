@@ -292,10 +292,10 @@ public class MainWindow : NativeWindow
 			return;
 		}
 
-		UpdatePlayer(Time.DeltaTime);
+		UpdatePlayer((float)Time.DeltaTime);
 	}
 
-	private void UpdatePlayer(double dt)
+	private void UpdatePlayer(float dt)
 	{
 		bool isCameraRotateMode = MouseState.IsButtonDown(MouseButton.Right);
 		bool isCameraRun = KeyboardState.IsKeyDown(Keys.LeftShift);
