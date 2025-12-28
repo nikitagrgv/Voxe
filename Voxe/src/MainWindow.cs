@@ -52,7 +52,11 @@ public class MainWindow : NativeWindow
 		public float Pitch
 		{
 			get;
-			set => field = value.Normalize360();
+			set
+			{
+				value = float.Clamp(value, 0.001f, 179.99f);
+				field = value.Normalize360();
+			}
 		} = 0f;
 
 		public Vector3 Position { get; set; }
