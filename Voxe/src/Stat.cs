@@ -4,4 +4,10 @@ public static class Stat
 {
 	public static ulong RenderedIndices { get; set; }
 	public static ulong RenderedIndicesPerFrame { get; set; }
+
+	public static void AddRenderedIndices(ulong renderedIndices)
+	{
+		RenderedIndices += renderedIndices;
+		RenderedIndicesPerFrame += renderedIndices;
+	}
 }
