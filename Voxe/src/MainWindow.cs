@@ -191,7 +191,7 @@ public class MainWindow : NativeWindow
 		heightMapBuilder.SetBounds(0, 1, 0, 1);
 		heightMapBuilder.Build();
 
-		Chunk chunk = new();
+		Chunk spamChunk = new();
 		for (int y = 0; y < Chunk.ChunkHeight; y++)
 		{
 			for (int z = 0; z < Chunk.ChunkWidth; z++)
@@ -209,7 +209,7 @@ public class MainWindow : NativeWindow
 					else
 						block = new Block(BasicBlock.Dirt);
 
-					chunk.SetBlock(x, y, z, block);
+					spamChunk.SetBlock(x, y, z, block);
 				}
 			}
 		}
@@ -219,7 +219,7 @@ public class MainWindow : NativeWindow
 		int playerStartY = Chunk.ChunkHeight - 1;
 		while (true)
 		{
-			Block block = chunk.GetBlock(playerStartX, playerStartY, playerStartZ);
+			Block block = spamChunk.GetBlock(playerStartX, playerStartY, playerStartZ);
 			if (block.TypeId != (int)BasicBlock.Air)
 				break;
 			playerStartY--;
@@ -257,17 +257,17 @@ public class MainWindow : NativeWindow
 			GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
 
 			_world.GetChunks(new ChunkIndex(0, 0), 10, renderChunks);
-			foreach (Chunk ch in renderChunks)
+			foreach (Chunk chunk in renderChunks)
 			{
-				if (ch.Mesh == null)
+				if (chunk.Mesh == null)
 				{
 					ChunkMeshGenerator.Result result = _meshGenerator.GenerateMesh(chunk);
 					ChunkMesh chunkMesh = new();
 					chunkMesh.SetData(result.Vertices, result.Indices);
-					ch.Mesh = chunkMesh;
+					chunk.Mesh = chunkMesh;
 				}
 
-				ch.Mesh?.Render();
+				chunk.Mesh?.Render();
 			}
 
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitX, Color.Red, depthTest: false);
