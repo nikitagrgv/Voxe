@@ -92,10 +92,8 @@ public class MainWindow : NativeWindow
 		{
 			TimeSpan currentTime = _timer.Elapsed;
 			TimeSpan prevTime = Time.CurrentTime;
-			Time.CurrentTime = currentTime;
-
 			TimeSpan delta = currentTime - prevTime;
-			Time.DeltaSpan = delta;
+			Time.UpdateTime(currentTime, delta);
 
 			// Update input state for next frame
 			NewInputFrame();
