@@ -304,7 +304,7 @@ public class MainWindow : NativeWindow
 			return;
 		}
 
-		if (KeyboardState.IsKeyPressed(Keys.F8))
+		if (KeyboardState.IsKeyPressed(Keys.F9))
 		{
 			VSync = !VSync;
 		}
