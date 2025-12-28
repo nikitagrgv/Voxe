@@ -176,51 +176,57 @@ public class MainWindow : NativeWindow
 
 		_camera.Position = new Vector3(0, 0, 8);
 
-		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
-		ScaleBias blockScale = new(perlin, scale: 0.1f, bias: 0.5f);
-		IModule final = blockScale;
-
-		NoiseMap heightMap = new();
-		NoiseMapBuilderPlane heightMapBuilder = new()
+		var createChunk = () =>
 		{
-			SourceModule = final,
-			NoiseMap = heightMap,
-			Seamless = true,
-		};
-		heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
-		heightMapBuilder.SetBounds(0, 1, 0, 1);
-		heightMapBuilder.Build();
+			SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
+			ScaleBias blockScale = new(perlin, scale: 0.1f, bias: 0.5f);
+			IModule final = blockScale;
 
-		Chunk spamChunk = new();
-		_world.InitChunk(new ChunkIndex(0, 0), spamChunk);
-		for (int y = 0; y < Chunk.ChunkHeight; y++)
-		{
-			for (int z = 0; z < Chunk.ChunkWidth; z++)
+			NoiseMap heightMap = new();
+			NoiseMapBuilderPlane heightMapBuilder = new()
 			{
-				for (int x = 0; x < Chunk.ChunkWidth; x++)
-				{
-					float heightNormalized = heightMap.GetValue(x, z);
-					float height = heightNormalized * Chunk.ChunkHeight;
-					int h = (int)height;
-					Block block;
-					if (y > h)
-						block = new Block(BasicBlock.Air);
-					else if (y == h)
-						block = new Block(BasicBlock.Grass);
-					else
-						block = new Block(BasicBlock.Dirt);
+				SourceModule = final,
+				NoiseMap = heightMap,
+				Seamless = true,
+			};
+			heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
+			heightMapBuilder.SetBounds(0, 1, 0, 1);
+			heightMapBuilder.Build();
 
-					spamChunk.SetBlock(x, y, z, block);
+			Chunk spamChunk = new();
+			_world.InitChunk(new ChunkIndex(0, 0), spamChunk);
+			for (int y = 0; y < Chunk.ChunkHeight; y++)
+			{
+				for (int z = 0; z < Chunk.ChunkWidth; z++)
+				{
+					for (int x = 0; x < Chunk.ChunkWidth; x++)
+					{
+						float heightNormalized = heightMap.GetValue(x, z);
+						float height = heightNormalized * Chunk.ChunkHeight;
+						int h = (int)height;
+						Block block;
+						if (y > h)
+							block = new Block(BasicBlock.Air);
+						else if (y == h)
+							block = new Block(BasicBlock.Grass);
+						else
+							block = new Block(BasicBlock.Dirt);
+
+						spamChunk.SetBlock(x, y, z, block);
+					}
 				}
 			}
-		}
+		};
+
+		Chunk? centerChunk = _world.TryGetChunk(new ChunkIndex());
+		Debug.Assert(centerChunk != null);
 
 		const int playerStartX = Chunk.ChunkWidth / 2;
 		const int playerStartZ = Chunk.ChunkWidth / 2;
 		int playerStartY = Chunk.ChunkHeight - 1;
 		while (true)
 		{
-			Block block = spamChunk.GetBlock(playerStartX, playerStartY, playerStartZ);
+			Block block = centerChunk.GetBlock(playerStartX, playerStartY, playerStartZ);
 			if (block.TypeId != (int)BasicBlock.Air)
 				break;
 			playerStartY--;
