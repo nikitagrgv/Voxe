@@ -263,9 +263,8 @@ public class MainWindow : NativeWindow
 			_world.GetChunks(new ChunkIndex(0, 0), 10, renderChunks);
 			foreach (Chunk ch in renderChunks)
 			{
-				
+				ch.Mesh?.Render();
 			}
-			chunkMesh.Render();
 
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitX, Color.Red, depthTest: false);
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitY, Color.Green, depthTest: false);
