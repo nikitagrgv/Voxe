@@ -22,9 +22,6 @@ public class World
 	{
 		// TODO# Implement normally, use chunks flat map
 		chunks.Clear();
-		foreach (Chunk chunk in _chunksMap.Values)
-		{
-			chunks.Add(chunk);
-		}
+		chunks.AddRange(_chunksMap.Values);
 	}
 }
