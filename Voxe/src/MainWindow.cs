@@ -170,6 +170,9 @@ public class MainWindow : NativeWindow
 		_camera.Position = new Vector3(0, 0, 8);
 
 		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
+		ScaleBias blockScale = new(perlin, scale: 0.1f, bias: 0.5f);
+		IModule final = blockScale;
+
 		NoiseMap heightMap = new();
 		NoiseMapBuilderPlane heightMapBuilder = new()
 		{
@@ -180,10 +183,6 @@ public class MainWindow : NativeWindow
 		heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
 		heightMapBuilder.SetBounds(0, 1, 0, 1);
 		heightMapBuilder.Build();
-
-		ScaleBias blockScale = new(perlin, scale: 0.1f, bias: 0.5f);
-
-		IModule final = blockScale;
 
 		Chunk chunk = new();
 		for (int y = 0; y < Chunk.ChunkHeight; y++)
