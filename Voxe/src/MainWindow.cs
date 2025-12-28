@@ -263,22 +263,26 @@ public class MainWindow : NativeWindow
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitX, Color.Red, depthTest: false);
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitY, Color.Green, depthTest: false);
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitZ, Color.Blue, depthTest: false);
-			Visualizer.AddScreenText($"""
-			                          FPS{(VSync ? "(VSync):" : ":")} {1 / dt:F1}
-			                          Mean FPS: {1 / _fpsStat.LastMeanFps:F1}
-			                          Min FPS: {1 / _fpsStat.LastMaxDt:F1} ({_fpsStat.LastMaxDt * 1000:F1}ms)
-			                          Max FPS: {1 / _fpsStat.LastMinDt:F1}
-			                          --------------
-			                          Pos: {_camera.Position.X:F1} {_camera.Position.Y:F1} {_camera.Position.Z:F1}
-			                          Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
-			                          """,
-				new Vector2(5, 5),
-				20,
-				Color.DarkRed);
+			Visualizer.AddScreenText(GetDebugText(), new Vector2(5, 5), height: 20, Color.DarkRed);
 			Visualizer.RenderAndClear(viewProj, ClientSize);
 		};
 
 		OnResize(new ResizeEventArgs(ClientSize));
+	}
+
+	private string GetDebugText()
+	{
+		double dt = Time.DeltaTime;
+
+		return $"""
+		        FPS{(VSync ? "(VSync):" : ":")} {1 / dt:F1}
+		        Mean FPS: {1 / _fpsStat.LastMeanFps:F1}
+		        Min FPS: {1 / _fpsStat.LastMaxDt:F1} ({_fpsStat.LastMaxDt * 1000:F1}ms)
+		        Max FPS: {1 / _fpsStat.LastMinDt:F1}
+		        --------------
+		        Pos: {_camera.Position.X:F1} {_camera.Position.Y:F1} {_camera.Position.Z:F1}
+		        Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
+		        """;
 	}
 
 	private Matrix4 CreateProjectionMatrix()
