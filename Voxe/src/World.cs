@@ -9,6 +9,7 @@ public class World
 	public void InitChunk(ChunkIndex index, Chunk chunk)
 	{
 		Debug.Assert(!HasChunk(index));
+		Debug.Assert(chunk.Index == index);
 		_chunksMap.Add(index, chunk);
 	}
 
