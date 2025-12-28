@@ -21,9 +21,10 @@ public class World
 	public void GetChunks(ChunkIndex index, int radius, List<Chunk> chunks)
 	{
 		// TODO# Implement normally, use chunks flat map
+		chunks.Clear();
 		foreach (Chunk chunk in _chunksMap.Values)
 		{
-			
+			chunks.Add(chunk);
 		}
 	}
 }
