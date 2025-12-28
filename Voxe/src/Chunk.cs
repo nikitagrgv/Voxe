@@ -13,6 +13,8 @@ public class Chunk
 
 	private readonly Block[] _blocks;
 
+	private ChunkMesh? _mesh;
+
 	public Chunk()
 	{
 		_blocks = new Block[NumBlocks];
