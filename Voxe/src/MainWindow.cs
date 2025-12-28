@@ -183,6 +183,8 @@ public class MainWindow : NativeWindow
 
 		ScaleBias blockScale = new(perlin, scale: 0.1f, bias: 0.5f);
 
+		var final = blockScale;
+
 		Chunk chunk = new();
 		for (int y = 0; y < Chunk.ChunkHeight; y++)
 		{
