@@ -15,7 +15,9 @@ public static class VoxelUtils
 
 	public static ChunkIndex GetChunkIndex(int x, int z)
 	{
-		
+		int chunkX = FloorToWidth(x);
+		int chunkZ = FloorToWidth(z);
+		return new ChunkIndex(chunkX, chunkZ);
 	}
 
 	private static int FloorToWidth(int value)
