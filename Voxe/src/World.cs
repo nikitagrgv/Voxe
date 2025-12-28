@@ -20,7 +20,7 @@ public class World
 
 	public void GetChunks(ChunkIndex index, int radius, List<Chunk> chunks)
 	{
-		// TODO# Implement normally, use chunks map
+		// TODO# Implement normally, use chunks flat map
 		foreach (Chunk chunk in _chunksMap.Values)
 		{
 			
