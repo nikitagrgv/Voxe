@@ -303,7 +303,7 @@ public class MainWindow : NativeWindow
 			return;
 		}
 
-		if (KeyboardState.IsKeyPressed(Keys.F1))
+		if (KeyboardState.IsKeyPressed(Keys.F2))
 		{
 			WindowState = WindowState == WindowState.Fullscreen ? WindowState.Normal : WindowState.Fullscreen;
 		}
