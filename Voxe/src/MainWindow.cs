@@ -55,7 +55,7 @@ public class MainWindow : NativeWindow
 			set
 			{
 				value = float.Clamp(value, 0.001f, 179.99f);
-				field = value.Normalize360();
+				field = value.Normalize180();
 			}
 		} = 0f;
 
