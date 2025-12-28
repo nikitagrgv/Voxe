@@ -283,7 +283,7 @@ public class MainWindow : NativeWindow
 		        Max FPS: {1 / _fpsStat.LastMinDt:F1}
 		        --------------
 		        Pos: {_camera.Position.X:F1} {_camera.Position.Y:F1} {_camera.Position.Z:F1}
-		        Block: {blockPosition.X}{blockPosition.Y}{blockPosition.Z}
+		        Block: {blockPosition.X} {blockPosition.Y} {blockPosition.Z}
 		        Chunk: {chunkIndex.X} {chunkIndex.Z}
 		        Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
 		        """;
