@@ -197,9 +197,9 @@ public class MainWindow : NativeWindow
 				chunkIndex.Z + 1);
 			heightMapBuilder.Build();
 
-			Chunk spamChunk = new();
-			spamChunk.Index = chunkIndex;
-			_world.InitChunk(chunkIndex, spamChunk);
+			Chunk chunk = new();
+			chunk.Index = chunkIndex;
+			_world.InitChunk(chunkIndex, chunk);
 			for (int y = 0; y < Chunk.ChunkHeight; y++)
 			{
 				for (int z = 0; z < Chunk.ChunkWidth; z++)
@@ -217,12 +217,12 @@ public class MainWindow : NativeWindow
 						else
 							block = new Block(BasicBlock.Dirt);
 
-						spamChunk.SetBlock(x, y, z, block);
+						chunk.SetBlock(x, y, z, block);
 					}
 				}
 			}
 
-			return spamChunk;
+			return chunk;
 		};
 
 		createChunk(new ChunkIndex());
