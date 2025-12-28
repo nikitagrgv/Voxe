@@ -176,7 +176,7 @@ public class MainWindow : NativeWindow
 		NoiseMap heightMap = new();
 		NoiseMapBuilderPlane heightMapBuilder = new()
 		{
-			SourceModule = perlin,
+			SourceModule = final,
 			NoiseMap = heightMap,
 			Seamless = true,
 		};
