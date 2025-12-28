@@ -184,36 +184,40 @@ public class MainWindow : NativeWindow
 		ChunkMesh chunkMesh = new();
 		chunkMesh.SetData(result.Vertices, result.Indices);
 
-		double lastUpdateMeanFpsTime = 0f;
-		double lastUpdateMinMaxFpsTime = 0f;
+		TimeSpan lastUpdateMeanFpsTime = Time.CurrentTime;
+		TimeSpan lastUpdateMinMaxFpsTime = Time.CurrentTime;
 		int numFramesForMeanFps = 0;
 		double lastMeanFps = 0f;
 		double lastMinDt = 0f;
 		double lastMaxDt = float.PositiveInfinity;
 		double minDt = float.PositiveInfinity;
 		double maxDt = 0;
-		const float meanFpsUpdateTime = 0.5f;
-		const float minMaxFpsUpdateTime = 2f;
+		TimeSpan meanFpsUpdateTime = TimeSpan.FromSeconds(0.5);
+		TimeSpan minMaxFpsUpdateTime = TimeSpan.FromSeconds(2f);
+
 		RenderFrame += () =>
 		{
-			if (_totalTime - lastUpdateMeanFpsTime > meanFpsUpdateTime)
+			TimeSpan curTime = Time.CurrentTime;
+			double dt = Time.DeltaTime;
+
+			if (curTime - lastUpdateMeanFpsTime > meanFpsUpdateTime)
 			{
-				lastMeanFps = (_totalTime - lastUpdateMeanFpsTime) / int.Max(numFramesForMeanFps, 1);
-				lastUpdateMeanFpsTime = _totalTime;
+				lastMeanFps = (curTime - lastUpdateMeanFpsTime).TotalSeconds / int.Max(numFramesForMeanFps, 1);
+				lastUpdateMeanFpsTime = curTime;
 				numFramesForMeanFps = 0;
 			}
 
-			if (_totalTime - lastUpdateMinMaxFpsTime > minMaxFpsUpdateTime)
+			if (curTime - lastUpdateMinMaxFpsTime > minMaxFpsUpdateTime)
 			{
-				lastUpdateMinMaxFpsTime = _totalTime;
+				lastUpdateMinMaxFpsTime = curTime;
 				lastMinDt = minDt;
 				lastMaxDt = maxDt;
 				minDt = float.PositiveInfinity;
 				maxDt = 0;
 			}
 
-			minDt = double.Min(minDt, UpdateTime);
-			maxDt = double.Max(maxDt, UpdateTime);
+			minDt = double.Min(minDt, dt);
+			maxDt = double.Max(maxDt, dt);
 
 			numFramesForMeanFps++;
 
@@ -243,7 +247,7 @@ public class MainWindow : NativeWindow
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitY, Color.Green, depthTest: false);
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitZ, Color.Blue, depthTest: false);
 			Visualizer.AddScreenText($"""
-			                          FPS: {1 / UpdateTime:F1}
+			                          FPS: {1 / dt:F1}
 			                          Mean FPS: {1 / lastMeanFps:F1}
 			                          Min FPS: {1 / lastMaxDt:F1} ({lastMaxDt * 1000:F1}ms)
 			                          Max FPS: {1 / lastMinDt:F1}
@@ -288,7 +292,7 @@ public class MainWindow : NativeWindow
 			return;
 		}
 
-		UpdatePlayer((float)Time.DeltaSpan);
+		UpdatePlayer((float)Time.DeltaTime);
 	}
 
 	private void UpdatePlayer(float dt)
