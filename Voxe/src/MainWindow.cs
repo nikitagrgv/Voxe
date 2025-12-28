@@ -95,10 +95,7 @@ public class MainWindow : NativeWindow
 			TimeSpan delta = currentTime - prevTime;
 			Time.UpdateTime(currentTime, delta);
 
-			// Update input state for next frame
 			NewInputFrame();
-
-			// Handle events for this frame
 			ProcessWindowEvents(IsEventDriven);
 
 			UpdateTime = elapsed;
