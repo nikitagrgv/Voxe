@@ -243,6 +243,7 @@ public class MainWindow : NativeWindow
 		_camera.Position = new Vector3(playerStartX, playerStartY, playerStartZ);
 
 		List<Chunk> renderChunks = new();
+		List<ChunkIndex> emptyChunks = new();
 		RenderFrame += () =>
 		{
 			TimeSpan curTime = Time.CurrentTime;
@@ -269,6 +270,12 @@ public class MainWindow : NativeWindow
 			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
 			GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
+
+			_world.GetEmptyChunks(new ChunkIndex(0, 0), 10, emptyChunks);
+			foreach (ChunkIndex chunkIndex in emptyChunks)
+			{
+				createChunk(chunkIndex);
+			}
 
 			_world.GetChunks(new ChunkIndex(0, 0), 10, renderChunks);
 			foreach (Chunk chunk in renderChunks)
