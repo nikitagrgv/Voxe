@@ -88,6 +88,7 @@ public class MainWindow : NativeWindow
 	}
 
 	private Camera _camera = new();
+	private ChunkMeshGenerator _meshGenerator = new();
 
 	private bool WindowShouldClose
 	{
@@ -213,11 +214,6 @@ public class MainWindow : NativeWindow
 			}
 		}
 
-		ChunkMeshGenerator meshGenerator = new();
-		ChunkMeshGenerator.Result result = meshGenerator.GenerateMesh(chunk);
-		ChunkMesh chunkMesh = new();
-		chunkMesh.SetData(result.Vertices, result.Indices);
-
 		const int playerStartX = Chunk.ChunkWidth / 2;
 		const int playerStartZ = Chunk.ChunkWidth / 2;
 		int playerStartY = Chunk.ChunkHeight - 1;
@@ -263,6 +259,14 @@ public class MainWindow : NativeWindow
 			_world.GetChunks(new ChunkIndex(0, 0), 10, renderChunks);
 			foreach (Chunk ch in renderChunks)
 			{
+				if (ch.Mesh == null)
+				{
+					ChunkMeshGenerator.Result result = _meshGenerator.GenerateMesh(chunk);
+					ChunkMesh chunkMesh = new();
+					chunkMesh.SetData(result.Vertices, result.Indices);
+					ch.Mesh = chunkMesh;
+				}
+
 				ch.Mesh?.Render();
 			}
 
