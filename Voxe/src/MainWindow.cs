@@ -17,6 +17,16 @@ public class MainWindow : NativeWindow
 	private const float CameraRunMultiplier = 2f;
 	private const float CameraRotateSpeed = 0.2f;
 
+	public bool VSync
+	{
+		get;
+		set
+		{
+			GLFW.SwapInterval(value ? 1 : 0);
+			field = value;
+		}
+	}
+
 	private float _currentCameraMoveSpeedMultiplier = 1f;
 
 	private readonly Stopwatch _timer = new();
@@ -113,6 +123,8 @@ public class MainWindow : NativeWindow
 		}
 
 		Context?.MakeCurrent();
+
+		VSync = true;
 
 		GLState.Init();
 		GL.ClearColor(Color4.Darkgray);
