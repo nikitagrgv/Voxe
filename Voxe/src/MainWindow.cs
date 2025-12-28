@@ -31,6 +31,8 @@ public class MainWindow : NativeWindow
 
 	private readonly Stopwatch _timer = new();
 
+	private readonly FpsStat _fpsStat = new();
+
 	// TODO# Just for convenience, remove
 	private event Action? RenderFrame;
 	private event Action? UpdateFrame;
@@ -196,42 +198,11 @@ public class MainWindow : NativeWindow
 		ChunkMesh chunkMesh = new();
 		chunkMesh.SetData(result.Vertices, result.Indices);
 
-		TimeSpan lastUpdateMeanFpsTime = Time.CurrentTime;
-		TimeSpan lastUpdateMinMaxFpsTime = Time.CurrentTime;
-		int numFramesForMeanFps = 0;
-		double lastMeanFps = 0f;
-		double lastMinDt = 0f;
-		double lastMaxDt = float.PositiveInfinity;
-		double minDt = float.PositiveInfinity;
-		double maxDt = 0;
-		TimeSpan meanFpsUpdateTime = TimeSpan.FromSeconds(0.5);
-		TimeSpan minMaxFpsUpdateTime = TimeSpan.FromSeconds(2f);
-
 		RenderFrame += () =>
 		{
 			TimeSpan curTime = Time.CurrentTime;
 			double dt = Time.DeltaTime;
-
-			if (curTime - lastUpdateMeanFpsTime > meanFpsUpdateTime)
-			{
-				lastMeanFps = (curTime - lastUpdateMeanFpsTime).TotalSeconds / int.Max(numFramesForMeanFps, 1);
-				lastUpdateMeanFpsTime = curTime;
-				numFramesForMeanFps = 0;
-			}
-
-			if (curTime - lastUpdateMinMaxFpsTime > minMaxFpsUpdateTime)
-			{
-				lastUpdateMinMaxFpsTime = curTime;
-				lastMinDt = minDt;
-				lastMaxDt = maxDt;
-				minDt = float.PositiveInfinity;
-				maxDt = 0;
-			}
-
-			minDt = double.Min(minDt, dt);
-			maxDt = double.Max(maxDt, dt);
-
-			numFramesForMeanFps++;
+			_fpsStat.Update(curTime, dt);
 
 			GL.Enable(EnableCap.DepthTest);
 
@@ -260,9 +231,9 @@ public class MainWindow : NativeWindow
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitZ, Color.Blue, depthTest: false);
 			Visualizer.AddScreenText($"""
 			                          FPS{(VSync ? "(VSync):" : ":")} {1 / dt:F1}
-			                          Mean FPS: {1 / lastMeanFps:F1}
-			                          Min FPS: {1 / lastMaxDt:F1} ({lastMaxDt * 1000:F1}ms)
-			                          Max FPS: {1 / lastMinDt:F1}
+			                          Mean FPS: {1 / _fpsStat.LastMeanFps:F1}
+			                          Min FPS: {1 / _fpsStat.LastMaxDt:F1} ({_fpsStat.LastMaxDt * 1000:F1}ms)
+			                          Max FPS: {1 / _fpsStat.LastMinDt:F1}
 			                          --------------
 			                          Pos: {_camera.Position.X:F1} {_camera.Position.Y:F1} {_camera.Position.Z:F1}
 			                          Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}

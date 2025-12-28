@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
+      <PackageReference Include="LibNoise" Version="0.2.0" />
       <PackageReference Include="OpenTK" Version="5.0.0-pre.15" />
       <PackageReference Include="StbImageSharp" Version="2.30.15" />
     </ItemGroup>
