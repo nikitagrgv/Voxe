@@ -259,7 +259,7 @@ public class MainWindow : NativeWindow
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitY, Color.Green, depthTest: false);
 			Visualizer.AddWorldLine(Vector3.Zero, Vector3.UnitZ, Color.Blue, depthTest: false);
 			Visualizer.AddScreenText($"""
-			                          FPS:{(VSync ? " (VSync) " : " ")}{1 / dt:F1}
+			                          FPS{(VSync ? "(VSync):" : ":")} {1 / dt:F1}
 			                          Mean FPS: {1 / lastMeanFps:F1}
 			                          Min FPS: {1 / lastMaxDt:F1} ({lastMaxDt * 1000:F1}ms)
 			                          Max FPS: {1 / lastMinDt:F1}
