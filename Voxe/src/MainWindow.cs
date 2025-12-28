@@ -181,21 +181,21 @@ public class MainWindow : NativeWindow
 		Chunk chunk = new();
 		for (int y = 0; y < Chunk.ChunkHeight; y++)
 		{
-			float heightNormalized = heightMap.GetValue(x, z);
-			float height = heightNormalized * Chunk.ChunkHeight;
-			int h = (int)height;
-			Block block;
-			if (y > h)
-				block = new Block(BasicBlock.Air);
-			else if (y == h)
-				block = new Block(BasicBlock.Grass);
-			else
-				block = new Block(BasicBlock.Dirt);
-
 			for (int z = 0; z < Chunk.ChunkWidth; z++)
 			{
 				for (int x = 0; x < Chunk.ChunkWidth; x++)
 				{
+					float heightNormalized = heightMap.GetValue(x, z);
+					float height = heightNormalized * Chunk.ChunkHeight;
+					int h = (int)height;
+					Block block;
+					if (y > h)
+						block = new Block(BasicBlock.Air);
+					else if (y == h)
+						block = new Block(BasicBlock.Grass);
+					else
+						block = new Block(BasicBlock.Dirt);
+
 					chunk.SetBlock(x, y, z, block);
 				}
 			}
