@@ -303,6 +303,11 @@ public class MainWindow : NativeWindow
 			return;
 		}
 
+		if (KeyboardState.IsKeyPressed(Keys.F1))
+		{
+			WindowState = WindowState == WindowState.Fullscreen ? WindowState.Normal : WindowState.Fullscreen;
+		}
+
 		if (KeyboardState.IsKeyPressed(Keys.F9))
 		{
 			VSync = !VSync;
