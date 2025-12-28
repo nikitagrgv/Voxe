@@ -176,12 +176,12 @@ public class MainWindow : NativeWindow
 
 		_camera.Position = new Vector3(0, 0, 8);
 
-		var createChunk = () =>
-		{
-			SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
-			ScaleBias blockScale = new(perlin, scale: 0.1f, bias: 0.5f);
-			IModule final = blockScale;
+		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
+		ScaleBias blockScale = new(perlin, scale: 0.1f, bias: 0.5f);
+		IModule final = blockScale;
 
+		var createChunk = (ChunkIndex chunkIndex) =>
+		{
 			NoiseMap heightMap = new();
 			NoiseMapBuilderPlane heightMapBuilder = new()
 			{
@@ -190,11 +190,15 @@ public class MainWindow : NativeWindow
 				Seamless = true,
 			};
 			heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
-			heightMapBuilder.SetBounds(0, 1, 0, 1);
+			heightMapBuilder.SetBounds(
+				chunkIndex.X + 0,
+				chunkIndex.X + 1,
+				chunkIndex.Z + 0,
+				chunkIndex.Z + 1);
 			heightMapBuilder.Build();
 
 			Chunk spamChunk = new();
-			_world.InitChunk(new ChunkIndex(0, 0), spamChunk);
+			_world.InitChunk(chunkIndex, spamChunk);
 			for (int y = 0; y < Chunk.ChunkHeight; y++)
 			{
 				for (int z = 0; z < Chunk.ChunkWidth; z++)
@@ -216,8 +220,11 @@ public class MainWindow : NativeWindow
 					}
 				}
 			}
+
+			return spamChunk;
 		};
 
+		createChunk(new ChunkIndex());
 		Chunk? centerChunk = _world.TryGetChunk(new ChunkIndex());
 		Debug.Assert(centerChunk != null);
 
