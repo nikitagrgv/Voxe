@@ -2,6 +2,9 @@
 using System.Drawing;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using LibNoise;
+using LibNoise.Builder;
+using LibNoise.Primitive;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -164,8 +167,10 @@ public class MainWindow : NativeWindow
 		int mvpLocation = shader.GetUniformLocation("mvp");
 
 		_camera.Position = new Vector3(0, 0, 8);
-		
-		
+
+		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
+		NoiseMap heightMap = new(Chunk.ChunkWidth, Chunk.ChunkWidth);
+		NoiseMapBuilderPlane heightMapBuilder = new(0, 0, 1, 1, true);
 
 		Chunk chunk = new();
 		for (int y = 0; y < Chunk.ChunkHeight; y++)
