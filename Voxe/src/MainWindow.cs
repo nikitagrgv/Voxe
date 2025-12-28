@@ -212,6 +212,19 @@ public class MainWindow : NativeWindow
 		ChunkMesh chunkMesh = new();
 		chunkMesh.SetData(result.Vertices, result.Indices);
 
+		const int playerStartX = Chunk.ChunkWidth / 2;
+		const int playerStartZ = Chunk.ChunkWidth / 2;
+		int playerStartY = Chunk.ChunkHeight - 1;
+		while (true)
+		{
+			Block block = chunk.GetBlock(playerStartX, playerStartY, playerStartZ);
+			if (block.TypeId != (int)BasicBlock.Air)
+				break;
+			playerStartY--;
+		}
+
+		playerStartY += 5;
+
 		RenderFrame += () =>
 		{
 			TimeSpan curTime = Time.CurrentTime;
