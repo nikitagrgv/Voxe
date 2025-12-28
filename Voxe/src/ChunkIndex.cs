@@ -21,4 +21,14 @@ public struct ChunkIndex(
 	{
 		return HashCode.Combine(X, Z);
 	}
+
+	public static bool operator ==(ChunkIndex left, ChunkIndex right)
+	{
+		return left.Equals(right);
+	}
+
+	public static bool operator !=(ChunkIndex left, ChunkIndex right)
+	{
+		return !(left == right);
+	}
 }
