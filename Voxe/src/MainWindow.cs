@@ -270,7 +270,6 @@ public class MainWindow : NativeWindow
 
 				if (chunk.Mesh != null)
 				{
-					chunk.
 					chunk.Mesh.Render();
 				}
 			}
