@@ -27,7 +27,19 @@ public class World
 	{
 		// TODO# Implement normally, use chunks flat map, sort
 		chunks.Clear();
-		chunks.AddRange(_chunksMap.Values);
+		int rad2 = radius * radius;
+		for (int x = center.X - radius; x < center.X + radius; x++)
+		{
+			for (int z = center.Z - radius; z < center.Z + radius; z++)
+			{
+				if (x * x + z * z > rad2)
+					continue;
+				ChunkIndex chunkIndex = new(x, z);
+				if (!_chunksMap.TryGetValue(chunkIndex, out Chunk? chunk))
+					continue;
+				chunks.Add(chunk);
+			}
+		}
 	}
 
 	public void GetEmptyChunks(ChunkIndex center, int radius, List<ChunkIndex> chunks)
@@ -40,7 +52,7 @@ public class World
 			{
 				if (x * x + z * z > rad2)
 					continue;
-				ChunkIndex chunkIndex = new ChunkIndex(x, z);
+				ChunkIndex chunkIndex = new(x, z);
 				if (HasChunk(chunkIndex))
 					continue;
 				chunks.Add(chunkIndex);
