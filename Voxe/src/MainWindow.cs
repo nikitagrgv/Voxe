@@ -175,7 +175,7 @@ public class MainWindow : NativeWindow
 		heightMapBuilder.NoiseMap = heightMap;
 		heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
 		// heightMapBuilder.Seamless = true;
-		heightMapBuilder.SetBounds(0, 0, 1, 1);
+		heightMapBuilder.SetBounds(0, 1, 0, 1);
 		heightMapBuilder.Build();
 
 		Chunk chunk = new();
