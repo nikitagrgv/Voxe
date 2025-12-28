@@ -13,6 +13,15 @@ public static class VoxelUtils
 		return new Vector3i(x, y, z);
 	}
 
+	public static ChunkIndex GetChunkIndex(float x, float z)
+	{
+		int blockX = (int)float.Floor(x);
+		int blockZ = (int)float.Floor(z);
+		int chunkX = FloorToWidth(blockX);
+		int chunkZ = FloorToWidth(blockZ);
+		return new ChunkIndex(chunkX, chunkZ);
+	}
+
 	public static ChunkIndex GetChunkIndex(int x, int z)
 	{
 		int chunkX = FloorToWidth(x);
