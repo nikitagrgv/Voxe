@@ -87,7 +87,7 @@ public class MainWindow : NativeWindow
 		Initialize();
 
 		_timer.Start();
-		Time.UpdateTime(_timer.Elapsed, TimeSpan.Zero);
+		Time.UpdateTime(currentTime: _timer.Elapsed, delta: TimeSpan.Zero);
 		while (!WindowShouldClose)
 		{
 			TimeSpan currentTime = _timer.Elapsed;
