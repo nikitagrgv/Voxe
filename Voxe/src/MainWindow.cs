@@ -193,8 +193,8 @@ public class MainWindow : NativeWindow
 			}
 		}
 
-		ChunkMeshGenerator generator = new();
-		ChunkMeshGenerator.Result result = generator.GenerateMesh(chunk);
+		ChunkMeshGenerator meshGenerator = new();
+		ChunkMeshGenerator.Result result = meshGenerator.GenerateMesh(chunk);
 		ChunkMesh chunkMesh = new();
 		chunkMesh.SetData(result.Vertices, result.Indices);
 
