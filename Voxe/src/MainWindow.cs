@@ -274,7 +274,7 @@ public class MainWindow : NativeWindow
 					Vector3 chunkPos = VoxelUtils.GetChunkPosition(index.X, index.Z);
 					Matrix4 chunksModel = Matrix4.CreateTranslation(chunkPos);
 					Matrix4 chunkMvp = chunksModel * viewProj;
-					shader.SetUniform(mvpLocation, mvp);
+					shader.SetUniform(mvpLocation, chunkMvp);
 					chunk.Mesh.Render();
 				}
 			}
