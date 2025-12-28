@@ -272,13 +272,16 @@ public class MainWindow : NativeWindow
 
 			GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
 
-			_world.GetEmptyChunks(new ChunkIndex(0, 0), 10, emptyChunks);
+			const int renderRadius = 3;
+			const int generateRadius = 3;
+
+			_world.GetEmptyChunks(new ChunkIndex(0, 0), generateRadius, emptyChunks);
 			foreach (ChunkIndex chunkIndex in emptyChunks)
 			{
 				createChunk(chunkIndex);
 			}
 
-			_world.GetChunks(new ChunkIndex(0, 0), 10, renderChunks);
+			_world.GetChunks(new ChunkIndex(0, 0), renderRadius, renderChunks);
 			foreach (Chunk chunk in renderChunks)
 			{
 				if (chunk.Mesh == null)
