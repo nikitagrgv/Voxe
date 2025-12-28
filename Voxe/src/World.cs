@@ -4,7 +4,7 @@ namespace Voxe;
 
 public class World
 {
-	private Dictionary<ChunkIndex, Chunk> _chunksMap = new();
+	private readonly Dictionary<ChunkIndex, Chunk> _chunksMap = new();
 
 	public void InitChunk(ChunkIndex index, Chunk chunk)
 	{
