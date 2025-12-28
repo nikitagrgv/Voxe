@@ -293,7 +293,7 @@ public class MainWindow : NativeWindow
 	{
 		double dt = Time.DeltaTime;
 		Vector3i blockPosition = VoxelUtils.ToBlockPosition(_camera.Position);
-		ChunkIndex chunkIndex = VoxelUtils.GetChunkIndex(blockPosition.X, blockPosition.Z);
+		ChunkIndex chunkIndex = VoxelUtils.GetChunkIndexByBlock(blockPosition.X, blockPosition.Z);
 
 		return $"""
 		        FPS{(VSync ? "(VSync):" : ":")} {1 / dt:F1}
