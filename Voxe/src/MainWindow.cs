@@ -55,8 +55,8 @@ public class MainWindow : NativeWindow
 			get;
 			set
 			{
-				const float MaxAngle = 89.99f;
-				value = float.Clamp(value, -MaxAngle, MaxAngle);
+				const float maxAngle = 89.99f;
+				value = float.Clamp(value, -maxAngle, maxAngle);
 				field = value.Normalize180();
 			}
 		} = 0f;
