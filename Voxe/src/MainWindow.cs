@@ -20,15 +20,15 @@ public class MainWindow : NativeWindow
 	private const float CameraRunMultiplier = 2f;
 	private const float CameraRotateSpeed = 0.2f;
 
-	public bool VSync
-	{
-		get;
-		set
-		{
-			GLFW.SwapInterval(value ? 1 : 0);
-			field = value;
-		}
-	}
+	// public bool VSync
+	// {
+	// 	get;
+	// 	set
+	// 	{
+	// 		GLFW.SwapInterval(value ? 1 : 0);
+	// 		field = value;
+	// 	}
+	// }
 
 	private World _world = new();
 
@@ -139,7 +139,7 @@ public class MainWindow : NativeWindow
 
 		Context?.MakeCurrent();
 
-		VSync = true;
+		VSync = VSyncMode.On;
 
 		GLState.Init();
 		GL.ClearColor(Color4.Darkgray);
@@ -323,7 +323,7 @@ public class MainWindow : NativeWindow
 
 		return $"""
 		        ------- FPS -------
-		        FPS{(VSync ? "(VSync):" : ":")} {1 / dt:F1}
+		        FPS{(VSync == VSyncMode.On ? "(VSync):" : ":")} {1 / dt:F1}
 		        Mean FPS: {1 / _fpsStat.LastMeanFps:F1}
 		        Min FPS: {1 / _fpsStat.LastMaxDt:F1} ({_fpsStat.LastMaxDt * 1000:F1}ms)
 		        Max FPS: {1 / _fpsStat.LastMinDt:F1}
@@ -373,7 +373,7 @@ public class MainWindow : NativeWindow
 
 		if (KeyboardState.IsKeyPressed(Keys.F9))
 		{
-			VSync = !VSync;
+			VSync = VSync == VSyncMode.On ? VSyncMode.Off : VSyncMode.On;
 		}
 
 		UpdatePlayer((float)Time.DeltaTime);
