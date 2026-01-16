@@ -331,6 +331,9 @@ public class MainWindow : NativeWindow
 		        Block: {blockPosition.X} {blockPosition.Y} {blockPosition.Z}
 		        Chunk: {chunkIndex.X} {chunkIndex.Z}
 		        Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
+		        --------------
+		        Rendered Indices: {Stat.RenderedIndicesPerFrame}
+		        Rendered Indices Total: {Stat.RenderedIndicesTotal}
 		        """;
 	}
 
