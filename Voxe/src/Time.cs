@@ -1,10 +1,5 @@
 ﻿namespace Voxe;
 
-public struct TimePoint
-{
-	// private 
-}
-
 public static class Time
 {
 	private static double _deltaTime = 0;
