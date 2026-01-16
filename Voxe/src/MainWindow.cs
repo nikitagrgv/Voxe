@@ -124,6 +124,8 @@ public class MainWindow : NativeWindow
 			Update();
 			Render();
 			Swap();
+
+			Stat.EndFrame();
 		}
 	}
 

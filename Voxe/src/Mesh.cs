@@ -57,6 +57,7 @@ public class Mesh : IDisposable
 		Bind();
 
 		Renderer.DrawElements(PrimitiveType.Triangles, DrawElementsType.UnsignedInt, _numIndices);
+		Stat.AddRenderedIndices((ulong)_numIndices);
 	}
 
 	public void Destroy()
