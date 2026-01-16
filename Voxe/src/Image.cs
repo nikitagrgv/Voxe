@@ -1,12 +1,14 @@
-﻿using StbImageSharp;
+﻿using System.Diagnostics;
+using System.Drawing;
+using StbImageSharp;
 using Voxe;
 
 public class Image
 {
-	private ImageResult _image;
-	private ImageFormat _imageFormat;
+	private ImageResult _data;
+	private ImageFormat _format;
 
-	public ImageFormat Format => _imageFormat;
+	public ImageFormat Format => _format;
 
 	public enum ImageFormat
 	{
@@ -14,18 +16,35 @@ public class Image
 		Rgba
 	}
 
-	public Image(string path, ImageFormat imageFormat, bool flipY = false)
+	public Image(string path, ImageFormat targetFormat, bool flipY = false)
 	{
 		Stream stream = FileSystem.ReadFileStream(path);
 
 		StbImage.stbi_set_flip_vertically_on_load(flipY ? 1 : 0);
-		ImageResult? result = ImageResult.FromStream(stream, ColorComponentsFromFormat(imageFormat));
+		ImageResult? result = ImageResult.FromStream(stream, ColorComponentsFromFormat(targetFormat));
 
 		if (result == null)
 			throw new Exception($"Cannot load image {path}");
 
-		_image = result;
-		_imageFormat = imageFormat;
+		_data = result;
+		_format = targetFormat;
+	}
+
+	public void SetPixel(int x, int y, Color color)
+	{
+		Debug.Assert(_data.Data != null);
+		Debug.Assert(x >= 0 && x < _data.Width);
+		Debug.Assert(y >= 0 && y < _data.Height);
+		Debug.Assert(_format is ImageFormat.Rgba or ImageFormat.Rgb, "Not supported");
+
+		int offset = y * _data.Width + x;
+		_data.Data[offset + 0] = color.R;
+		_data.Data[offset + 1] = color.G;
+		_data.Data[offset + 2] = color.B;
+		if (_format == ImageFormat.Rgba)
+		{
+			_data.Data[offset + 3] = color.A;
+		}
 	}
 
 	private static ColorComponents ColorComponentsFromFormat(ImageFormat imageFormat)
@@ -38,7 +57,7 @@ public class Image
 		};
 	}
 
-	public byte[] RawData => _image.Data;
-	public int Width => _image.Width;
-	public int Height => _image.Height;
+	public byte[] RawData => _data.Data;
+	public int Width => _data.Width;
+	public int Height => _data.Height;
 }
