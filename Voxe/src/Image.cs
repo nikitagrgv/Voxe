@@ -37,13 +37,22 @@ public class Image
 		Debug.Assert(y >= 0 && y < _data.Height);
 		Debug.Assert(_format is ImageFormat.Rgba or ImageFormat.Rgb, "Not supported");
 
-		int offset = y * _data.Width + x;
-		_data.Data[offset + 0] = color.R;
-		_data.Data[offset + 1] = color.G;
-		_data.Data[offset + 2] = color.B;
+		int pixelSize = _format switch
+		{
+			ImageFormat.Rgb => 3,
+			ImageFormat.Rgba => 4,
+			_ => 0,
+		};
+
+		int pixelOffset = y * _data.Width + x;
+		int bytesOffset = pixelOffset * pixelSize;
+
+		_data.Data[bytesOffset + 0] = color.R;
+		_data.Data[bytesOffset + 1] = color.G;
+		_data.Data[bytesOffset + 2] = color.B;
 		if (_format == ImageFormat.Rgba)
 		{
-			_data.Data[offset + 3] = color.A;
+			_data.Data[bytesOffset + 3] = color.A;
 		}
 	}
 
