@@ -55,8 +55,8 @@ public class Image
 		string extension = Path.GetExtension(path);
 		if (string.IsNullOrEmpty(extension))
 		{
-			extension = "png";
-			path += "." + extension;
+			extension = ".png";
+			path += extension;
 		}
 
 		ColorComponents components = ColorComponentsFromFormat(Format);
@@ -64,13 +64,13 @@ public class Image
 
 		switch (extension)
 		{
-			case "png":
+			case ".png":
 				writer.WritePng(_data!.Data, _data.Width, _data.Height, componentsWrite, stream);
 				break;
-			case "bmp":
+			case ".bmp":
 				writer.WriteBmp(_data!.Data, _data.Width, _data.Height, componentsWrite, stream);
 				break;
-			case "jpg":
+			case ".jpg":
 				writer.WriteJpg(_data!.Data, _data.Width, _data.Height, componentsWrite, stream, quality: 95);
 				break;
 			default:
