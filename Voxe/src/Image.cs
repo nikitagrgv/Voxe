@@ -168,9 +168,24 @@ public class Image
 		_data[bytesOffset + 1] = color.G;
 		_data[bytesOffset + 2] = color.B;
 		if (_format == ImageFormat.Rgba)
-		{
 			_data[bytesOffset + 3] = color.A;
-		}
+	}
+
+	public Color GetPixel(int x, int y)
+	{
+		Debug.Assert(x >= 0 && x < Width);
+		Debug.Assert(y >= 0 && y < Height);
+		Debug.Assert(_format is ImageFormat.Rgba or ImageFormat.Rgb, "Not supported");
+
+		int bytesOffset = GetOffsetBytes(x, y);
+		byte r = _data[bytesOffset + 0];
+		byte g = _data[bytesOffset + 1];
+		byte b = _data[bytesOffset + 2];
+		byte a = 255;
+		if (_format == ImageFormat.Rgba)
+			a = _data[bytesOffset + 3];
+
+		return Color.FromArgb(a, r, g, b);
 	}
 
 	public void CopyFrom(Image image, int x, int y, int width, int height)
@@ -183,8 +198,9 @@ public class Image
 		Debug.Assert(y >= 0 && y < Height);
 		Debug.Assert(endX >= 0 && endX < Width);
 		Debug.Assert(endY >= 0 && endY < Height);
-		
-		
+
+		int pixelSize = GetPixelSizeBytes();
+		int offsetBytes = GetOffsetBytes(x, y);
 	}
 
 	private static ColorComponentsWrite ColorComponentsWriteFromColorComponents(ColorComponents colorComponents)
