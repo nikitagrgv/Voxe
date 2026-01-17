@@ -41,6 +41,8 @@ public class Image
 		_format = targetFormat;
 	}
 
+	public bool IsValid => _data != null;
+
 	public void SetPixel(int x, int y, Color color)
 	{
 		Debug.Assert(_data.Data != null);
