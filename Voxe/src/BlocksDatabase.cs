@@ -21,14 +21,14 @@ public class BlocksDatabase
 		public bool IsTransparent { get; init; }
 		public bool IsInvisible { get; init; }
 
-		public Image? ImagePX { get; init; }
-		public Image? ImageNX { get; init; }
+		public int? TextureIndexPX { get; init; }
+		public int? TextureIndexNX { get; init; }
 
-		public Image? ImagePY { get; init; }
-		public Image? ImageNY { get; init; }
+		public int? TextureIndexPY { get; init; }
+		public int? TextureIndexNY { get; init; }
 
-		public Image? ImagePZ { get; init; }
-		public Image? ImageNZ { get; init; }
+		public int? TextureIndexPZ { get; init; }
+		public int? TextureIndexNZ { get; init; }
 	}
 
 	private readonly struct ParsedBlock
@@ -61,7 +61,7 @@ public class BlocksDatabase
 		using Stream stream = FileSystem.ReadFileStream(databaseRelPath);
 		ParsedRoot root = JsonSerializer.Deserialize<ParsedRoot>(stream);
 
-		Dictionary<string, Image> imagesMap = new();
+		Dictionary<string, int> imageToIndex = new();
 		List<Image> images = [];
 
 		foreach (ParsedBlock block in root.Blocks)
@@ -83,16 +83,16 @@ public class BlocksDatabase
 		{
 			ParsedBlock parsedBlock = root.Blocks[i];
 
-			Image? imageMain = parsedBlock.TexturePath != null ? imagesMap[parsedBlock.TexturePath] : null;
+			int? imageMain = parsedBlock.TexturePath != null ? imageToIndex[parsedBlock.TexturePath] : null;
 
-			Image? imagePX = TryGetImage(parsedBlock.TexturePathPX, imageMain);
-			Image? imageNX = TryGetImage(parsedBlock.TexturePathNX, imageMain);
+			int? imagePX = TryGetImage(parsedBlock.TexturePathPX, imageMain);
+			int? imageNX = TryGetImage(parsedBlock.TexturePathNX, imageMain);
 
-			Image? imagePY = TryGetImage(parsedBlock.TexturePathPY, imageMain);
-			Image? imageNY = TryGetImage(parsedBlock.TexturePathNY, imageMain);
+			int? imagePY = TryGetImage(parsedBlock.TexturePathPY, imageMain);
+			int? imageNY = TryGetImage(parsedBlock.TexturePathNY, imageMain);
 
-			Image? imagePZ = TryGetImage(parsedBlock.TexturePathPZ, imageMain);
-			Image? imageNZ = TryGetImage(parsedBlock.TexturePathNZ, imageMain);
+			int? imagePZ = TryGetImage(parsedBlock.TexturePathPZ, imageMain);
+			int? imageNZ = TryGetImage(parsedBlock.TexturePathNZ, imageMain);
 
 			Block block = new()
 			{
@@ -102,14 +102,14 @@ public class BlocksDatabase
 				IsTransparent = parsedBlock.IsTransparent ?? false,
 				IsInvisible = parsedBlock.IsInvisible ?? false,
 
-				ImagePX = imagePX,
-				ImageNX = imageNX,
+				TextureIndexPX = imagePX,
+				TextureIndexNX = imageNX,
 
-				ImagePY = imagePY,
-				ImageNY = imageNY,
+				TextureIndexPY = imagePY,
+				TextureIndexNY = imageNY,
 
-				ImagePZ = imagePZ,
-				ImageNZ = imageNZ,
+				TextureIndexPZ = imagePZ,
+				TextureIndexNZ = imageNZ,
 			};
 
 			blocks[i] = block;
@@ -127,7 +127,7 @@ public class BlocksDatabase
 			if (string.IsNullOrEmpty(path))
 				return;
 
-			if (imagesMap.ContainsKey(path))
+			if (imageToIndex.ContainsKey(path))
 				return;
 
 			Image image = new(path, Image.ImageFormat.Rgba, flipY: true);
@@ -135,11 +135,12 @@ public class BlocksDatabase
 			if (image.Width != BlockTextureWidth || image.Height != BlockTextureWidth)
 				throw new Exception($"Invalid block texture size: {image.Width}x{image.Height}");
 
+			int imageIndex = images.Count;
 			images.Add(image);
-			imagesMap.Add(path, image);
+			imageToIndex.Add(path, imageIndex);
 		}
 
-		Image? TryGetImage(string? path, Image? defaultImage)
+		int? TryGetImage(string? path, int? defaultImage)
 		{
 			switch (path)
 			{
@@ -148,8 +149,7 @@ public class BlocksDatabase
 				case "":
 					return null;
 				default:
-					imagesMap.TryGetValue(path, out Image? image);
-					Debug.Assert(image != null);
+					imageToIndex.TryGetValue(path, out int image);
 					return image;
 			}
 		}
