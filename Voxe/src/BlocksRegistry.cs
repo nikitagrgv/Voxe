@@ -89,6 +89,7 @@ public static class BlocksRegistry
 			sideBlocksSizePixels *= 2;
 		int numImagesBySide = sideBlocksSizePixels / imageWidth;
 
+		todo merge image to single
 		Image image = new(sideBlocksSizePixels, sideBlocksSizePixels,
 			Image.ImageFormat.Rgba,
 			Color.FromArgb(255, 255, 0, 255));
