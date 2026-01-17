@@ -72,7 +72,7 @@ public static class BlocksRegistry
 
 		BlocksDatabase database = new();
 		// TODO# inject from params
-		BlocksDatabase.Block[] blocks = database.Load("blocks.json");
+		BlocksDatabase.Result databaseBlocks = database.Load("blocks.json");
 
 		AddBasicBlock(BasicBlock.Air, new UvIndexSet(), isInvisible: true);
 		AddBasicBlock(BasicBlock.Grass,
