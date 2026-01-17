@@ -1,4 +1,6 @@
-﻿namespace Voxe;
+﻿using System;
+
+namespace Voxe;
 
 public class FpsStat
 {

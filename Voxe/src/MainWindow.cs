@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using LibNoise;
@@ -19,16 +21,6 @@ public class MainWindow : NativeWindow
 	private const float CameraBaseMoveSpeed = 4f;
 	private const float CameraRunMultiplier = 2f;
 	private const float CameraRotateSpeed = 0.2f;
-
-	// public bool VSync
-	// {
-	// 	get;
-	// 	set
-	// 	{
-	// 		GLFW.SwapInterval(value ? 1 : 0);
-	// 		field = value;
-	// 	}
-	// }
 
 	private World _world = new();
 
@@ -154,7 +146,6 @@ public class MainWindow : NativeWindow
 		Shader shader = new(vertexShaderSource, fragmentShaderSource);
 
 		Image atlasImage = new("atlas.png", Image.ImageFormat.Rgb, flipY: true);
-		todo
 		atlasImage.SetPixel(18+0, 0, Color.Red);
 		atlasImage.SetPixel(18+0, 1, Color.Red);
 		atlasImage.SetPixel(18+0, 2, Color.Red);
