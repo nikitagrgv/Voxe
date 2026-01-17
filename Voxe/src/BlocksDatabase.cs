@@ -50,7 +50,12 @@ public class BlocksDatabase
 	public Block[] Parse(string databaseRelPath)
 	{
 		using Stream stream = FileSystem.ReadFileStream(databaseRelPath);
-		ParsedRoot? root = JsonSerializer.Deserialize<ParsedRoot>(stream);
+		ParsedRoot root = JsonSerializer.Deserialize<ParsedRoot>(stream);
+
+		foreach (ParsedBlock block in root.Blocks)
+		{
+			
+		}
 
 		return [];
 	}
