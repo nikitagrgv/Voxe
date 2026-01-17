@@ -65,6 +65,7 @@ public class BlocksDatabase
 		List<Image> images = [];
 
 		Image image = new(128, 128, Image.ImageFormat.Rgba, Color.FromArgb(255, 255, 0, 255));
+		image.Save("spam/atttl.png");
 
 		foreach (ParsedBlock block in root.Blocks)
 		{
