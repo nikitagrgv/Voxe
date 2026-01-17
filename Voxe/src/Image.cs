@@ -80,7 +80,8 @@ public class Image
 
 	public void SetPixel(int x, int y, Color color)
 	{
-		Debug.Assert(_data.Data != null);
+		Debug.Assert(IsValid);
+		Debug.Assert(_data!.Data != null);
 		Debug.Assert(x >= 0 && x < _data.Width);
 		Debug.Assert(y >= 0 && y < _data.Height);
 		Debug.Assert(_format is ImageFormat.Rgba or ImageFormat.Rgb, "Not supported");
