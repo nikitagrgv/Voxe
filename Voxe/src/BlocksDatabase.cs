@@ -64,9 +64,6 @@ public class BlocksDatabase
 		Dictionary<string, int> imageToIndex = new();
 		List<Image> images = [];
 
-		Image image = new(128, 128, Image.ImageFormat.Rgba, Color.FromArgb(255, 255, 0, 255));
-		image.Save("spam/gen.png");
-
 		foreach (ParsedBlock block in root.Blocks)
 		{
 			TryAddImage(block.TexturePath);

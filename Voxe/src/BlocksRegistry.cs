@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Transactions;
 using Voxe.Math;
@@ -73,6 +74,10 @@ public static class BlocksRegistry
 		BlocksDatabase database = new();
 		// TODO# inject from params
 		BlocksDatabase.Result databaseBlocks = database.Load("blocks.json");
+
+		Image image = new(128, 128, Image.ImageFormat.Rgba, Color.FromArgb(255, 255, 0, 255));
+		image.CopyFrom(databaseBlocks.Images[0], 0, 0, 0, 0, 16, 16);
+		image.Save("spam/gen.png");
 
 		AddBasicBlock(BasicBlock.Air, new UvIndexSet(), isInvisible: true);
 		AddBasicBlock(BasicBlock.Grass,
