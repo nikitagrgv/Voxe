@@ -76,17 +76,15 @@ public static class BlocksRegistry
 		{
 			Console.WriteLine($"{i} - {System.Math.Sqrt(i)} - {System.Math.Floor(System.Math.Sqrt(i))}");
 		}
-		
-		// TODO: Shitty but ok
-		int sideBlocksSize = 1;
-		
 
 		// TODO# inject from params
 		BlocksDatabase.Result databaseBlocks = database.Load("blocks.json");
 		int numImages = databaseBlocks.Images.Length;
-		int numImagesBySide = (int)System.Math.Ceiling(System.Math.Sqrt(numImages));
-		int numPixelsBySide = databaseBlocks.BlockTextureWidth * numImagesBySide;
-		int roundedNumPixelsBySide = Voxe.Math.Utils.RoundUpToPowerOfTwo(numPixelsBySide);
+		int imageWidth = databaseBlocks.ImageWidth;
+
+		// TODO: Shitty but ok
+		int sideBlocksSize = 1;
+
 
 		Image image = new(roundedNumPixelsBySide, roundedNumPixelsBySide,
 			Image.ImageFormat.Rgba,
