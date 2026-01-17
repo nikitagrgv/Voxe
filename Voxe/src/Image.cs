@@ -7,7 +7,7 @@ using Voxe;
 
 public class Image
 {
-	private ImageResult _data;
+	private ImageResult? _data;
 	private ImageFormat _format;
 
 	public ImageFormat Format => _format;
@@ -18,7 +18,16 @@ public class Image
 		Rgba
 	}
 
+	public Image()
+	{
+	}
+
 	public Image(string path, ImageFormat targetFormat, bool flipY = false)
+	{
+		Load(path, targetFormat, flipY);
+	}
+
+	public void Load(string path, ImageFormat targetFormat, bool flipY = false)
 	{
 		Stream stream = FileSystem.ReadFileStream(path);
 

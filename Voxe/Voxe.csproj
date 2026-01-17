@@ -13,6 +13,7 @@
       <PackageReference Include="LibNoise" Version="0.2.0" />
       <PackageReference Include="OpenTK" Version="5.0.0-pre.15" />
       <PackageReference Include="StbImageSharp" Version="2.30.15" />
+      <PackageReference Include="StbImageWriteSharp" Version="1.16.7" />
     </ItemGroup>
 
     <ItemGroup>
