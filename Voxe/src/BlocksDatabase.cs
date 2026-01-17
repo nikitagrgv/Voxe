@@ -24,27 +24,27 @@ public class BlocksDatabase
 
 	private readonly struct ParsedBlock
 	{
-		[JsonPropertyName("id")] public ushort Id { get; }
-		[JsonPropertyName("name")] public string Name { get; }
+		[JsonPropertyName("id")] public ushort Id { get; init; }
+		[JsonPropertyName("name")] public string Name { get; init; }
 
-		[JsonPropertyName("transparent")] public bool? IsTransparent { get; }
-		[JsonPropertyName("invisible")] public bool? IsInvisible { get; }
+		[JsonPropertyName("transparent")] public bool? IsTransparent { get; init; }
+		[JsonPropertyName("invisible")] public bool? IsInvisible { get; init; }
 
-		[JsonPropertyName("texture")] public string? TexturePath { get; }
+		[JsonPropertyName("texture")] public string? TexturePath { get; init; }
 
-		[JsonPropertyName("texture-px")] public string? TexturePathPX { get; }
-		[JsonPropertyName("texture-nx")] public string? TexturePathNX { get; }
+		[JsonPropertyName("texture-px")] public string? TexturePathPX { get; init; }
+		[JsonPropertyName("texture-nx")] public string? TexturePathNX { get; init; }
 
-		[JsonPropertyName("texture-py")] public string? TexturePathPY { get; }
-		[JsonPropertyName("texture-ny")] public string? TexturePathNY { get; }
+		[JsonPropertyName("texture-py")] public string? TexturePathPY { get; init; }
+		[JsonPropertyName("texture-ny")] public string? TexturePathNY { get; init; }
 
-		[JsonPropertyName("texture-pz")] public string? TexturePathPZ { get; }
-		[JsonPropertyName("texture-nz")] public string? TexturePathNZ { get; }
+		[JsonPropertyName("texture-pz")] public string? TexturePathPZ { get; init; }
+		[JsonPropertyName("texture-nz")] public string? TexturePathNZ { get; init; }
 	}
 
 	private readonly struct ParsedRoot
 	{
-		[JsonPropertyName("blocks")] public ParsedBlock[] Blocks { get; }
+		[JsonPropertyName("blocks")] public ParsedBlock[] Blocks { get; init; }
 	}
 
 	public Block[] Parse(string databaseRelPath)
@@ -54,7 +54,6 @@ public class BlocksDatabase
 
 		foreach (ParsedBlock block in root.Blocks)
 		{
-			
 		}
 
 		return [];
