@@ -72,6 +72,7 @@ public class BlocksDatabase
 
 		return [];
 
+		////////////////////////////////
 		void TryAddImage(string? path)
 		{
 			if (string.IsNullOrEmpty(path))
