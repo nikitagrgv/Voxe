@@ -5,6 +5,8 @@ namespace Voxe;
 
 public class BlocksDatabase
 {
+	public const int BlockTextureWidth = 16;
+
 	public readonly struct Block
 	{
 		public ushort Id { get; init; }
@@ -52,8 +54,29 @@ public class BlocksDatabase
 		using Stream stream = FileSystem.ReadFileStream(databaseRelPath);
 		ParsedRoot root = JsonSerializer.Deserialize<ParsedRoot>(stream);
 
+		Dictionary<string, Image> images = new();
+
+		void TryAddImage(string? path)
+		{
+			if (string.IsNullOrEmpty(path))
+				return;
+			Image image = new(path, Image.ImageFormat.Rgba, flipY: true);
+			if (image.Width != BlockTextureWidth || image.Height != BlockTextureWidth)
+				throw new Exception($"Invalid block texture size: {image.Width}x{image.Height}");
+		}
+
 		foreach (ParsedBlock block in root.Blocks)
 		{
+			TryAddImage(block.TexturePath);
+
+			TryAddImage(block.TexturePathPX);
+			TryAddImage(block.TexturePathNX);
+
+			TryAddImage(block.TexturePathPY);
+			TryAddImage(block.TexturePathNY);
+
+			TryAddImage(block.TexturePathPZ);
+			TryAddImage(block.TexturePathNZ);
 		}
 
 		return [];
