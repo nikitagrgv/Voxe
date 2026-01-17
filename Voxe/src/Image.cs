@@ -203,7 +203,8 @@ public class Image
 		{
 			for (int j = 0; j < width; j++)
 			{
-				source.GetPixel(i, j);
+				Color pixel = source.GetPixel(sourceX + j, sourceY + i);
+				SetPixel(targetX + j, targetY + i, pixel);
 			}
 		}
 	}
