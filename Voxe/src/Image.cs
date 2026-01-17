@@ -114,10 +114,7 @@ public class Image
 		Debug.Assert(y >= 0 && y < _data.Height);
 		Debug.Assert(_format is ImageFormat.Rgba or ImageFormat.Rgb, "Not supported");
 
-		int pixelSize = GetPixelSizeBytes();
-		int pixelOffset = GetOffsetPixels(x, y);
-		int bytesOffset = pixelOffset * pixelSize;
-
+		int bytesOffset = GetOffsetBytes(x, y);
 		_data.Data[bytesOffset + 0] = color.R;
 		_data.Data[bytesOffset + 1] = color.G;
 		_data.Data[bytesOffset + 2] = color.B;
