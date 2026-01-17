@@ -10,7 +10,7 @@ public class BlocksDatabase
 
 	public readonly struct Result
 	{
-		public int ImageWidth { get; init; }
+		public int BlockTextureWidth { get; init; }
 		public Block[] Blocks { get; init; }
 		public Image[] Images { get; init; }
 	}
@@ -118,7 +118,7 @@ public class BlocksDatabase
 
 		return new Result()
 		{
-			ImageWidth = BlockTextureWidth,
+			BlockTextureWidth = BlockTextureWidth,
 			Blocks = blocks,
 			Images = images.ToArray(),
 		};

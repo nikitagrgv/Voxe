@@ -74,13 +74,24 @@ public static class BlocksRegistry
 		BlocksDatabase database = new();
 		for (int i = 0; i < 19; ++i)
 		{
-		   Console.WriteLine($"{i} - {Voxe.Math.Utils.RoundUpToPowerOfTwo(i)}");
+			Console.WriteLine($"{i} - {System.Math.Sqrt(i)} - {System.Math.Floor(System.Math.Sqrt(i))}");
 		}
+		
+		// TODO: Shitty but ok
+		int sideBlocksSize = 1;
+		
+
 		// TODO# inject from params
 		BlocksDatabase.Result databaseBlocks = database.Load("blocks.json");
+		int numImages = databaseBlocks.Images.Length;
+		int numImagesBySide = (int)System.Math.Ceiling(System.Math.Sqrt(numImages));
+		int numPixelsBySide = databaseBlocks.BlockTextureWidth * numImagesBySide;
+		int roundedNumPixelsBySide = Voxe.Math.Utils.RoundUpToPowerOfTwo(numPixelsBySide);
 
-		Image image = new(128, 128, Image.ImageFormat.Rgba, Color.FromArgb(255, 255, 0, 255));
-		image.CopyFrom(databaseBlocks.Images[2], 4, 4, 12, 55, 16-4, 16-4);
+		Image image = new(roundedNumPixelsBySide, roundedNumPixelsBySide,
+			Image.ImageFormat.Rgba,
+			Color.FromArgb(255, 255, 0, 255));
+		image.CopyFrom(databaseBlocks.Images[2], 4, 4, 12, 55, 16 - 4, 16 - 4);
 		image.Save("spam/gen.png");
 
 		AddBasicBlock(BasicBlock.Air, new UvIndexSet(), isInvisible: true);
