@@ -8,6 +8,12 @@ public class BlocksDatabase
 {
 	public const int BlockTextureWidth = 16;
 
+	public readonly struct Result
+	{
+		public Block[] Blocks { get; init; }
+		public Image[] Images { get; init; }
+	}
+
 	public readonly struct Block
 	{
 		public ushort Id { get; init; }
@@ -50,12 +56,14 @@ public class BlocksDatabase
 		[JsonPropertyName("blocks")] public ParsedBlock[] Blocks { get; init; }
 	}
 
-	public Block[] Load(string databaseRelPath)
+
+	public Result Load(string databaseRelPath)
 	{
 		using Stream stream = FileSystem.ReadFileStream(databaseRelPath);
 		ParsedRoot root = JsonSerializer.Deserialize<ParsedRoot>(stream);
 
-		Dictionary<string, Image> images = new();
+		Dictionary<string, Image> imagesMap = new();
+		List<Image> images = [];
 
 		foreach (ParsedBlock block in root.Blocks)
 		{
@@ -76,7 +84,7 @@ public class BlocksDatabase
 		{
 			ParsedBlock parsedBlock = root.Blocks[i];
 
-			Image? imageMain = parsedBlock.TexturePath != null ? images[parsedBlock.TexturePath] : null;
+			Image? imageMain = parsedBlock.TexturePath != null ? imagesMap[parsedBlock.TexturePath] : null;
 
 			Image? imagePX = TryGetImage(parsedBlock.TexturePathPX, imageMain);
 			Image? imageNX = TryGetImage(parsedBlock.TexturePathNX, imageMain);
@@ -108,7 +116,11 @@ public class BlocksDatabase
 			blocks[i] = block;
 		}
 
-		return blocks;
+		return new Result()
+		{
+			Blocks = blocks,
+			Images = images.ToArray(),
+		};
 
 		////////////////////////////////
 		void TryAddImage(string? path)
@@ -116,7 +128,7 @@ public class BlocksDatabase
 			if (string.IsNullOrEmpty(path))
 				return;
 
-			if (images.ContainsKey(path))
+			if (imagesMap.ContainsKey(path))
 				return;
 
 			Image image = new(path, Image.ImageFormat.Rgba, flipY: true);
@@ -124,7 +136,8 @@ public class BlocksDatabase
 			if (image.Width != BlockTextureWidth || image.Height != BlockTextureWidth)
 				throw new Exception($"Invalid block texture size: {image.Width}x{image.Height}");
 
-			images.Add(path, image);
+			images.Add(image);
+			imagesMap.Add(path, image);
 		}
 
 		Image? TryGetImage(string? path, Image? defaultImage)
@@ -136,7 +149,7 @@ public class BlocksDatabase
 				case "":
 					return null;
 				default:
-					images.TryGetValue(path, out Image? image);
+					imagesMap.TryGetValue(path, out Image? image);
 					Debug.Assert(image != null);
 					return image;
 			}
