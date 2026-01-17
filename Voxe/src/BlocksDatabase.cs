@@ -71,8 +71,11 @@ public class BlocksDatabase
 			TryAddImage(block.TexturePathNZ);
 		}
 
-		foreach (ParsedBlock parsedBlock in root.Blocks)
+		Block[] blocks = new Block[root.Blocks.Length];
+		for (int i = 0; i < root.Blocks.Length; i++)
 		{
+			ParsedBlock parsedBlock = root.Blocks[i];
+
 			Image? imageMain = parsedBlock.TexturePath != null ? images[parsedBlock.TexturePath] : null;
 
 			Image? imagePX = TryGetImage(parsedBlock.TexturePathPX, imageMain);
@@ -101,9 +104,11 @@ public class BlocksDatabase
 				ImagePZ = imagePZ,
 				ImageNZ = imageNZ,
 			};
+
+			blocks[i] = block;
 		}
 
-		return [];
+		return blocks;
 
 		////////////////////////////////
 		void TryAddImage(string? path)
