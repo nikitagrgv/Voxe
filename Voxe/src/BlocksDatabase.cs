@@ -7,19 +7,19 @@ public class BlocksDatabase
 {
 	public readonly struct Block
 	{
-		public ushort Id { get; }
-		public string Name { get; }
-		public bool IsTransparent { get; }
-		public bool IsInvisible { get; }
+		public ushort Id { get; init; }
+		public string Name { get; init; }
+		public bool IsTransparent { get; init; }
+		public bool IsInvisible { get; init; }
 
-		public Image? ImagePX { get; }
-		public Image? ImageNX { get; }
+		public Image? ImagePX { get; init; }
+		public Image? ImageNX { get; init; }
 
-		public Image? ImagePY { get; }
-		public Image? ImageNY { get; }
+		public Image? ImagePY { get; init; }
+		public Image? ImageNY { get; init; }
 
-		public Image? ImagePZ { get; }
-		public Image? ImageNZ { get; }
+		public Image? ImagePZ { get; init; }
+		public Image? ImageNZ { get; init; }
 	}
 
 	private readonly struct ParsedBlock
