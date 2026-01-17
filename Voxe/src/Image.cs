@@ -188,21 +188,29 @@ public class Image
 		return Color.FromArgb(a, r, g, b);
 	}
 
-	public void CopyFrom(Image image, int x, int y, int width, int height)
+	public void CopyFrom(Image source, int sourceX, int sourceY, int targetX, int targetY, int width, int height)
 	{
-		int endX = x + width;
-		int endY = y + height;
-
 		Debug.Assert(width > 0 && height > 0);
-		Debug.Assert(x >= 0 && x < Width);
-		Debug.Assert(y >= 0 && y < Height);
-		Debug.Assert(endX >= 0 && endX < Width);
-		Debug.Assert(endY >= 0 && endY < Height);
-		
-		// TODO: Optimize
 
-		int pixelSize = GetPixelSizeBytes();
-		int offsetBytes = GetOffsetBytes(x, y);
+		Debug.Assert(source.IsValidPixel(sourceX, sourceY));
+		Debug.Assert(source.IsValidPixel(sourceX + width - 1, sourceY + height - 1));
+
+		Debug.Assert(IsValidPixel(targetX, targetY));
+		Debug.Assert(IsValidPixel(targetX + width - 1, targetY + height - 1));
+
+		// TODO: Optimize
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				source.GetPixel(i, j);
+			}
+		}
+	}
+
+	public bool IsValidPixel(int x, int y)
+	{
+		return x >= 0 && x < Width && y >= 0 && y < Height;
 	}
 
 	private static ColorComponentsWrite ColorComponentsWriteFromColorComponents(ColorComponents colorComponents)
