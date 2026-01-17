@@ -71,11 +71,36 @@ public class BlocksDatabase
 			TryAddImage(block.TexturePathNZ);
 		}
 
-		foreach (ParsedBlock block in root.Blocks)
+		foreach (ParsedBlock parsedBlock in root.Blocks)
 		{
-			Image? textureMain = block.TexturePath != null ? images[block.TexturePath] : null;
-			Image? texturePX = block.TexturePathPX != null ? images[block.TexturePathPX] : textureMain;
-			Image? texturePY = block.TexturePathPY != null ? images[block.TexturePathPY] : textureMain;
+			Image? imageMain = parsedBlock.TexturePath != null ? images[parsedBlock.TexturePath] : null;
+
+			Image? imagePX = TryGetImage(parsedBlock.TexturePathPX, imageMain);
+			Image? imageNX = TryGetImage(parsedBlock.TexturePathNX, imageMain);
+
+			Image? imagePY = TryGetImage(parsedBlock.TexturePathPY, imageMain);
+			Image? imageNY = TryGetImage(parsedBlock.TexturePathNY, imageMain);
+
+			Image? imagePZ = TryGetImage(parsedBlock.TexturePathPZ, imageMain);
+			Image? imageNZ = TryGetImage(parsedBlock.TexturePathNZ, imageMain);
+
+			Block block = new()
+			{
+				Id = parsedBlock.Id,
+				Name = parsedBlock.Name,
+
+				IsTransparent = parsedBlock.IsTransparent ?? false,
+				IsInvisible = parsedBlock.IsInvisible ?? false,
+
+				ImagePX = imagePX,
+				ImageNX = imageNX,
+
+				ImagePY = imagePY,
+				ImageNY = imageNY,
+
+				ImagePZ = imagePZ,
+				ImageNZ = imageNZ,
+			};
 		}
 
 		return [];
