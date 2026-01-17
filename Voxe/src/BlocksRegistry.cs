@@ -67,7 +67,7 @@ public static class BlocksRegistry
 	private static int _numBasicBlocks;
 	private static int _atlasWidth;
 
-	public static void Initialize(int atlasWidth)
+	public static void Initialize(string blocksDatabasePath)
 	{
 		Debug.Assert(_blocks.Count == 0, "Already initialized");
 
@@ -78,7 +78,7 @@ public static class BlocksRegistry
 		}
 
 		// TODO# inject from params
-		BlocksDatabase.Result databaseBlocks = database.Load("blocks.json");
+		BlocksDatabase.Result databaseBlocks = database.Load(blocksDatabasePath);
 		int numImages = databaseBlocks.Images.Length;
 		int imageWidth = databaseBlocks.ImageWidth;
 
@@ -87,6 +87,7 @@ public static class BlocksRegistry
 		int sideBlocksSizePixels = imageWidth;
 		while ((sideBlocksSizePixels / imageWidth) * (sideBlocksSizePixels / imageWidth) < numImages)
 			sideBlocksSizePixels *= 2;
+		int numImagesBySide = sideBlocksSizePixels / imageWidth;
 
 		Image image = new(sideBlocksSizePixels, sideBlocksSizePixels,
 			Image.ImageFormat.Rgba,
@@ -112,13 +113,13 @@ public static class BlocksRegistry
 		Debug.Assert(Enum.GetValues<BasicBlock>().Cast<ushort>().Max() == _numBasicBlocks - 1,
 			"All must be registered");
 
-		SetAtlasWidth(atlasWidth);
+		SetAtlasWidth(numImagesBySide);
 	}
 
-	public static void SetAtlasWidth(int width)
+	public static void SetAtlasWidth(int widthBlocks)
 	{
-		Debug.Assert(width > 0);
-		_atlasWidth = width;
+		Debug.Assert(widthBlocks > 0);
+		_atlasWidth = widthBlocks;
 		RecalculateUv();
 	}
 

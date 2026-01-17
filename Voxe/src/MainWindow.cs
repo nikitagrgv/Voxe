@@ -138,8 +138,7 @@ public class MainWindow : NativeWindow
 
 		Visualizer.Initialize();
 
-		const int atlasSize = 8;
-		BlocksRegistry.Initialize(atlasSize);
+		BlocksRegistry.Initialize("blocks.json");
 
 		string vertexShaderSource = FileSystem.ReadTextFile("mesh_vertex.glsl");
 		string fragmentShaderSource = FileSystem.ReadTextFile("mesh_fragment.glsl");
