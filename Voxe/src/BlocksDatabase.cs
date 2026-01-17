@@ -6,10 +6,11 @@ namespace Voxe;
 
 public class BlocksDatabase
 {
-	public const int BlockTextureWidth = 16;
+	private const int BlockTextureWidth = 16;
 
 	public readonly struct Result
 	{
+		public int ImageWidth { get; init; }
 		public Block[] Blocks { get; init; }
 		public Image[] Images { get; init; }
 	}
@@ -117,6 +118,7 @@ public class BlocksDatabase
 
 		return new Result()
 		{
+			ImageWidth = BlockTextureWidth,
 			Blocks = blocks,
 			Images = images.ToArray(),
 		};

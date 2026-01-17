@@ -76,7 +76,7 @@ public static class BlocksRegistry
 		BlocksDatabase.Result databaseBlocks = database.Load("blocks.json");
 
 		Image image = new(128, 128, Image.ImageFormat.Rgba, Color.FromArgb(255, 255, 0, 255));
-		image.CopyFrom(databaseBlocks.Images[0], 0, 0, 0, 0, 16, 16);
+		image.CopyFrom(databaseBlocks.Images[2], 4, 4, 12, 55, 16-4, 16-4);
 		image.Save("spam/gen.png");
 
 		AddBasicBlock(BasicBlock.Air, new UvIndexSet(), isInvisible: true);
