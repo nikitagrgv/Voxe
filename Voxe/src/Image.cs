@@ -35,8 +35,14 @@ public class Image
 		Load(path, targetFormat, flipY);
 	}
 
-	public void Init(int width, int height, ImageFormat format, Color color)
+	public void Create(int width, int height, ImageFormat format, Color color)
 	{
+		_width = width;
+		_height = height;
+		_format = format;
+
+		int pixelSize = GetPixelSizeBytes(format);
+		_data = new byte[_width * _height * pixelSize];
 	}
 
 	public void Load(string path, ImageFormat targetFormat, bool flipY = false)
@@ -85,6 +91,16 @@ public class Image
 			default:
 				throw new Exception($"Unsupported file extension {extension}");
 		}
+	}
+
+	public static int GetPixelSizeBytes(ImageFormat format)
+	{
+		return format switch
+		{
+			ImageFormat.Rgb => 3,
+			ImageFormat.Rgba => 4,
+			_ => 0,
+		};
 	}
 
 	public int GetPixelSizeBytes()
