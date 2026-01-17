@@ -56,7 +56,6 @@ public class BlocksDatabase
 		[JsonPropertyName("blocks")] public ParsedBlock[] Blocks { get; init; }
 	}
 
-
 	public Result Load(string databaseRelPath)
 	{
 		using Stream stream = FileSystem.ReadFileStream(databaseRelPath);
