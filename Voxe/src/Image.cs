@@ -30,6 +30,11 @@ public class Image
 	{
 	}
 
+	public Image(int width, int height, ImageFormat format, Color color)
+	{
+		Create(width, height, format, color);
+	}
+
 	public Image(string path, ImageFormat targetFormat, bool flipY = false)
 	{
 		Load(path, targetFormat, flipY);

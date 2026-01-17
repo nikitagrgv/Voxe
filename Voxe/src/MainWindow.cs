@@ -156,6 +156,9 @@ public class MainWindow : NativeWindow
 
 		atlasImage.Save("spam/atlas.png", flipY: true);
 
+		Image atl = new(128, 128, Image.ImageFormat.Rgba, Color.Violet);
+		atl.Save("spam/atl.png");
+
 		int atlasTexture = GL.GenTexture();
 		GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
