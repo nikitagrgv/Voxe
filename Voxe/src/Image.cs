@@ -30,7 +30,7 @@ public class Image
 		Load(path, targetFormat, flipY);
 	}
 
-	public void Init(int width, int height, Color color)
+	public void Init(int width, int height, ImageFormat format, Color color)
 	{
 	}
 
