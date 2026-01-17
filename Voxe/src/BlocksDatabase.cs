@@ -116,7 +116,7 @@ public class BlocksDatabase
 			blocks[i] = block;
 		}
 
-		return new Result()
+		return new Result
 		{
 			ImageWidth = BlockTextureWidth,
 			Blocks = blocks,
