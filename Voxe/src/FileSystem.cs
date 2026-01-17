@@ -55,6 +55,11 @@ public static class FileSystem
 	public static Stream WriteFileStream(string relativePath)
 	{
 		string absolutePath = GetAbsolutePath(relativePath);
+
+		string? dirPath = Path.GetDirectoryName(absolutePath);
+		if (!string.IsNullOrEmpty(dirPath))
+			Directory.CreateDirectory(dirPath);
+
 		FileStream stream = File.OpenWrite(absolutePath);
 		return stream;
 	}
