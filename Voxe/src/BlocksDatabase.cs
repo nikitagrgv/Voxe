@@ -60,9 +60,16 @@ public class BlocksDatabase
 		{
 			if (string.IsNullOrEmpty(path))
 				return;
+
+			if (images.ContainsKey(path))
+				return;
+
 			Image image = new(path, Image.ImageFormat.Rgba, flipY: true);
+
 			if (image.Width != BlockTextureWidth || image.Height != BlockTextureWidth)
 				throw new Exception($"Invalid block texture size: {image.Width}x{image.Height}");
+
+			images.Add(path, image);
 		}
 
 		foreach (ParsedBlock block in root.Blocks)
