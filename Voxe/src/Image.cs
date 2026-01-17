@@ -42,7 +42,36 @@ public class Image
 		_format = format;
 
 		int pixelSize = GetPixelSizeBytes(format);
-		_data = new byte[_width * _height * pixelSize];
+		int totalSize = _width * _height * pixelSize;
+		_data = new byte[totalSize];
+
+		switch (format)
+		{
+			case ImageFormat.Rgb:
+			{
+				for (int i = 0; i < totalSize; i += pixelSize)
+				{
+					_data[i] = color.R;
+					_data[i + 1] = color.G;
+					_data[i + 2] = color.B;
+				}
+
+				break;
+			}
+			case ImageFormat.Rgba:
+			{
+				for (int i = 0; i < totalSize; i += pixelSize)
+				{
+					_data[i] = color.R;
+					_data[i + 1] = color.G;
+					_data[i + 2] = color.B;
+					_data[i + 3] = color.A;
+				}
+
+				break;
+			}
+			default: throw new Exception($"Unsupported format {format}");
+		}
 	}
 
 	public void Load(string path, ImageFormat targetFormat, bool flipY = false)
