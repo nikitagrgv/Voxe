@@ -8,10 +8,11 @@ using Voxe;
 
 public class Image
 {
-	private ImageResult? _data;
-	private ImageFormat _format;
+	private int _width = 0;
+	private int _height = 0;
+	private byte[] _data = [];
 
-	public ImageFormat Format => _format;
+	private ImageFormat _format = ImageFormat.Rgba;
 
 	public enum ImageFormat
 	{
@@ -19,7 +20,11 @@ public class Image
 		Rgba
 	}
 
-	public bool IsValid => _data != null;
+	public bool IsEmpty => _data.Length > 0;
+	public byte[] RawData => _data;
+	public int Width => _width;
+	public int Height => _height;
+	public ImageFormat Format => _format;
 
 	public Image()
 	{
@@ -44,15 +49,14 @@ public class Image
 		if (result == null)
 			throw new Exception($"Cannot load image {path}");
 
-		_data = result;
+		_width = result.Width;
+		_height = result.Height;
+		_data = result.Data;
 		_format = targetFormat;
 	}
 
 	public void Save(string path, bool flipY = false)
 	{
-		if (!IsValid)
-			throw new Exception("Image is invalid");
-
 		string extension = Path.GetExtension(path);
 		if (string.IsNullOrEmpty(extension))
 		{
@@ -70,13 +74,13 @@ public class Image
 		switch (extension)
 		{
 			case ".png":
-				writer.WritePng(_data!.Data, _data.Width, _data.Height, componentsWrite, stream);
+				writer.WritePng(_data, Width, Height, componentsWrite, stream);
 				break;
 			case ".bmp":
-				writer.WriteBmp(_data!.Data, _data.Width, _data.Height, componentsWrite, stream);
+				writer.WriteBmp(_data, Width, Height, componentsWrite, stream);
 				break;
 			case ".jpg":
-				writer.WriteJpg(_data!.Data, _data.Width, _data.Height, componentsWrite, stream, quality: 95);
+				writer.WriteJpg(_data, Width, Height, componentsWrite, stream, quality: 95);
 				break;
 			default:
 				throw new Exception($"Unsupported file extension {extension}");
@@ -85,7 +89,6 @@ public class Image
 
 	public int GetPixelSizeBytes()
 	{
-		Debug.Assert(IsValid);
 		return _format switch
 		{
 			ImageFormat.Rgb => 3,
@@ -96,31 +99,27 @@ public class Image
 
 	public int GetOffsetPixels(int x, int y)
 	{
-		Debug.Assert(IsValid);
-		return y * _data!.Width + x;
+		return y * Width + x;
 	}
 
 	public int GetOffsetBytes(int x, int y)
 	{
-		Debug.Assert(IsValid);
 		return GetOffsetPixels(x, y) * GetPixelSizeBytes();
 	}
 
 	public void SetPixel(int x, int y, Color color)
 	{
-		Debug.Assert(IsValid);
-		Debug.Assert(_data!.Data != null);
-		Debug.Assert(x >= 0 && x < _data.Width);
-		Debug.Assert(y >= 0 && y < _data.Height);
+		Debug.Assert(x >= 0 && x < Width);
+		Debug.Assert(y >= 0 && y < Height);
 		Debug.Assert(_format is ImageFormat.Rgba or ImageFormat.Rgb, "Not supported");
 
 		int bytesOffset = GetOffsetBytes(x, y);
-		_data.Data[bytesOffset + 0] = color.R;
-		_data.Data[bytesOffset + 1] = color.G;
-		_data.Data[bytesOffset + 2] = color.B;
+		_data[bytesOffset + 0] = color.R;
+		_data[bytesOffset + 1] = color.G;
+		_data[bytesOffset + 2] = color.B;
 		if (_format == ImageFormat.Rgba)
 		{
-			_data.Data[bytesOffset + 3] = color.A;
+			_data[bytesOffset + 3] = color.A;
 		}
 	}
 
@@ -146,8 +145,4 @@ public class Image
 			_ => throw new ArgumentOutOfRangeException(nameof(imageFormat), imageFormat, null)
 		};
 	}
-
-	public byte[] RawData => _data.Data;
-	public int Width => _data.Width;
-	public int Height => _data.Height;
 }
