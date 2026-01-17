@@ -198,6 +198,8 @@ public class Image
 		Debug.Assert(y >= 0 && y < Height);
 		Debug.Assert(endX >= 0 && endX < Width);
 		Debug.Assert(endY >= 0 && endY < Height);
+		
+		// TODO: Optimize
 
 		int pixelSize = GetPixelSizeBytes();
 		int offsetBytes = GetOffsetBytes(x, y);
