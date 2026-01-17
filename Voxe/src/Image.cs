@@ -44,7 +44,7 @@ public class Image
 		_format = targetFormat;
 	}
 
-	public void Save(string path)
+	public void Save(string path, bool flipY = false)
 	{
 		if (!IsValid)
 			throw new Exception("Image is invalid");
@@ -57,6 +57,7 @@ public class Image
 		}
 
 		ImageWriter writer = new();
+		StbImageWrite.stbi_flip_vertically_on_write(flipY ? 1 : 0);
 		using Stream stream = FileSystem.WriteFileStream(path);
 
 		ColorComponents components = ColorComponentsFromFormat(Format);
