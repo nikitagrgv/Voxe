@@ -156,7 +156,7 @@ public class MainWindow : NativeWindow
 
 		atlasImage.Save("spam/atlas.png", flipY: true);
 
-		Image atl = new(128, 128, Image.ImageFormat.Rgba, Color.Violet);
+		Image atl = new(128, 128, Image.ImageFormat.Rgba, Color.MediumVioletRed);
 		atl.Save("spam/atl.png");
 
 		int atlasTexture = GL.GenTexture();
