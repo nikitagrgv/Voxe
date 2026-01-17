@@ -64,7 +64,7 @@ public static class Utils
 
 	public static double Normalize180(this double angle)
 	{
-		angle = Normalize360(angle);
+		angle = angle.Normalize360();
 		if (angle > 180)
 			angle -= 360;
 		return angle;
@@ -72,7 +72,7 @@ public static class Utils
 
 	public static float Normalize180(this float angle)
 	{
-		angle = Normalize360(angle);
+		angle = angle.Normalize360();
 		if (angle > 180f)
 			angle -= 360f;
 		return angle;

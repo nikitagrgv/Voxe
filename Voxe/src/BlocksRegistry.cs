@@ -72,6 +72,10 @@ public static class BlocksRegistry
 		Debug.Assert(_blocks.Count == 0, "Already initialized");
 
 		BlocksDatabase database = new();
+		for (int i = 0; i < 19; ++i)
+		{
+		   Console.WriteLine($"{i} - {Voxe.Math.Utils.RoundUpToPowerOfTwo(i)}");
+		}
 		// TODO# inject from params
 		BlocksDatabase.Result databaseBlocks = database.Load("blocks.json");
 
