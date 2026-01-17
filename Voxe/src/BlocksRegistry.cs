@@ -83,13 +83,14 @@ public static class BlocksRegistry
 		int imageWidth = databaseBlocks.ImageWidth;
 
 		// TODO: Shitty but ok
-		int sideBlocksSize = 1;
+		Debug.Assert(Voxe.Math.Utils.RoundUpToPowerOfTwo(imageWidth) == imageWidth);
+		int sideBlocksSizePixels = imageWidth;
+		while ((sideBlocksSizePixels / imageWidth) * (sideBlocksSizePixels / imageWidth) < numImages)
+			sideBlocksSizePixels *= 2;
 
-
-		Image image = new(roundedNumPixelsBySide, roundedNumPixelsBySide,
+		Image image = new(sideBlocksSizePixels, sideBlocksSizePixels,
 			Image.ImageFormat.Rgba,
 			Color.FromArgb(255, 255, 0, 255));
-		image.CopyFrom(databaseBlocks.Images[2], 4, 4, 12, 55, 16 - 4, 16 - 4);
 		image.Save("spam/gen.png");
 
 		AddBasicBlock(BasicBlock.Air, new UvIndexSet(), isInvisible: true);
