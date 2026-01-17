@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Voxe;
@@ -70,6 +71,13 @@ public class BlocksDatabase
 			TryAddImage(block.TexturePathNZ);
 		}
 
+		foreach (ParsedBlock block in root.Blocks)
+		{
+			Image? textureMain = block.TexturePath != null ? images[block.TexturePath] : null;
+			Image? texturePX = block.TexturePathPX != null ? images[block.TexturePathPX] : textureMain;
+			Image? texturePY = block.TexturePathPY != null ? images[block.TexturePathPY] : textureMain;
+		}
+
 		return [];
 
 		////////////////////////////////
@@ -87,6 +95,21 @@ public class BlocksDatabase
 				throw new Exception($"Invalid block texture size: {image.Width}x{image.Height}");
 
 			images.Add(path, image);
+		}
+
+		Image? TryGetImage(string? path, Image? defaultImage)
+		{
+			switch (path)
+			{
+				case null:
+					return defaultImage;
+				case "":
+					return null;
+				default:
+					images.TryGetValue(path, out Image? image);
+					Debug.Assert(image != null);
+					return image;
+			}
 		}
 	}
 }
