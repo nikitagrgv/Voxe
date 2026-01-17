@@ -47,7 +47,7 @@ public class BlocksDatabase
 		[JsonPropertyName("blocks")] public ParsedBlock[] Blocks { get; init; }
 	}
 
-	public Block[] Parse(string databaseRelPath)
+	public Block[] Load(string databaseRelPath)
 	{
 		using Stream stream = FileSystem.ReadFileStream(databaseRelPath);
 		ParsedRoot root = JsonSerializer.Deserialize<ParsedRoot>(stream);
