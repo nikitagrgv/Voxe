@@ -51,4 +51,11 @@ public static class FileSystem
 		FileStream stream = File.OpenRead(absolutePath);
 		return stream;
 	}
+
+	public static Stream WriteFileStream(string relativePath)
+	{
+		string absolutePath = GetAbsolutePath(relativePath);
+		FileStream stream = File.OpenWrite(absolutePath);
+		return stream;
+	}
 }
