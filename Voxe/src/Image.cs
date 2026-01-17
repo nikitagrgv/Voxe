@@ -173,6 +173,20 @@ public class Image
 		}
 	}
 
+	public void CopyFrom(Image image, int x, int y, int width, int height)
+	{
+		int endX = x + width;
+		int endY = y + height;
+
+		Debug.Assert(width > 0 && height > 0);
+		Debug.Assert(x >= 0 && x < Width);
+		Debug.Assert(y >= 0 && y < Height);
+		Debug.Assert(endX >= 0 && endX < Width);
+		Debug.Assert(endY >= 0 && endY < Height);
+		
+		
+	}
+
 	private static ColorComponentsWrite ColorComponentsWriteFromColorComponents(ColorComponents colorComponents)
 	{
 		return colorComponents switch
