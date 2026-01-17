@@ -70,6 +70,10 @@ public static class BlocksRegistry
 	{
 		Debug.Assert(_blocks.Count == 0, "Already initialized");
 
+		BlocksDatabase database = new();
+		// TODO# inject from params
+		BlocksDatabase.Block[] blocks = database.Parse("blocks.json");
+
 		AddBasicBlock(BasicBlock.Air, new UvIndexSet(), isInvisible: true);
 		AddBasicBlock(BasicBlock.Grass,
 			new UvIndexSet(positiveX: 1, negativeX: 1, positiveY: 0, negativeY: 2, positiveZ: 1, negativeZ: 1),

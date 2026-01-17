@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Voxe;
 
@@ -41,10 +42,15 @@ public class BlocksDatabase
 		[JsonPropertyName("texture-nz")] public string? TexturePathNZ { get; }
 	}
 
+	private readonly struct ParsedRoot
+	{
+		[JsonPropertyName("blocks")] public ParsedBlock[] Blocks { get; }
+	}
+
 	public Block[] Parse(string databaseRelPath)
 	{
-		string path = FileSystem.GetAbsolutePath(databaseRelPath);
-
+		using Stream stream = FileSystem.ReadFileStream(databaseRelPath);
+		ParsedRoot? root = JsonSerializer.Deserialize<ParsedRoot>(stream);
 
 		return [];
 	}
