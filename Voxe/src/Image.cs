@@ -30,6 +30,10 @@ public class Image
 		Load(path, targetFormat, flipY);
 	}
 
+	public void Init(int width, int height, Color color)
+	{
+	}
+
 	public void Load(string path, ImageFormat targetFormat, bool flipY = false)
 	{
 		using Stream stream = FileSystem.ReadFileStream(path);
@@ -79,6 +83,29 @@ public class Image
 		}
 	}
 
+	public int GetPixelSizeBytes()
+	{
+		Debug.Assert(IsValid);
+		return _format switch
+		{
+			ImageFormat.Rgb => 3,
+			ImageFormat.Rgba => 4,
+			_ => 0,
+		};
+	}
+
+	public int GetOffsetPixels(int x, int y)
+	{
+		Debug.Assert(IsValid);
+		return y * _data!.Width + x;
+	}
+
+	public int GetOffsetBytes(int x, int y)
+	{
+		Debug.Assert(IsValid);
+		return GetOffsetPixels(x, y) * GetPixelSizeBytes();
+	}
+
 	public void SetPixel(int x, int y, Color color)
 	{
 		Debug.Assert(IsValid);
@@ -87,14 +114,8 @@ public class Image
 		Debug.Assert(y >= 0 && y < _data.Height);
 		Debug.Assert(_format is ImageFormat.Rgba or ImageFormat.Rgb, "Not supported");
 
-		int pixelSize = _format switch
-		{
-			ImageFormat.Rgb => 3,
-			ImageFormat.Rgba => 4,
-			_ => 0,
-		};
-
-		int pixelOffset = y * _data.Width + x;
+		int pixelSize = GetPixelSizeBytes();
+		int pixelOffset = GetOffsetPixels(x, y);
 		int bytesOffset = pixelOffset * pixelSize;
 
 		_data.Data[bytesOffset + 0] = color.R;
