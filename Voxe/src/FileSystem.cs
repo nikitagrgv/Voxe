@@ -1,4 +1,7 @@
-﻿namespace Voxe;
+﻿using System;
+using System.IO;
+
+namespace Voxe;
 
 public static class FileSystem
 {
