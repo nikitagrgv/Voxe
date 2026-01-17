@@ -28,6 +28,8 @@ public static class FileSystem
 	{
 		if (_dataPath == null)
 			throw new InvalidOperationException("FileSystem is not initialized");
+		if (Path.IsPathRooted(relativePath))
+			return relativePath;
 		return Path.GetFullPath(relativePath, _dataPath);
 	}
 
