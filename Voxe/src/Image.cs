@@ -49,15 +49,15 @@ public class Image
 		if (!IsValid)
 			throw new Exception("Image is invalid");
 
-		ImageWriter writer = new();
-		using Stream stream = FileSystem.WriteFileStream(path);
-
 		string extension = Path.GetExtension(path);
 		if (string.IsNullOrEmpty(extension))
 		{
 			extension = ".png";
 			path += extension;
 		}
+
+		ImageWriter writer = new();
+		using Stream stream = FileSystem.WriteFileStream(path);
 
 		ColorComponents components = ColorComponentsFromFormat(Format);
 		ColorComponentsWrite componentsWrite = ColorComponentsWriteFromColorComponents(components);
