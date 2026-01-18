@@ -6,3 +6,4 @@ riderModule.iml
 .idea/
 *.DotSettings.user
 Voxe/data/spam/
+Voxe/data/gen/
