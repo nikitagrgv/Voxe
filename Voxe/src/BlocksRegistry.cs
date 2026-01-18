@@ -89,11 +89,19 @@ public static class BlocksRegistry
 			sideBlocksSizePixels *= 2;
 		int numImagesBySide = sideBlocksSizePixels / imageWidth;
 
-		todo merge image to single
-		Image image = new(sideBlocksSizePixels, sideBlocksSizePixels,
+		Image atlasImage = new(sideBlocksSizePixels, sideBlocksSizePixels,
 			Image.ImageFormat.Rgba,
 			Color.FromArgb(255, 255, 0, 255));
-		image.Save("spam/gen.png");
+
+		for (int i = 0; i < databaseBlocks.Images.Length; ++i)
+		{
+			Image blockImage = databaseBlocks.Images[i];
+			int imageX = (i % numImagesBySide) * imageWidth;
+			int imageY = (i / numImagesBySide) * imageWidth;
+			atlasImage.CopyFrom(blockImage, 0, 0, imageX, imageY, imageWidth, imageWidth);
+		}
+
+		atlasImage.Save("spam/gen.png");
 
 		AddBasicBlock(BasicBlock.Air, new UvIndexSet(), isInvisible: true);
 		AddBasicBlock(BasicBlock.Grass,
