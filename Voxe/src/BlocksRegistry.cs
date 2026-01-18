@@ -103,6 +103,22 @@ public static class BlocksRegistry
 
 		atlasImage.Save("spam/gen.png");
 
+
+		foreach (BlocksDatabase.Block block in databaseBlocks.Blocks.OrderBy(v => v.Id))
+		{
+			// TODO: Allow skip ids
+			Debug.Assert(_blocks.Count == block.Id, "Skipped ID");
+			Debug.Assert(_blocks.Count == _uvIndexSets.Count, "Skipped ID");
+
+			BlockType type = new(block.Id, isInvisible: block.IsInvisible);
+			UvIndexSet uvset = new(
+				positiveX: block.p
+				);
+
+			_blocks.Add(type);
+			_uvIndexSets.Add(uvIndexSet);
+		}
+
 		AddBasicBlock(BasicBlock.Air, new UvIndexSet(), isInvisible: true);
 		AddBasicBlock(BasicBlock.Grass,
 			new UvIndexSet(positiveX: 1, negativeX: 1, positiveY: 0, negativeY: 2, positiveZ: 1, negativeZ: 1),
