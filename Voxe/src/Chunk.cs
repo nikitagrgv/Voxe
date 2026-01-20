@@ -18,7 +18,7 @@ public class Chunk
 
 	public Chunk()
 	{
-		_blocks = new Block[NumBlocks];
+		_blocks = GC.AllocateUninitializedArray<Block>(NumBlocks);
 		for (int i = 0; i < _blocks.Length; i++)
 		{
 			_blocks[i] = new Block();

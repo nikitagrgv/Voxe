@@ -40,6 +40,11 @@ public class Image
 		Load(path, targetFormat, flipY);
 	}
 
+	public Image(Image source)
+	{
+		CloneFrom(source);
+	}
+
 	public void Create(int width, int height, ImageFormat format, Color color)
 	{
 		_width = width;
@@ -91,8 +96,17 @@ public class Image
 
 		_width = result.Width;
 		_height = result.Height;
-		_data = result.Data;
 		_format = targetFormat;
+		_data = result.Data;
+	}
+
+	public void CloneFrom(Image source)
+	{
+		_width = source._width;
+		_height = source._height;
+		_format = source._format;
+		_data = GC.AllocateUninitializedArray<byte>(source._data.Length);
+		Buffer.BlockCopy(source._data, 0, _data, 0, _data.Length);
 	}
 
 	public void Save(string path, bool flipY = false)
