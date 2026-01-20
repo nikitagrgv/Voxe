@@ -102,7 +102,7 @@ public static class BlocksRegistry
 			_atlasImage.CopyFrom(blockImage, 0, 0, imageX, imageY, imageWidth, imageWidth);
 		}
 
-		_atlasImage.Save("spam/gen.png");
+		_atlasImage.Save("gen/Atlas.png");
 
 		foreach (BlocksDatabase.Block block in databaseBlocks.Blocks.OrderBy(v => v.Id))
 		{
