@@ -156,7 +156,7 @@ public class MainWindow : NativeWindow
 
 		for (int i = 0; i < atlasMipMaps.Count; i++)
 		{
-			atlasImage.Save($"gen/Atlas-{i}.png");
+			atlasMipMaps[i].Save($"gen/Atlas-{i}.png");
 		}
 
 		int atlasTexture = GL.GenTexture();
