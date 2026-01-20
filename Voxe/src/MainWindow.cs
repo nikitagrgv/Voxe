@@ -144,17 +144,7 @@ public class MainWindow : NativeWindow
 		string fragmentShaderSource = FileSystem.ReadTextFile("mesh_fragment.glsl");
 		Shader shader = new(vertexShaderSource, fragmentShaderSource);
 
-		Image atlasImage = new("atlas.png", Image.ImageFormat.Rgb, flipY: true);
-		atlasImage.SetPixel(18 + 0, 0, Color.Red);
-		atlasImage.SetPixel(18 + 0, 1, Color.Red);
-		atlasImage.SetPixel(18 + 0, 2, Color.Red);
-		atlasImage.SetPixel(18 + 0, 3, Color.Red);
-		atlasImage.SetPixel(18 + 1, 0, Color.Green);
-		atlasImage.SetPixel(18 + 2, 0, Color.Green);
-		atlasImage.SetPixel(18 + 3, 0, Color.Green);
-
-		atlasImage.Save("spam/atlas.png", flipY: true);
-
+		Image atlasImage = BlocksRegistry.GetAtlasImage();
 		int atlasTexture = GL.GenTexture();
 		GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);

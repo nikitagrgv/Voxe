@@ -132,6 +132,12 @@ public static class BlocksRegistry
 		SetAtlasWidth(numImagesBySide);
 	}
 
+	public static Image GetAtlasImage()
+	{
+		Debug.Assert(_atlasImage != null);
+		return _atlasImage;
+	}
+
 	private static void SetAtlasWidth(int widthBlocks)
 	{
 		Debug.Assert(widthBlocks > 0);
