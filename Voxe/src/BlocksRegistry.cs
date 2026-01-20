@@ -73,12 +73,7 @@ public static class BlocksRegistry
 		Debug.Assert(_blocks.Count == 0, "Already initialized");
 
 		BlocksDatabase database = new();
-		for (int i = 0; i < 19; ++i)
-		{
-			Console.WriteLine($"{i} - {System.Math.Sqrt(i)} - {System.Math.Floor(System.Math.Sqrt(i))}");
-		}
 
-		// TODO# inject from params
 		BlocksDatabase.Result databaseBlocks = database.Load(blocksDatabasePath);
 		int numImages = databaseBlocks.Images.Length;
 		int imageWidth = databaseBlocks.ImageWidth;
@@ -107,7 +102,7 @@ public static class BlocksRegistry
 		var m1 = _atlasImage.GenerateNextMipLevel();
 		var m2 = m1.GenerateNextMipLevel();
 		var m3 = m2.GenerateNextMipLevel();
-		
+
 		m1.Save("gen/m1.png");
 		m2.Save("gen/m2.png");
 		m3.Save("gen/m3.png");
