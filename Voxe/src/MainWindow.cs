@@ -145,8 +145,6 @@ public class MainWindow : NativeWindow
 		Shader shader = new(vertexShaderSource, fragmentShaderSource);
 
 		Image atlasImage = BlocksRegistry.GetAtlasImage();
-		atlasImage.Save("gen/Atlas.png");
-
 		// TODO# make mipmaps from each block, not this shit
 		List<Image> atlasMipMaps = new();
 		atlasMipMaps.Add(atlasImage);
@@ -154,6 +152,11 @@ public class MainWindow : NativeWindow
 		{
 			Image next = atlasMipMaps.Last().GenerateNextMipLevel();
 			atlasMipMaps.Add(next);
+		}
+
+		for (int i = 0; i < atlasMipMaps.Count; i++)
+		{
+			atlasImage.Save($"gen/Atlas-{i}.png");
 		}
 
 		int atlasTexture = GL.GenTexture();
