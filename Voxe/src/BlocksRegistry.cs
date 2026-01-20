@@ -112,26 +112,17 @@ public static class BlocksRegistry
 
 			BlockType type = new(block.Id, isInvisible: block.IsInvisible);
 			UvIndexSet uvset = new(
-				positiveX: block.p
-				);
+				positiveX: block.TextureIndexPX.GetValueOrDefault(-1),
+				negativeX: block.TextureIndexNX.GetValueOrDefault(-1),
+				positiveY: block.TextureIndexPY.GetValueOrDefault(-1),
+				negativeY: block.TextureIndexNY.GetValueOrDefault(-1),
+				positiveZ: block.TextureIndexPZ.GetValueOrDefault(-1),
+				negativeZ: block.TextureIndexNZ.GetValueOrDefault(-1)
+			);
 
 			_blocks.Add(type);
-			_uvIndexSets.Add(uvIndexSet);
+			_uvIndexSets.Add(uvset);
 		}
-
-		AddBasicBlock(BasicBlock.Air, new UvIndexSet(), isInvisible: true);
-		AddBasicBlock(BasicBlock.Grass,
-			new UvIndexSet(positiveX: 1, negativeX: 1, positiveY: 0, negativeY: 2, positiveZ: 1, negativeZ: 1),
-			isInvisible: false);
-		AddBasicBlock(BasicBlock.Dirt,
-			new UvIndexSet(positiveX: 2, negativeX: 2, positiveY: 2, negativeY: 2, positiveZ: 2, negativeZ: 2),
-			isInvisible: false);
-		AddBasicBlock(BasicBlock.Stone,
-			new UvIndexSet(positiveX: 3, negativeX: 3, positiveY: 3, negativeY: 3, positiveZ: 3, negativeZ: 3),
-			isInvisible: false);
-		AddBasicBlock(BasicBlock.Snow,
-			new UvIndexSet(positiveX: 4, negativeX: 4, positiveY: 4, negativeY: 4, positiveZ: 4, negativeZ: 4),
-			isInvisible: false);
 
 		_numBasicBlocks = _blocks.Count;
 
