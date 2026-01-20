@@ -66,6 +66,7 @@ public static class BlocksRegistry
 
 	private static int _numBasicBlocks;
 	private static int _atlasWidth;
+	private static Image? _atlasImage;
 
 	public static void Initialize(string blocksDatabasePath)
 	{
@@ -89,7 +90,7 @@ public static class BlocksRegistry
 			sideBlocksSizePixels *= 2;
 		int numImagesBySide = sideBlocksSizePixels / imageWidth;
 
-		Image atlasImage = new(sideBlocksSizePixels, sideBlocksSizePixels,
+		_atlasImage = new(sideBlocksSizePixels, sideBlocksSizePixels,
 			Image.ImageFormat.Rgba,
 			Color.FromArgb(255, 255, 0, 255));
 
@@ -98,11 +99,10 @@ public static class BlocksRegistry
 			Image blockImage = databaseBlocks.Images[i];
 			int imageX = (i % numImagesBySide) * imageWidth;
 			int imageY = (i / numImagesBySide) * imageWidth;
-			atlasImage.CopyFrom(blockImage, 0, 0, imageX, imageY, imageWidth, imageWidth);
+			_atlasImage.CopyFrom(blockImage, 0, 0, imageX, imageY, imageWidth, imageWidth);
 		}
 
-		atlasImage.Save("spam/gen.png");
-
+		_atlasImage.Save("spam/gen.png");
 
 		foreach (BlocksDatabase.Block block in databaseBlocks.Blocks.OrderBy(v => v.Id))
 		{
