@@ -9,4 +9,9 @@ public static class Utils
 		if (value < 1) return 1;
 		return 1 << (BitOperations.Log2((uint)(value - 1)) + 1);
 	}
+
+	public static bool IsPowerOfTwo(int n)
+	{
+		return BitOperations.IsPow2(n);
+	}
 }

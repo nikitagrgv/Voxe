@@ -148,6 +148,62 @@ public class Image
 		}
 	}
 
+	public Image GenerateNextMipLevel()
+	{
+		if (Width < 2 || Height < 2)
+			throw new Exception("Too small image");
+		if (Width != Height)
+			throw new NotSupportedException();
+		if (Voxe.Math.Utils.IsPowerOfTwo(Width))
+			throw new NotSupportedException();
+
+		int newWidth = Math.Max(1, Width / 2);
+		int newHeight = Math.Max(1, Height / 2);
+
+		Image mip = new();
+		mip.CreateWithGarbage(newWidth, newHeight, Format);
+
+		for (int y = 0; y < newHeight; y++)
+		{
+			for (int x = 0; x < newWidth; x++)
+			{
+				int srcX = x * 2;
+				int srcY = y * 2;
+
+				Color p00 = GetPixel(srcX, srcY);
+				Color p10 = GetPixel(srcX + 1, srcY);
+				Color p01 = GetPixel(srcX, srcY + 1);
+				Color p11 = GetPixel(srcX + 1, srcY + 1);
+
+				Color averaged = AverageColors(p00, p10, p01, p11);
+				mip.SetPixel(x, y, averaged);
+			}
+		}
+
+		return mip;
+	}
+
+	private static Color AverageColors(params Color[] colors)
+	{
+		float rSum = 0, gSum = 0, bSum = 0, aSum = 0;
+		float invCount = 1.0f / colors.Length;
+
+		foreach (Color c in colors)
+		{
+			rSum += SrgbToLinear(c.R / 255.0f);
+			gSum += SrgbToLinear(c.G / 255.0f);
+			bSum += SrgbToLinear(c.B / 255.0f);
+			aSum += c.A / 255.0f;
+		}
+
+		byte r = (byte)Math.Clamp(LinearToSrgb(rSum * invCount) * 255.0f, 0, 255);
+		byte g = (byte)Math.Clamp(LinearToSrgb(gSum * invCount) * 255.0f, 0, 255);
+		byte b = (byte)Math.Clamp(LinearToSrgb(bSum * invCount) * 255.0f, 0, 255);
+		byte a = (byte)Math.Clamp((aSum * invCount) * 255.0f, 0, 255);
+
+		return Color.FromArgb(a, r, g, b);
+	}
+
 	public static int GetPixelSizeBytes(ImageFormat format)
 	{
 		return format switch
@@ -257,4 +313,7 @@ public class Image
 			_ => throw new ArgumentOutOfRangeException(nameof(imageFormat), imageFormat, null)
 		};
 	}
+
+	private static float SrgbToLinear(float s) => (float)Math.Pow(s, 2.2);
+	private static float LinearToSrgb(float l) => (float)Math.Pow(l, 1.0 / 2.2);
 }
