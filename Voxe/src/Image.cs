@@ -155,7 +155,7 @@ public class Image
 			throw new Exception("Too small image");
 		if (Width != Height)
 			throw new NotSupportedException();
-		if (Voxe.Math.Utils.IsPowerOfTwo(Width))
+		if (!Math.Utils.IsPowerOfTwo(Width))
 			throw new NotSupportedException();
 
 		int newWidth = System.Math.Max(1, Width / 2);

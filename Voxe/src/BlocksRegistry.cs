@@ -104,6 +104,14 @@ public static class BlocksRegistry
 
 		_atlasImage.Save("gen/Atlas.png");
 
+		var m1 = _atlasImage.GenerateNextMipLevel();
+		var m2 = m1.GenerateNextMipLevel();
+		var m3 = m2.GenerateNextMipLevel();
+		
+		m1.Save("gen/m1.png");
+		m2.Save("gen/m2.png");
+		m3.Save("gen/m3.png");
+
 		foreach (BlocksDatabase.Block block in databaseBlocks.Blocks.OrderBy(v => v.Id))
 		{
 			// TODO: Allow skip ids
