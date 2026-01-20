@@ -45,7 +45,7 @@ public class Image
 		CloneFrom(source);
 	}
 
-	public void CreateGarbage(int width, int height, ImageFormat format)
+	public void CreateWithGarbage(int width, int height, ImageFormat format)
 	{
 		_width = width;
 		_height = height;
@@ -58,7 +58,7 @@ public class Image
 
 	public void Create(int width, int height, ImageFormat format, Color color)
 	{
-		CreateGarbage(width, height, format);
+		CreateWithGarbage(width, height, format);
 		int pixelSize = GetPixelSizeBytes(format);
 		int totalSize = _data.Length;
 
