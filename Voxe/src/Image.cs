@@ -4,7 +4,8 @@ using StbImageSharp;
 using StbImageWriteSharp;
 using ColorComponents = StbImageSharp.ColorComponents;
 using ColorComponentsWrite = StbImageWriteSharp.ColorComponents;
-using Voxe;
+
+namespace Voxe;
 
 public class Image
 {
@@ -157,8 +158,8 @@ public class Image
 		if (Voxe.Math.Utils.IsPowerOfTwo(Width))
 			throw new NotSupportedException();
 
-		int newWidth = Math.Max(1, Width / 2);
-		int newHeight = Math.Max(1, Height / 2);
+		int newWidth = System.Math.Max(1, Width / 2);
+		int newHeight = System.Math.Max(1, Height / 2);
 
 		Image mip = new();
 		mip.CreateWithGarbage(newWidth, newHeight, Format);
@@ -196,10 +197,10 @@ public class Image
 			aSum += c.A / 255.0f;
 		}
 
-		byte r = (byte)Math.Clamp(LinearToSrgb(rSum * invCount) * 255.0f, 0, 255);
-		byte g = (byte)Math.Clamp(LinearToSrgb(gSum * invCount) * 255.0f, 0, 255);
-		byte b = (byte)Math.Clamp(LinearToSrgb(bSum * invCount) * 255.0f, 0, 255);
-		byte a = (byte)Math.Clamp((aSum * invCount) * 255.0f, 0, 255);
+		byte r = (byte)System.Math.Clamp(LinearToSrgb(rSum * invCount) * 255.0f, 0, 255);
+		byte g = (byte)System.Math.Clamp(LinearToSrgb(gSum * invCount) * 255.0f, 0, 255);
+		byte b = (byte)System.Math.Clamp(LinearToSrgb(bSum * invCount) * 255.0f, 0, 255);
+		byte a = (byte)System.Math.Clamp((aSum * invCount) * 255.0f, 0, 255);
 
 		return Color.FromArgb(a, r, g, b);
 	}
@@ -314,6 +315,6 @@ public class Image
 		};
 	}
 
-	private static float SrgbToLinear(float s) => (float)Math.Pow(s, 2.2);
-	private static float LinearToSrgb(float l) => (float)Math.Pow(l, 1.0 / 2.2);
+	private static float SrgbToLinear(float s) => (float)System.Math.Pow(s, 2.2);
+	private static float LinearToSrgb(float l) => (float)System.Math.Pow(l, 1.0 / 2.2);
 }
