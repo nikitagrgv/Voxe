@@ -167,6 +167,8 @@ public class MainWindow : NativeWindow
 			(int)TextureMinFilter.NearestMipmapNearest);
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
+		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.NearestMipmapNearest);
+		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMaxLevel, atlasMipMaps.Count - 1);
 		for (int level = 0; level < atlasMipMaps.Count; level++)
 		{
 			Image currentLevel = atlasMipMaps[level];
