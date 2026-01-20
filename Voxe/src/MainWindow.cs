@@ -147,26 +147,37 @@ public class MainWindow : NativeWindow
 		Image atlasImage = BlocksRegistry.GetAtlasImage();
 		atlasImage.Save("gen/Atlas.png");
 
+		// TODO# make mipmaps from each block, not this shit
+		List<Image> atlasMipMaps = new();
+		atlasMipMaps.Add(atlasImage);
+		while (atlasMipMaps.Last().Width >= 2)
+		{
+			Image next = atlasMipMaps.Last().GenerateNextMipLevel();
+			atlasMipMaps.Add(next);
+		}
+
 		int atlasTexture = GL.GenTexture();
 		GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter,
-			(int)TextureMinFilter.Nearest);
-		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter,
-			(int)TextureMinFilter.Nearest);
-		GL.TexImage2D(TextureTarget.Texture2d,
-			level: 0,
-			InternalFormat.Rgb,
-			atlasImage.Width,
-			atlasImage.Height,
-			border: 0,
-			atlasImage.Format.ToOpenGLFormat(),
-			PixelType.UnsignedByte,
-			atlasImage.RawData);
-		GL.GenerateMipmap(TextureTarget.Texture2d);
+			(int)TextureMinFilter.NearestMipmapNearest);
+		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
-		int mvpLocation = shader.GetUniformLocation("mvp");
+		for (int level = 0; level < atlasMipMaps.Count; level++)
+		{
+			Image currentLevel = atlasMipMaps[level];
+
+			GL.TexImage2D(TextureTarget.Texture2d,
+				level: level,
+				InternalFormat.Rgba,
+				currentLevel.Width,
+				currentLevel.Height,
+				border: 0,
+				currentLevel.Format.ToOpenGLFormat(),
+				PixelType.UnsignedByte,
+				currentLevel.RawData);
+		}
 
 		_camera.Position = new Vector3(0, 0, 8);
 
@@ -237,6 +248,7 @@ public class MainWindow : NativeWindow
 		playerStartY += 5;
 		_camera.Position = new Vector3(playerStartX, playerStartY, playerStartZ);
 
+		int mvpLocation = shader.GetUniformLocation("mvp");
 		List<Chunk> renderChunks = new();
 		List<ChunkIndex> emptyChunks = new();
 		RenderFrame += () =>
