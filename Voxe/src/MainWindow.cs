@@ -145,6 +145,8 @@ public class MainWindow : NativeWindow
 		Shader shader = new(vertexShaderSource, fragmentShaderSource);
 
 		Image atlasImage = BlocksRegistry.GetAtlasImage();
+		atlasImage.Save("gen/Atlas.png");
+
 		int atlasTexture = GL.GenTexture();
 		GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
