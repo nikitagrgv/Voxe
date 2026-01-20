@@ -9,9 +9,9 @@
     {
       "id": 1,
       "name": "Grass",
-      "texture": "textures/blocks/Dirt.png",
+      "texture": "textures/blocks/GrassSide.png",
       "texture-py": "textures/blocks/GrassTop.png",
-      "texture-ny": "textures/blocks/GrassSide.png"
+      "texture-ny": "textures/blocks/Dirt.png"
     },
     {
       "id": 2,
