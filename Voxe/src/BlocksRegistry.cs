@@ -85,7 +85,9 @@ public static class BlocksRegistry
 			Debug.Assert(_blocks.Count == block.Id, "Skipped ID");
 			Debug.Assert(_blocks.Count == _uvIndexSets.Count, "Skipped ID");
 
-			BlockType type = new(block.Id, isInvisible: block.IsInvisible);
+			BlockType type = new(block.Id,
+				isInvisible: block.IsInvisible,
+				isTransparent: block.IsTransparent);
 			UvIndexSet uvset = new(
 				positiveX: block.TextureIndexPX.GetValueOrDefault(-1),
 				negativeX: block.TextureIndexNX.GetValueOrDefault(-1),

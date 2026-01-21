@@ -107,6 +107,21 @@ public class ChunkMeshGenerator
 		return new Result(vertices, indices);
 	}
 
+	private static bool IsTransparentBlockAt(int x, int y, int z, Chunk chunk)
+	{
+		if (y is < 0 or >= Chunk.ChunkHeight)
+			return true;
+
+		if (x is < 0 or >= Chunk.ChunkWidth)
+			return true;
+
+		if (z is < 0 or >= Chunk.ChunkWidth)
+			return true;
+
+		BlockType type = chunk.GetBlockType(x, y, z);
+		return type.IsTransparent;
+	}
+
 	private void AppendIndices(ref uint numVertices, ref uint numIndices)
 	{
 		_indices[numIndices + 0] = numVertices + 0;

@@ -43,6 +43,14 @@ public class Chunk
 		return GetBlock(index);
 	}
 
+	public BlockType GetBlockType(int x, int y, int z)
+	{
+		int index = GetBlockIndex(x, y, z);
+		Block block = GetBlock(index);
+		BlockType type = BlocksRegistry.GetBlockType(block.TypeId);
+		return type;
+	}
+
 	public Block GetBlock(int index)
 	{
 		Debug.Assert(index is >= 0 and < NumBlocks);
