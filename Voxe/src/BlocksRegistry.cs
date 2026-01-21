@@ -92,6 +92,7 @@ public static class BlocksRegistry
 			for (int i = 0; i < mipMapsBlocks.Length; ++i)
 			{
 				Image blockImage = mipMapsBlocks[i];
+				Debug.Assert(blockImage.Width == curMipMapBlockWidth && blockImage.Height == curMipMapBlockWidth);
 				int imageX = (i % numImagesBySide) * curMipMapBlockWidth;
 				int imageY = (i / numImagesBySide) * curMipMapBlockWidth;
 				atlas.CopyFrom(blockImage, 0, 0, imageX, imageY, curMipMapBlockWidth, curMipMapBlockWidth);
