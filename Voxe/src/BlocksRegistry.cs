@@ -83,7 +83,7 @@ public static class BlocksRegistry
 		int curMipMapBlockWidth = blockImageWidth;
 		List<Image> mipMaps = [];
 		Image[] mipMapsBlocks = databaseBlocks.Images.ToArray();
-		while (curMipMapBlockWidth >= 2)
+		while (true)
 		{
 			int atlasWidth = numImagesBySide * curMipMapBlockWidth;
 			Image atlas = new(atlasWidth, atlasWidth,
@@ -108,6 +108,10 @@ public static class BlocksRegistry
 					Image next = cur.GenerateNextMipLevel();
 					mipMapsBlocks[i] = next;
 				}
+			}
+			else
+			{
+				break;
 			}
 		}
 
