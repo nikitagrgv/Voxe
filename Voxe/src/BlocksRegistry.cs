@@ -72,7 +72,7 @@ public static class BlocksRegistry
 		BlocksDatabase database = new();
 
 		BlocksDatabase.Result databaseBlocks = database.Load(blocksDatabasePath);
-		GenerateMipMaps(databaseBlocks.Images, databaseBlocks.ImageWidth, out _atlasImages, out _numImagesBySide);
+		GenerateAtlas(databaseBlocks.Images, databaseBlocks.ImageWidth, out _atlasImages, out _numImagesBySide);
 
 		for (int i = 0; i < _atlasImages.Length; i++)
 		{
@@ -107,7 +107,7 @@ public static class BlocksRegistry
 		RecalculateUv();
 	}
 
-	private static void GenerateMipMaps(Image[] blockImages, int blockImageWidth, out Image[] atlasImages,
+	private static void GenerateAtlas(Image[] blockImages, int blockImageWidth, out Image[] atlasImages,
 		out int numImagesBySide)
 	{
 		// TODO: Shitty
