@@ -144,21 +144,6 @@ public class MainWindow : NativeWindow
 		string fragmentShaderSource = FileSystem.ReadTextFile("mesh_fragment.glsl");
 		Shader shader = new(vertexShaderSource, fragmentShaderSource);
 
-		Image atlasImage = BlocksRegistry.GetAtlasImage();
-		// TODO# make mipmaps from each block, not this shit
-		List<Image> atlasMipMaps = new();
-		atlasMipMaps.Add(atlasImage);
-		while (atlasMipMaps.Last().Width >= 2)
-		{
-			Image next = atlasMipMaps.Last().GenerateNextMipLevel();
-			atlasMipMaps.Add(next);
-		}
-
-		for (int i = 0; i < atlasMipMaps.Count; i++)
-		{
-			atlasMipMaps[i].Save($"gen/Atlas-{i}.png");
-		}
-
 		int atlasTexture = GL.GenTexture();
 		GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
@@ -166,11 +151,11 @@ public class MainWindow : NativeWindow
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter,
 			(int)TextureMinFilter.NearestMipmapNearest);
 		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMaxLevel, atlasMipMaps.Count - 1);
+		GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMaxLevel, BlocksRegistry.NumMipMaps - 1);
 
-		for (int level = 0; level < atlasMipMaps.Count; level++)
+		for (int level = 0; level < BlocksRegistry.NumMipMaps; level++)
 		{
-			Image currentLevel = atlasMipMaps[level];
+			Image currentLevel = BlocksRegistry.GetAtlas(level);
 
 			GL.TexImage2D(TextureTarget.Texture2d,
 				level: level,

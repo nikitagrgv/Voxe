@@ -66,7 +66,8 @@ public static class BlocksRegistry
 
 	private static int _numBasicBlocks;
 	private static int _atlasWidth;
-	private static Image? _atlasImage;
+
+	private static Image[] _atlasImages = [];
 
 	public static void Initialize(string blocksDatabasePath)
 	{
@@ -75,26 +76,45 @@ public static class BlocksRegistry
 		BlocksDatabase database = new();
 
 		BlocksDatabase.Result databaseBlocks = database.Load(blocksDatabasePath);
-		int numImages = databaseBlocks.Images.Length;
-		int imageWidth = databaseBlocks.ImageWidth;
+		int totalNumBlockImages = databaseBlocks.Images.Length;
+		int blockImageWidth = databaseBlocks.ImageWidth;
+		int numImagesBySide = GetNumImagesBySide(totalNumBlockImages, blockImageWidth);
 
-		// TODO: Shitty but ok
-		Debug.Assert(Voxe.Math.Utils.RoundUpToPowerOfTwo(imageWidth) == imageWidth);
-		int sideBlocksSizePixels = imageWidth;
-		while ((sideBlocksSizePixels / imageWidth) * (sideBlocksSizePixels / imageWidth) < numImages)
-			sideBlocksSizePixels *= 2;
-		int numImagesBySide = sideBlocksSizePixels / imageWidth;
-
-		_atlasImage = new(sideBlocksSizePixels, sideBlocksSizePixels,
-			Image.ImageFormat.Rgba,
-			Color.FromArgb(255, 255, 0, 255));
-
-		for (int i = 0; i < databaseBlocks.Images.Length; ++i)
+		int curMipMapBlockWidth = blockImageWidth;
+		List<Image> mipMaps = [];
+		Image[] mipMapsBlocks = databaseBlocks.Images.ToArray();
+		while (curMipMapBlockWidth >= 2)
 		{
-			Image blockImage = databaseBlocks.Images[i];
-			int imageX = (i % numImagesBySide) * imageWidth;
-			int imageY = (i / numImagesBySide) * imageWidth;
-			_atlasImage.CopyFrom(blockImage, 0, 0, imageX, imageY, imageWidth, imageWidth);
+			int atlasWidth = numImagesBySide * curMipMapBlockWidth;
+			Image atlas = new(atlasWidth, atlasWidth,
+				Image.ImageFormat.Rgba,
+				Color.FromArgb(255, 255, 0, 255));
+			for (int i = 0; i < mipMapsBlocks.Length; ++i)
+			{
+				Image blockImage = mipMapsBlocks[i];
+				int imageX = (i % numImagesBySide) * curMipMapBlockWidth;
+				int imageY = (i / numImagesBySide) * curMipMapBlockWidth;
+				atlas.CopyFrom(blockImage, 0, 0, imageX, imageY, curMipMapBlockWidth, curMipMapBlockWidth);
+			}
+
+			mipMaps.Add(atlas);
+			curMipMapBlockWidth /= 2;
+			if (curMipMapBlockWidth >= 2)
+			{
+				for (int i = 0; i < mipMapsBlocks.Length; i++)
+				{
+					Image cur = mipMapsBlocks[i];
+					Image next = cur.GenerateNextMipLevel();
+					mipMapsBlocks[i] = next;
+				}
+			}
+		}
+
+		_atlasImages = mipMaps.ToArray();
+
+		for (int i = 0; i < _atlasImages.Length; i++)
+		{
+			_atlasImages[i].Save($"gen/Atlas-{i}.png");
 		}
 
 		foreach (BlocksDatabase.Block block in databaseBlocks.Blocks.OrderBy(v => v.Id))
@@ -125,10 +145,11 @@ public static class BlocksRegistry
 		SetAtlasWidth(numImagesBySide);
 	}
 
-	public static Image GetAtlasImage()
+	public static int NumMipMaps => _atlasImages.Length;
+
+	public static Image GetAtlas(int mipLevel)
 	{
-		Debug.Assert(_atlasImage != null);
-		return _atlasImage;
+		return _atlasImages[mipLevel];
 	}
 
 	private static void SetAtlasWidth(int widthBlocks)
@@ -222,5 +243,16 @@ public static class BlocksRegistry
 			maxX: (float)(colNextD * blockSize),
 			maxY: (float)(rowNextD * blockSize)
 		);
+	}
+
+	private static int GetNumImagesBySide(int totalNumImages, int imageWidth)
+	{
+		// TODO: Shitty but ok
+		Debug.Assert(Voxe.Math.Utils.RoundUpToPowerOfTwo(imageWidth) == imageWidth);
+		int sideBlocksSizePixels = imageWidth;
+		while ((sideBlocksSizePixels / imageWidth) * (sideBlocksSizePixels / imageWidth) < totalNumImages)
+			sideBlocksSizePixels *= 2;
+		int numImagesBySide = sideBlocksSizePixels / imageWidth;
+		return numImagesBySide;
 	}
 }
