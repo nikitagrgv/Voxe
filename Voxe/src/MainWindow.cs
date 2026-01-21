@@ -317,6 +317,8 @@ public class MainWindow : NativeWindow
 		ChunkIndex chunkIndex = VoxelUtils.GetChunkIndexByBlock(blockPosition.X, blockPosition.Z);
 		Chunk? chunk = _world.TryGetChunk(chunkIndex);
 		Block block = new(BasicBlock.Air);
+
+		TODO# fix
 		if (chunk != null && blockPosition.Y is >= 0 and < Chunk.ChunkHeight)
 			block = chunk.GetBlock(blockPosition.X % Chunk.ChunkWidth,
 				blockPosition.Y,
