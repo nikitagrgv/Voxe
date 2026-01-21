@@ -65,7 +65,7 @@ public static class BlocksRegistry
 	private readonly static List<UvSet> _uvSets = new();
 
 	private static int _numBasicBlocks;
-	private static int _atlasWidth;
+	private static int _numImagesBySide;
 
 	private static Image[] _atlasImages = [];
 
@@ -76,13 +76,52 @@ public static class BlocksRegistry
 		BlocksDatabase database = new();
 
 		BlocksDatabase.Result databaseBlocks = database.Load(blocksDatabasePath);
-		int totalNumBlockImages = databaseBlocks.Images.Length;
-		int blockImageWidth = databaseBlocks.ImageWidth;
-		int numImagesBySide = GetNumImagesBySide(totalNumBlockImages, blockImageWidth);
+		GenerateMipMaps(databaseBlocks.Images, databaseBlocks.ImageWidth, out _atlasImages, out _numImagesBySide);
+
+		for (int i = 0; i < _atlasImages.Length; i++)
+		{
+			_atlasImages[i].Save($"gen/Atlas-{i}.png");
+		}
+
+		foreach (BlocksDatabase.Block block in databaseBlocks.Blocks.OrderBy(v => v.Id))
+		{
+			// TODO: Allow skip ids
+			Debug.Assert(_blocks.Count == block.Id, "Skipped ID");
+			Debug.Assert(_blocks.Count == _uvIndexSets.Count, "Skipped ID");
+
+			BlockType type = new(block.Id, isInvisible: block.IsInvisible);
+			UvIndexSet uvset = new(
+				positiveX: block.TextureIndexPX.GetValueOrDefault(-1),
+				negativeX: block.TextureIndexNX.GetValueOrDefault(-1),
+				positiveY: block.TextureIndexPY.GetValueOrDefault(-1),
+				negativeY: block.TextureIndexNY.GetValueOrDefault(-1),
+				positiveZ: block.TextureIndexPZ.GetValueOrDefault(-1),
+				negativeZ: block.TextureIndexNZ.GetValueOrDefault(-1)
+			);
+
+			_blocks.Add(type);
+			_uvIndexSets.Add(uvset);
+		}
+
+		_numBasicBlocks = _blocks.Count;
+
+		Debug.Assert(Enum.GetValues<BasicBlock>().Cast<ushort>().Max() == _numBasicBlocks - 1,
+			"All must be registered");
+
+		RecalculateUv();
+	}
+
+	private static void GenerateMipMaps(Image[] blockImages, int blockImageWidth, out Image[] atlasImages,
+		out int numImagesBySide)
+	{
+		// TODO: Shitty
+
+		int totalNumBlockImages = blockImages.Length;
+		numImagesBySide = GetNumImagesBySide(totalNumBlockImages, blockImageWidth);
 
 		int curMipMapBlockWidth = blockImageWidth;
 		List<Image> mipMaps = [];
-		Image[] mipMapsBlocks = databaseBlocks.Images.ToArray();
+		Image[] mipMapsBlocks = blockImages.ToArray();
 		while (true)
 		{
 			int atlasWidth = numImagesBySide * curMipMapBlockWidth;
@@ -115,39 +154,7 @@ public static class BlocksRegistry
 			}
 		}
 
-		_atlasImages = mipMaps.ToArray();
-
-		for (int i = 0; i < _atlasImages.Length; i++)
-		{
-			_atlasImages[i].Save($"gen/Atlas-{i}.png");
-		}
-
-		foreach (BlocksDatabase.Block block in databaseBlocks.Blocks.OrderBy(v => v.Id))
-		{
-			// TODO: Allow skip ids
-			Debug.Assert(_blocks.Count == block.Id, "Skipped ID");
-			Debug.Assert(_blocks.Count == _uvIndexSets.Count, "Skipped ID");
-
-			BlockType type = new(block.Id, isInvisible: block.IsInvisible);
-			UvIndexSet uvset = new(
-				positiveX: block.TextureIndexPX.GetValueOrDefault(-1),
-				negativeX: block.TextureIndexNX.GetValueOrDefault(-1),
-				positiveY: block.TextureIndexPY.GetValueOrDefault(-1),
-				negativeY: block.TextureIndexNY.GetValueOrDefault(-1),
-				positiveZ: block.TextureIndexPZ.GetValueOrDefault(-1),
-				negativeZ: block.TextureIndexNZ.GetValueOrDefault(-1)
-			);
-
-			_blocks.Add(type);
-			_uvIndexSets.Add(uvset);
-		}
-
-		_numBasicBlocks = _blocks.Count;
-
-		Debug.Assert(Enum.GetValues<BasicBlock>().Cast<ushort>().Max() == _numBasicBlocks - 1,
-			"All must be registered");
-
-		SetAtlasWidth(numImagesBySide);
+		atlasImages = mipMaps.ToArray();
 	}
 
 	public static int NumMipMaps => _atlasImages.Length;
@@ -155,13 +162,6 @@ public static class BlocksRegistry
 	public static Image GetAtlas(int mipLevel)
 	{
 		return _atlasImages[mipLevel];
-	}
-
-	private static void SetAtlasWidth(int widthBlocks)
-	{
-		Debug.Assert(widthBlocks > 0);
-		_atlasWidth = widthBlocks;
-		RecalculateUv();
 	}
 
 	public static UvSet GetBlockUvSet(int id)
@@ -196,7 +196,7 @@ public static class BlocksRegistry
 
 	private static void RecalculateUv()
 	{
-		Debug.Assert(_blocks.Count <= _atlasWidth * _atlasWidth);
+		Debug.Assert(_blocks.Count <= _numImagesBySide * _numImagesBySide);
 		Debug.Assert(_blocks.Count == _uvIndexSets.Count);
 
 		_uvSets.Clear();
@@ -230,10 +230,10 @@ public static class BlocksRegistry
 
 	private static Rect GetRect(int index)
 	{
-		double blockSize = 1 / (double)_atlasWidth;
+		double blockSize = 1 / (double)_numImagesBySide;
 
-		int col = index % _atlasWidth;
-		int row = index / _atlasWidth;
+		int col = index % _numImagesBySide;
+		int row = index / _numImagesBySide;
 		int colNext = col + 1;
 		int rowNext = row + 1;
 
