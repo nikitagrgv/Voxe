@@ -99,9 +99,9 @@ public static class BlocksRegistry
 			}
 
 			mipMaps.Add(atlas);
-			curMipMapBlockWidth /= 2;
 			if (curMipMapBlockWidth >= 2)
 			{
+				curMipMapBlockWidth /= 2;
 				for (int i = 0; i < mipMapsBlocks.Length; i++)
 				{
 					Image cur = mipMapsBlocks[i];
