@@ -327,8 +327,8 @@ public class MainWindow : NativeWindow
 		        Chunk: {chunkIndex.X} {chunkIndex.Z}
 		        Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
 		        ------- Render -------
-		        Indices: {NumberToString(Stat.RenderedIndicesPerFrame)}
-		        Indices Total: {NumberToString(Stat.RenderedIndicesTotal)}
+		        Indices: {ToPrettyNumberString(Stat.RenderedIndicesPerFrame)}
+		        Indices Total: {ToPrettyNumberString(Stat.RenderedIndicesTotal)}
 		        """;
 	}
 
@@ -445,7 +445,7 @@ public class MainWindow : NativeWindow
 		return settings;
 	}
 
-	private static string NumberToString(ulong value)
+	private static string ToPrettyNumberString(ulong value)
 	{
 		return value.ToString("N0", SeparatedNumberFormatter);
 	}
