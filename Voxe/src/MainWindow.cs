@@ -315,6 +315,12 @@ public class MainWindow : NativeWindow
 		double dt = Time.DeltaTime;
 		Vector3i blockPosition = VoxelUtils.ToBlockPosition(_camera.Position);
 		ChunkIndex chunkIndex = VoxelUtils.GetChunkIndexByBlock(blockPosition.X, blockPosition.Z);
+		Chunk? chunk = _world.TryGetChunk(chunkIndex);
+		Block block = new(BasicBlock.Air);
+		if (chunk != null && blockPosition.Y is >= 0 and < Chunk.ChunkHeight)
+			block = chunk.GetBlock(blockPosition.X % Chunk.ChunkWidth,
+				blockPosition.Y,
+				blockPosition.Z % Chunk.ChunkWidth);
 
 		return $"""
 		        ------- FPS -------
@@ -324,7 +330,7 @@ public class MainWindow : NativeWindow
 		        Max FPS: {1 / _fpsStat.LastMinDt:F1}
 		        ------- World -------
 		        Pos: {_camera.Position.X:F1} {_camera.Position.Y:F1} {_camera.Position.Z:F1}
-		        Block: {blockPosition.X} {blockPosition.Y} {blockPosition.Z}
+		        Block: {blockPosition.X} {blockPosition.Y} {blockPosition.Z} {block}
 		        Chunk: {chunkIndex.X} {chunkIndex.Z}
 		        Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
 		        ------- Render -------
