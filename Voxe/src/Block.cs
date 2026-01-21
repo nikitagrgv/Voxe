@@ -17,4 +17,9 @@ public struct Block
 	{
 		TypeId = (ushort)basicBlock;
 	}
+
+	public override string ToString()
+	{
+		return $"Id={TypeId}";
+	}
 }
