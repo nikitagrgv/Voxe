@@ -182,18 +182,6 @@ public static class BlocksRegistry
 		return _blocks[id];
 	}
 
-	private static void AddBasicBlock(BasicBlock basicBlock, UvIndexSet uvIndexSet, bool isInvisible)
-	{
-		ushort id = (ushort)basicBlock;
-		BlockType type = new(id, isInvisible);
-
-		Debug.Assert(_blocks.Count == id, "Must be in order");
-		Debug.Assert(_blocks.Count == _uvIndexSets.Count, "Must be the same");
-
-		_blocks.Add(type);
-		_uvIndexSets.Add(uvIndexSet);
-	}
-
 	private static void RecalculateUv()
 	{
 		Debug.Assert(_blocks.Count <= _numImagesBySide * _numImagesBySide);
