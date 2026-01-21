@@ -1,5 +1,4 @@
-﻿using System;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using Voxe.Math;
 using Vertex = Voxe.ChunkMesh.Vertex;
 
@@ -52,52 +51,70 @@ public class ChunkMeshGenerator
 					Rect uvRect;
 
 					// +x
-					uvRect = uvSet.PositiveX;
-					_vertices[numVertices + 0] = new Vertex(new Vector3(px, py, pz), uvRect.TopLeft);
-					_vertices[numVertices + 1] = new Vertex(new Vector3(px, ny, pz), uvRect.BottomLeft);
-					_vertices[numVertices + 2] = new Vertex(new Vector3(px, ny, nz), uvRect.BottomRight);
-					_vertices[numVertices + 3] = new Vertex(new Vector3(px, py, nz), uvRect.TopRight);
-					AppendIndices(ref numVertices, ref numIndices);
+					if (IsTransparentBlockAt(x + 1, y, z, chunk))
+					{
+						uvRect = uvSet.PositiveX;
+						_vertices[numVertices + 0] = new Vertex(new Vector3(px, py, pz), uvRect.TopLeft);
+						_vertices[numVertices + 1] = new Vertex(new Vector3(px, ny, pz), uvRect.BottomLeft);
+						_vertices[numVertices + 2] = new Vertex(new Vector3(px, ny, nz), uvRect.BottomRight);
+						_vertices[numVertices + 3] = new Vertex(new Vector3(px, py, nz), uvRect.TopRight);
+						AppendIndices(ref numVertices, ref numIndices);
+					}
 
 					// -x
-					uvRect = uvSet.NegativeX;
-					_vertices[numVertices + 0] = new Vertex(new Vector3(nx, py, nz), uvRect.TopLeft);
-					_vertices[numVertices + 1] = new Vertex(new Vector3(nx, ny, nz), uvRect.BottomLeft);
-					_vertices[numVertices + 2] = new Vertex(new Vector3(nx, ny, pz), uvRect.BottomRight);
-					_vertices[numVertices + 3] = new Vertex(new Vector3(nx, py, pz), uvRect.TopRight);
-					AppendIndices(ref numVertices, ref numIndices);
+					if (IsTransparentBlockAt(x - 1, y, z, chunk))
+					{
+						uvRect = uvSet.NegativeX;
+						_vertices[numVertices + 0] = new Vertex(new Vector3(nx, py, nz), uvRect.TopLeft);
+						_vertices[numVertices + 1] = new Vertex(new Vector3(nx, ny, nz), uvRect.BottomLeft);
+						_vertices[numVertices + 2] = new Vertex(new Vector3(nx, ny, pz), uvRect.BottomRight);
+						_vertices[numVertices + 3] = new Vertex(new Vector3(nx, py, pz), uvRect.TopRight);
+						AppendIndices(ref numVertices, ref numIndices);
+					}
 
 					// +z
-					uvRect = uvSet.PositiveZ;
-					_vertices[numVertices + 0] = new Vertex(new Vector3(nx, py, pz), uvRect.TopLeft);
-					_vertices[numVertices + 1] = new Vertex(new Vector3(nx, ny, pz), uvRect.BottomLeft);
-					_vertices[numVertices + 2] = new Vertex(new Vector3(px, ny, pz), uvRect.BottomRight);
-					_vertices[numVertices + 3] = new Vertex(new Vector3(px, py, pz), uvRect.TopRight);
-					AppendIndices(ref numVertices, ref numIndices);
+					if (IsTransparentBlockAt(x, y, z + 1, chunk))
+					{
+						uvRect = uvSet.PositiveZ;
+						_vertices[numVertices + 0] = new Vertex(new Vector3(nx, py, pz), uvRect.TopLeft);
+						_vertices[numVertices + 1] = new Vertex(new Vector3(nx, ny, pz), uvRect.BottomLeft);
+						_vertices[numVertices + 2] = new Vertex(new Vector3(px, ny, pz), uvRect.BottomRight);
+						_vertices[numVertices + 3] = new Vertex(new Vector3(px, py, pz), uvRect.TopRight);
+						AppendIndices(ref numVertices, ref numIndices);
+					}
 
 					// -z
-					uvRect = uvSet.NegativeZ;
-					_vertices[numVertices + 0] = new Vertex(new Vector3(px, py, nz), uvRect.TopLeft);
-					_vertices[numVertices + 1] = new Vertex(new Vector3(px, ny, nz), uvRect.BottomLeft);
-					_vertices[numVertices + 2] = new Vertex(new Vector3(nx, ny, nz), uvRect.BottomRight);
-					_vertices[numVertices + 3] = new Vertex(new Vector3(nx, py, nz), uvRect.TopRight);
-					AppendIndices(ref numVertices, ref numIndices);
+					if (IsTransparentBlockAt(x, y, z - 1, chunk))
+					{
+						uvRect = uvSet.NegativeZ;
+						_vertices[numVertices + 0] = new Vertex(new Vector3(px, py, nz), uvRect.TopLeft);
+						_vertices[numVertices + 1] = new Vertex(new Vector3(px, ny, nz), uvRect.BottomLeft);
+						_vertices[numVertices + 2] = new Vertex(new Vector3(nx, ny, nz), uvRect.BottomRight);
+						_vertices[numVertices + 3] = new Vertex(new Vector3(nx, py, nz), uvRect.TopRight);
+						AppendIndices(ref numVertices, ref numIndices);
+					}
 
 					// +y
-					uvRect = uvSet.PositiveY;
-					_vertices[numVertices + 0] = new Vertex(new Vector3(px, py, nz), uvRect.TopLeft);
-					_vertices[numVertices + 1] = new Vertex(new Vector3(nx, py, nz), uvRect.BottomLeft);
-					_vertices[numVertices + 2] = new Vertex(new Vector3(nx, py, pz), uvRect.BottomRight);
-					_vertices[numVertices + 3] = new Vertex(new Vector3(px, py, pz), uvRect.TopRight);
-					AppendIndices(ref numVertices, ref numIndices);
+					if (IsTransparentBlockAt(x, y + 1, z, chunk))
+					{
+						uvRect = uvSet.PositiveY;
+						_vertices[numVertices + 0] = new Vertex(new Vector3(px, py, nz), uvRect.TopLeft);
+						_vertices[numVertices + 1] = new Vertex(new Vector3(nx, py, nz), uvRect.BottomLeft);
+						_vertices[numVertices + 2] = new Vertex(new Vector3(nx, py, pz), uvRect.BottomRight);
+						_vertices[numVertices + 3] = new Vertex(new Vector3(px, py, pz), uvRect.TopRight);
+						AppendIndices(ref numVertices, ref numIndices);
+					}
 
 					// -y
-					uvRect = uvSet.NegativeY;
-					_vertices[numVertices + 0] = new Vertex(new Vector3(px, ny, pz), uvRect.TopLeft);
-					_vertices[numVertices + 1] = new Vertex(new Vector3(nx, ny, pz), uvRect.BottomLeft);
-					_vertices[numVertices + 2] = new Vertex(new Vector3(nx, ny, nz), uvRect.BottomRight);
-					_vertices[numVertices + 3] = new Vertex(new Vector3(px, ny, nz), uvRect.TopRight);
-					AppendIndices(ref numVertices, ref numIndices);
+					if (IsTransparentBlockAt(x, y - 1, z, chunk))
+					{
+						uvRect = uvSet.NegativeY;
+						_vertices[numVertices + 0] = new Vertex(new Vector3(px, ny, pz), uvRect.TopLeft);
+						_vertices[numVertices + 1] = new Vertex(new Vector3(nx, ny, pz), uvRect.BottomLeft);
+						_vertices[numVertices + 2] = new Vertex(new Vector3(nx, ny, nz), uvRect.BottomRight);
+						_vertices[numVertices + 3] = new Vertex(new Vector3(px, ny, nz), uvRect.TopRight);
+						AppendIndices(ref numVertices, ref numIndices);
+					}
 				}
 			}
 		}
