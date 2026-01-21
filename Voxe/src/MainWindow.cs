@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using LibNoise;
 using LibNoise.Builder;
@@ -326,8 +327,8 @@ public class MainWindow : NativeWindow
 		        Chunk: {chunkIndex.X} {chunkIndex.Z}
 		        Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
 		        ------- Render -------
-		        Indices: {Stat.RenderedIndicesPerFrame}
-		        Indices Total: {Stat.RenderedIndicesTotal}
+		        Indices: {NumberToString(Stat.RenderedIndicesPerFrame)}
+		        Indices Total: {NumberToString(Stat.RenderedIndicesTotal)}
 		        """;
 	}
 
@@ -443,6 +444,17 @@ public class MainWindow : NativeWindow
 
 		return settings;
 	}
+
+	private static string NumberToString(ulong value)
+	{
+		return value.ToString("N0", SeparatedNumberFormatter);
+	}
+
+	private static readonly NumberFormatInfo SeparatedNumberFormatter = new()
+	{
+		NumberGroupSeparator = "'",
+		NumberGroupSizes = [3]
+	};
 
 	[DllImport("kernel32", SetLastError = true)]
 	private static extern IntPtr SetThreadAffinityMask(IntPtr hThread, IntPtr dwThreadAffinityMask);
