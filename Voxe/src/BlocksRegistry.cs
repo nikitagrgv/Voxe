@@ -111,7 +111,7 @@ public static class BlocksRegistry
 
 		RecalculateUv();
 
-		Console.WriteLine($"{typeof(BlocksRegistry).Name} Initialized: {stopwatch.Elapsed.TotalSeconds:F2}sec");
+		Console.WriteLine($"{nameof(BlocksRegistry)} Initialized: {stopwatch.Elapsed.TotalSeconds:F2}sec");
 	}
 
 	private static void GenerateAtlas(Image[] blockImages, int blockImageWidth, out Image[] atlasImages,
