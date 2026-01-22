@@ -318,11 +318,14 @@ public class MainWindow : NativeWindow
 		Chunk? chunk = _world.TryGetChunk(chunkIndex);
 		Block block = new(BasicBlock.Air);
 
-		TODO# fix
 		if (chunk != null && blockPosition.Y is >= 0 and < Chunk.ChunkHeight)
-			block = chunk.GetBlock(blockPosition.X % Chunk.ChunkWidth,
-				blockPosition.Y,
-				blockPosition.Z % Chunk.ChunkWidth);
+		{
+			Vector3 localPosition = VoxelUtils.MapToLocalPosition(blockPosition, chunkIndex);
+			Vector3i blockLocalPosition = VoxelUtils.ToBlockPosition(localPosition);
+			block = chunk.GetBlock(blockLocalPosition.X % Chunk.ChunkWidth,
+				blockLocalPosition.Y,
+				blockLocalPosition.Z % Chunk.ChunkWidth);
+		}
 
 		return $"""
 		        ------- FPS -------
