@@ -36,6 +36,28 @@ public static class VoxelUtils
 		return new Vector3(posX, 0, posZ);
 	}
 
+	public static Vector3 MapToLocalPosition(Vector3 globalPosition)
+	{
+		ChunkIndex chunkIndex = GetChunkIndexByBlock(globalPosition.X, globalPosition.Z);
+		return MapToLocalPosition(globalPosition, chunkIndex);
+	}
+
+	public static Vector3 MapToLocalPosition(Vector3 globalPosition, ChunkIndex chunkIndex)
+	{
+		Vector3 ret = globalPosition;
+		ret.X -= chunkIndex.X * Chunk.ChunkWidth;
+		ret.Z -= chunkIndex.Z * Chunk.ChunkWidth;
+		return ret;
+	}
+
+	public static Vector3 MapToGlobalPosition(Vector3 localPosition, ChunkIndex chunkIndex)
+	{
+		Vector3 ret = localPosition;
+		ret.X += chunkIndex.X * Chunk.ChunkWidth;
+		ret.Z += chunkIndex.Z * Chunk.ChunkWidth;
+		return ret;
+	}
+
 	private static int FloorToWidth(int value)
 	{
 		int res = value / Chunk.ChunkWidth;
