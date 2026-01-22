@@ -69,6 +69,9 @@ public static class BlocksRegistry
 	{
 		Debug.Assert(_blocks.Count == 0, "Already initialized");
 
+		Stopwatch stopwatch = new();
+		stopwatch.Start();
+
 		BlocksDatabase database = new();
 
 		BlocksDatabase.Result databaseBlocks = database.Load(blocksDatabasePath);
@@ -107,6 +110,8 @@ public static class BlocksRegistry
 			"All must be registered");
 
 		RecalculateUv();
+
+		Console.WriteLine($"{typeof(BlocksRegistry).Name} Initialized: {stopwatch.Elapsed.TotalSeconds:F2}sec");
 	}
 
 	private static void GenerateAtlas(Image[] blockImages, int blockImageWidth, out Image[] atlasImages,
