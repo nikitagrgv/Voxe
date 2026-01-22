@@ -124,6 +124,9 @@ public class MainWindow : NativeWindow
 
 	private void Initialize()
 	{
+		Stopwatch stopwatch = new();
+		stopwatch.Start();
+
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 		{
 			// From GameWindow, have no idea if I really need it
@@ -308,6 +311,8 @@ public class MainWindow : NativeWindow
 		};
 
 		OnResize(new ResizeEventArgs(ClientSize));
+
+		Console.WriteLine($"Initialized: {stopwatch.Elapsed.TotalSeconds:F2}sec");
 	}
 
 	private string GetDebugText()
