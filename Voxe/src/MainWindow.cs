@@ -353,7 +353,7 @@ public class MainWindow : NativeWindow
 				blockLocalPosition.Z % Chunk.ChunkWidth);
 		}
 
-		int totalBufferBytes = 0;
+		ulong totalBufferBytes = 0;
 		foreach (Chunk chunk in _world.AllChunks)
 		{
 			if (chunk.Mesh != null)
@@ -376,7 +376,7 @@ public class MainWindow : NativeWindow
 		        Indices: {ToPrettyNumberString(Stat.RenderedIndicesPerFrame)}
 		        Indices Total: {ToPrettyNumberString(Stat.RenderedIndicesTotal)}
 		        ------- Memory -------
-		        GPU Memory: {totalBufferBytes}
+		        GPU Memory: {ToPrettyNumberString(totalBufferBytes)}
 		        """;
 	}
 

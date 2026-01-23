@@ -42,12 +42,12 @@ public class ChunkMesh : IDisposable
 		}
 	}
 
-	public int BuffersMemoryUsage
+	public ulong BuffersMemoryUsage
 	{
 		get
 		{
-			int bytesVertices = Utils.GetSizeOfType<Vertex>() * _numVertices;
-			int bytesIndices = sizeof(uint) * _numIndices;
+			ulong bytesVertices = (ulong)(Utils.GetSizeOfType<Vertex>() * _numVertices);
+			ulong bytesIndices = (ulong)(sizeof(uint) * _numIndices);
 			return bytesVertices + bytesIndices;
 		}
 	}
