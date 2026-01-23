@@ -21,7 +21,7 @@ public class ChunkMeshGenerator
 		public ReadOnlySpan<uint> Indices { get; } = indices;
 	}
 
-	public Result GenerateMesh(Chunk chunk)
+	public Result GenerateMesh(Chunk chunk, ChunkNeighbourhood neighbourhood)
 	{
 		uint numVertices = 0;
 		uint numIndices = 0;
@@ -51,7 +51,7 @@ public class ChunkMeshGenerator
 					Rect uvRect;
 
 					// +x
-					if (IsTransparentBlockAt(x + 1, y, z, chunk))
+					if (IsTransparentBlockAt(x + 1, y, z, chunk, neighbourhood))
 					{
 						uvRect = uvSet.PositiveX;
 						_vertices[numVertices + 0] = new Vertex(new Vector3(px, py, pz), uvRect.TopLeft);
@@ -62,7 +62,7 @@ public class ChunkMeshGenerator
 					}
 
 					// -x
-					if (IsTransparentBlockAt(x - 1, y, z, chunk))
+					if (IsTransparentBlockAt(x - 1, y, z, chunk, neighbourhood))
 					{
 						uvRect = uvSet.NegativeX;
 						_vertices[numVertices + 0] = new Vertex(new Vector3(nx, py, nz), uvRect.TopLeft);
@@ -73,7 +73,7 @@ public class ChunkMeshGenerator
 					}
 
 					// +z
-					if (IsTransparentBlockAt(x, y, z + 1, chunk))
+					if (IsTransparentBlockAt(x, y, z + 1, chunk, neighbourhood))
 					{
 						uvRect = uvSet.PositiveZ;
 						_vertices[numVertices + 0] = new Vertex(new Vector3(nx, py, pz), uvRect.TopLeft);
@@ -84,7 +84,7 @@ public class ChunkMeshGenerator
 					}
 
 					// -z
-					if (IsTransparentBlockAt(x, y, z - 1, chunk))
+					if (IsTransparentBlockAt(x, y, z - 1, chunk, neighbourhood))
 					{
 						uvRect = uvSet.NegativeZ;
 						_vertices[numVertices + 0] = new Vertex(new Vector3(px, py, nz), uvRect.TopLeft);
@@ -95,7 +95,7 @@ public class ChunkMeshGenerator
 					}
 
 					// +y
-					if (IsTransparentBlockAt(x, y + 1, z, chunk))
+					if (IsTransparentBlockAt(x, y + 1, z, chunk, neighbourhood))
 					{
 						uvRect = uvSet.PositiveY;
 						_vertices[numVertices + 0] = new Vertex(new Vector3(px, py, nz), uvRect.TopLeft);
@@ -106,7 +106,7 @@ public class ChunkMeshGenerator
 					}
 
 					// -y
-					if (IsTransparentBlockAt(x, y - 1, z, chunk))
+					if (IsTransparentBlockAt(x, y - 1, z, chunk, neighbourhood))
 					{
 						uvRect = uvSet.NegativeY;
 						_vertices[numVertices + 0] = new Vertex(new Vector3(px, ny, pz), uvRect.TopLeft);
@@ -124,7 +124,7 @@ public class ChunkMeshGenerator
 		return new Result(vertices, indices);
 	}
 
-	private static bool IsTransparentBlockAt(int x, int y, int z, Chunk chunk)
+	private static bool IsTransparentBlockAt(int x, int y, int z, Chunk chunk, ChunkNeighbourhood neighbourhood)
 	{
 		if (y is < 0 or >= Chunk.ChunkHeight)
 			return true;
