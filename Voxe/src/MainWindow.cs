@@ -383,7 +383,7 @@ public class MainWindow : NativeWindow
 		        ------- Memory -------
 		        GPU Memory: {Utils.FormatBytes(totalBufferBytes)}
 		        ------- Other -------
-		        This Debug Text: {_lastGetDebugTextTime}ms 
+		        This Debug Text: {_lastGetDebugTextTime:F1}ms 
 		        """;
 
 		_lastGetDebugTextTime = stopwatch.Elapsed.TotalMilliseconds;
