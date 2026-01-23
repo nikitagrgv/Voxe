@@ -275,8 +275,8 @@ public class MainWindow : NativeWindow
 
 			GL.BindTexture(TextureTarget.Texture2d, atlasTexture);
 
-			const int renderRadius = 3;
-			const int generateRadius = 3;
+			const int renderRadius = 5;
+			const int generateRadius = 5;
 
 			ChunkIndex playerChunkIndex = VoxelUtils.GetChunkIndexByBlock(_camera.Position.X, _camera.Position.Z);
 			_world.GetEmptyChunks(playerChunkIndex, generateRadius, emptyChunks);
