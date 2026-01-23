@@ -358,12 +358,7 @@ public class MainWindow : NativeWindow
 				blockLocalPosition.Z % Chunk.ChunkWidth);
 		}
 
-		ulong totalBufferBytes = 0;
-		foreach (Chunk chunk in _world.AllChunks)
-		{
-			if (chunk.Mesh != null)
-				totalBufferBytes += chunk.Mesh.BuffersMemoryUsage;
-		}
+		ulong totalBufferBytes = _world.TotalGPUMemory;
 
 		string str = $"""
 		              ------- FPS -------

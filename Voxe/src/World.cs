@@ -9,6 +9,21 @@ public class World
 	public int NumLoadedChunks => _chunksMap.Count;
 	public IEnumerable<Chunk> AllChunks => _chunksMap.Values;
 
+	public ulong TotalGPUMemory
+	{
+		get
+		{
+			ulong total = 0;
+			foreach (Chunk chunk in AllChunks)
+			{
+				if (chunk.Mesh != null)
+					total += chunk.Mesh.BuffersMemoryUsage;
+			}
+
+			return total;
+		}
+	}
+
 	public void InitChunk(ChunkIndex index, Chunk chunk)
 	{
 		Debug.Assert(!HasChunk(index));
