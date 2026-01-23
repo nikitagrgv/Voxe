@@ -126,7 +126,10 @@ public class ChunkMeshGenerator
 
 	private static bool IsTransparentBlockAt(int x, int y, int z, Chunk chunk, ChunkNeighbourhood neighbourhood)
 	{
-		if (y is < 0 or >= Chunk.ChunkHeight)
+		if (y < 0)
+			return false;
+
+		if (y >= Chunk.ChunkHeight)
 			return true;
 
 		if (x < 0)
