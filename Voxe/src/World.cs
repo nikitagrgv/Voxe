@@ -7,6 +7,7 @@ public class World
 	private readonly Dictionary<ChunkIndex, Chunk> _chunksMap = new();
 
 	public int NumLoadedChunks => _chunksMap.Count;
+	public IEnumerable<Chunk> AllChunks => _chunksMap.Values;
 
 	public void InitChunk(ChunkIndex index, Chunk chunk)
 	{
