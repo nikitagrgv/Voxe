@@ -469,7 +469,11 @@ public class MainWindow : NativeWindow
 
 		Matrix3 rot = _camera.GetRotation();
 		Vector3 globalDelta = localDelta * rot;
-		_camera.Position += globalDelta;
+
+		Vector3 cameraPosition = _camera.Position;
+		cameraPosition += globalDelta;
+		cameraPosition.Y = float.Clamp(cameraPosition.Y, -200, Chunk.ChunkHeight + 200);
+		_camera.Position = cameraPosition;
 	}
 
 	private void Render()
