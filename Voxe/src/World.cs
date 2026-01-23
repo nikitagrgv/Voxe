@@ -48,13 +48,13 @@ public class World
 	{
 		chunks.Clear();
 		int rad2 = radius * radius;
-		for (int x = center.X - radius; x < center.X + radius; x++)
+		for (int x = -radius; x < +radius; x++)
 		{
-			for (int z = center.Z - radius; z < center.Z + radius; z++)
+			for (int z = -radius; z < +radius; z++)
 			{
 				if (x * x + z * z > rad2)
 					continue;
-				ChunkIndex chunkIndex = new(x, z);
+				ChunkIndex chunkIndex = new(center.X + x, center.Z + z);
 				if (HasChunk(chunkIndex))
 					continue;
 				chunks.Add(chunkIndex);
