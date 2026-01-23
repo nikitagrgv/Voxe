@@ -365,28 +365,29 @@ public class MainWindow : NativeWindow
 				totalBufferBytes += chunk.Mesh.BuffersMemoryUsage;
 		}
 
-		return $"""
-		        ------- FPS -------
-		        FPS{(VSync == VSyncMode.On ? "(VSync):" : ":")} {1 / dt:F1}
-		        Mean FPS: {1 / _fpsStat.LastMeanFps:F1}
-		        Min FPS: {1 / _fpsStat.LastMaxDt:F1} ({_fpsStat.LastMaxDt * 1000:F1}ms)
-		        Max FPS: {1 / _fpsStat.LastMinDt:F1}
-		        ------- World -------
-		        Pos: {_camera.Position.X:F1} {_camera.Position.Y:F1} {_camera.Position.Z:F1}
-		        Block: {blockPosition.X} {blockPosition.Y} {blockPosition.Z} {block}
-		        Chunk: {chunkIndex.X} {chunkIndex.Z}
-		        Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
-		        Total Loaded Chunks: {_world.NumLoadedChunks}
-		        ------- Render -------
-		        Indices: {ToPrettyNumberString(Stat.RenderedIndicesPerFrame)}
-		        Indices Total: {ToPrettyNumberString(Stat.RenderedIndicesTotal)}
-		        ------- Memory -------
-		        GPU Memory: {Utils.FormatBytes(totalBufferBytes)}
-		        ------- Other -------
-		        This Debug Text: {_lastGetDebugTextTime:F1}ms 
-		        """;
+		string str = $"""
+		              ------- FPS -------
+		              FPS{(VSync == VSyncMode.On ? "(VSync):" : ":")} {1 / dt:F1}
+		              Mean FPS: {1 / _fpsStat.LastMeanFps:F1}
+		              Min FPS: {1 / _fpsStat.LastMaxDt:F1} ({_fpsStat.LastMaxDt * 1000:F1}ms)
+		              Max FPS: {1 / _fpsStat.LastMinDt:F1}
+		              ------- World -------
+		              Pos: {_camera.Position.X:F1} {_camera.Position.Y:F1} {_camera.Position.Z:F1}
+		              Block: {blockPosition.X} {blockPosition.Y} {blockPosition.Z} {block}
+		              Chunk: {chunkIndex.X} {chunkIndex.Z}
+		              Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
+		              Total Loaded Chunks: {_world.NumLoadedChunks}
+		              ------- Render -------
+		              Indices: {ToPrettyNumberString(Stat.RenderedIndicesPerFrame)}
+		              Indices Total: {ToPrettyNumberString(Stat.RenderedIndicesTotal)}
+		              ------- Memory -------
+		              GPU Memory: {Utils.FormatBytes(totalBufferBytes)}
+		              ------- Other -------
+		              This Debug Text: {_lastGetDebugTextTime:F1}ms 
+		              """;
 
 		_lastGetDebugTextTime = stopwatch.Elapsed.TotalMilliseconds;
+		return str;
 	}
 
 	private Matrix4 CreateProjectionMatrix()
