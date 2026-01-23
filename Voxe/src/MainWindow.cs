@@ -197,7 +197,7 @@ public class MainWindow : NativeWindow
 			heightMapBuilder.Build();
 
 			Image image = SaveToImage(heightMap);
-			image.Save($"spam/hmap-{chunkIndex.X}-{chunkIndex.Z}.png");
+			image.Save($"spam/hmap{chunkIndex.X}x{chunkIndex.Z}.png");
 
 			Chunk chunk = new();
 			chunk.Index = chunkIndex;
