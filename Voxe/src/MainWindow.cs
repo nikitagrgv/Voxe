@@ -176,10 +176,26 @@ public class MainWindow : NativeWindow
 		_camera.Position = new Vector3(0, 0, 8);
 
 		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
-		const float scaleMagnitude = 1.9f;
+		const float scaleMagnitude = 0.5f;
 		ScalePoint scaleFreq = new(perlin, scaleMagnitude, scaleMagnitude, scaleMagnitude);
-		ScaleBias blockScale = new(scaleFreq, scale: 0.5f, bias: 0.5f);
-		IModule final = blockScale;
+		ScaleBias blockScale = new(scaleFreq, scale: 0.08f, bias: 0.5f);
+		IModule3D final = blockScale;
+
+		Image imm = new(200, 200, Image.ImageFormat.Rgb, Color.Green);
+		for (int i = 0; i < 200; i++)
+		{
+			for (int j = 0; j < 200; j++)
+			{
+				float x = (float)i / 32;
+				float z = (float)j / 32;
+				float v = final.GetValue(x, 0, z);
+				Debug.Assert(v is >= 0 and <= 1);
+				int c = (int)(v * 255);
+				Color color = Color.FromArgb(c, c, c, c);
+				imm.SetPixel(i, j, color);
+			}
+		}
+		imm.Save("spam/ORIG.png");
 
 		var createChunk = (ChunkIndex chunkIndex) =>
 		{
@@ -188,7 +204,7 @@ public class MainWindow : NativeWindow
 			{
 				SourceModule = final,
 				NoiseMap = heightMap,
-				Seamless = true,
+				Seamless = false, // Don't use! It makes shit!
 			};
 			heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
 			float scale = 1f;
@@ -325,15 +341,13 @@ public class MainWindow : NativeWindow
 
 	private static Image SaveToImage(NoiseMap heightMap)
 	{
-		heightMap.MinMax(out float minHeight, out float maxHeight);
 		Image image = new(heightMap.Width, heightMap.Height, Image.ImageFormat.Rgb, Color.White);
 		for (int i = 0; i < heightMap.Height; i++)
 		{
 			for (int j = 0; j < heightMap.Width; j++)
 			{
 				float v = heightMap.GetValue(i, j);
-				v -= minHeight;
-				v /= maxHeight - minHeight;
+				Debug.Assert(v is >= 0 and <= 1);
 				int c = (int)(v * 255);
 				Color color = Color.FromArgb(c, c, c, c);
 				image.SetPixel(i, j, color);
