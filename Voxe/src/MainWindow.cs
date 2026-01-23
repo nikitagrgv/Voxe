@@ -188,7 +188,7 @@ public class MainWindow : NativeWindow
 				Seamless = true,
 			};
 			heightMapBuilder.SetSize(Chunk.ChunkWidth, Chunk.ChunkWidth);
-			float scale = 0.1f;
+			float scale = 1f;
 			heightMapBuilder.SetBounds(
 				(chunkIndex.X + 0) * scale,
 				(chunkIndex.X + 1) * scale,
