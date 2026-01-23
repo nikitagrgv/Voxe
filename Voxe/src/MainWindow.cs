@@ -176,7 +176,7 @@ public class MainWindow : NativeWindow
 		_camera.Position = new Vector3(0, 0, 8);
 
 		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
-		const float scaleMagnitude = 5f;
+		const float scaleMagnitude = 3f;
 		ScalePoint scaleFreq = new(perlin, scaleMagnitude, scaleMagnitude, scaleMagnitude);
 		ScaleBias blockScale = new(scaleFreq, scale: 0.5f, bias: 0.5f);
 		IModule final = blockScale;
