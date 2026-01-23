@@ -129,11 +129,29 @@ public class ChunkMeshGenerator
 		if (y is < 0 or >= Chunk.ChunkHeight)
 			return true;
 
-		if (x is < 0 or >= Chunk.ChunkWidth)
-			return true;
+		if (x < 0)
+		{
+			x += Chunk.ChunkWidth;
+			chunk = neighbourhood.NegativeX;
+		}
 
-		if (z is < 0 or >= Chunk.ChunkWidth)
-			return true;
+		if (x >= Chunk.ChunkWidth)
+		{
+			x -= Chunk.ChunkWidth;
+			chunk = neighbourhood.PositiveX;
+		}
+
+		if (z < 0)
+		{
+			z += Chunk.ChunkWidth;
+			chunk = neighbourhood.NegativeZ;
+		}
+
+		if (z >= Chunk.ChunkWidth)
+		{
+			z -= Chunk.ChunkWidth;
+			chunk = neighbourhood.PositiveZ;
+		}
 
 		BlockType type = chunk.GetBlockType(x, y, z);
 		return type.IsTransparent;
