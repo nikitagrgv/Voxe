@@ -376,7 +376,7 @@ public class MainWindow : NativeWindow
 		        Indices: {ToPrettyNumberString(Stat.RenderedIndicesPerFrame)}
 		        Indices Total: {ToPrettyNumberString(Stat.RenderedIndicesTotal)}
 		        ------- Memory -------
-		        GPU Memory: {ToPrettyNumberString(totalBufferBytes)}
+		        GPU Memory: {Utils.FormatBytes(totalBufferBytes)}
 		        """;
 	}
 
