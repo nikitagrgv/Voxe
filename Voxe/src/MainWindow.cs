@@ -289,6 +289,7 @@ public class MainWindow : NativeWindow
 			{
 				if (chunk.Mesh == null)
 				{
+					_world.GetNeighbourhood(chunk.Index);
 					ChunkMeshGenerator.Result result = _meshGenerator.GenerateMesh(chunk, neighbourhood);
 					ChunkMesh chunkMesh = new();
 					chunkMesh.SetData(result.Vertices, result.Indices);

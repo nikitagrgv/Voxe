@@ -4,7 +4,7 @@ namespace Voxe;
 
 public class World
 {
-	private readonly Dictionary<ChunkIndex, Chunk> _chunksMap = new();
+	private readonly Dictionary<ChunkIndex, Chunk?> _chunksMap = new();
 
 	public int NumLoadedChunks => _chunksMap.Count;
 	public IEnumerable<Chunk> AllChunks => _chunksMap.Values;
@@ -77,5 +77,16 @@ public class World
 				chunks.Add(chunkIndex);
 			}
 		}
+	}
+
+	public ChunkNeighbourhood GetNeighbourhood(ChunkIndex chunkIndex)
+	{
+		_chunksMap.TryGetValue(new ChunkIndex(chunkIndex.X + 1, chunkIndex.Z), out Chunk? px);
+		_chunksMap.TryGetValue(new ChunkIndex(chunkIndex.X - 1, chunkIndex.Z), out Chunk? nx);
+		_chunksMap.TryGetValue(new ChunkIndex(chunkIndex.X, chunkIndex.Z + 1), out Chunk? pz);
+		_chunksMap.TryGetValue(new ChunkIndex(chunkIndex.X, chunkIndex.Z - 1), out Chunk? nz);
+
+		Debug.Assert(px != null || nx != null || pz != null || nz != null);
+		return new ChunkNeighbourhood(px!, nx!, pz!, nz!);
 	}
 }
