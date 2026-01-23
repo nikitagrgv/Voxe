@@ -336,8 +336,13 @@ public class MainWindow : NativeWindow
 		return image;
 	}
 
+	private double _lastGetDebugTextTime = 0;
+
 	private string GetDebugText()
 	{
+		Stopwatch stopwatch = new();
+		stopwatch.Start();
+
 		double dt = Time.DeltaTime;
 		Vector3i blockPosition = VoxelUtils.ToBlockPosition(_camera.Position);
 		ChunkIndex chunkIndex = VoxelUtils.GetChunkIndexByBlock(blockPosition.X, blockPosition.Z);
@@ -377,7 +382,11 @@ public class MainWindow : NativeWindow
 		        Indices Total: {ToPrettyNumberString(Stat.RenderedIndicesTotal)}
 		        ------- Memory -------
 		        GPU Memory: {Utils.FormatBytes(totalBufferBytes)}
+		        ------- Other -------
+		        This Debug Text: {_lastGetDebugTextTime}ms 
 		        """;
+
+		_lastGetDebugTextTime = stopwatch.Elapsed.TotalMilliseconds;
 	}
 
 	private Matrix4 CreateProjectionMatrix()
