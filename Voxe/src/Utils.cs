@@ -10,6 +10,8 @@ namespace Voxe;
 
 public static class Utils
 {
+	private static readonly string[] MemoryStringSuffixes = ["B", "KB", "MB", "GB", "TB", "PB"];
+
 	public static int GetSizeInBytes<T>(this List<T> array)
 		where T : unmanaged
 	{
@@ -35,6 +37,21 @@ public static class Utils
 		Debug.Assert(type.IsLayoutSequential || type.IsExplicitLayout,
 			$"{type.Name} must be marked with [StructLayout(LayoutKind.Sequential)]");
 		return Unsafe.SizeOf<T>();
+	}
+
+	public static string FormatBytes(ulong bytes)
+	{
+		if (bytes <= 0) return "0B";
+
+		int counter = 0;
+		decimal number = bytes;
+		while (number >= 1024 && counter < MemoryStringSuffixes.Length - 1)
+		{
+			number /= 1024;
+			counter++;
+		}
+
+		return $"{number:n1}{MemoryStringSuffixes[counter]}";
 	}
 
 	public static Vector4 ToVector4(this Color color)
