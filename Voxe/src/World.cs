@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace Voxe;
 
 public class World
 {
 	private readonly Dictionary<ChunkIndex, Chunk> _chunksMap = new();
+
+	public int NumLoadedChunks => _chunksMap.Count;
 
 	public void InitChunk(ChunkIndex index, Chunk chunk)
 	{

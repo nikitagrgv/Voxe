@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Runtime.InteropServices;
@@ -365,6 +364,7 @@ public class MainWindow : NativeWindow
 		        Block: {blockPosition.X} {blockPosition.Y} {blockPosition.Z} {block}
 		        Chunk: {chunkIndex.X} {chunkIndex.Z}
 		        Speed: {CameraBaseMoveSpeed * _currentCameraMoveSpeedMultiplier:F1}
+		        Total Loaded Chunks: {_world.NumLoadedChunks}
 		        ------- Render -------
 		        Indices: {ToPrettyNumberString(Stat.RenderedIndicesPerFrame)}
 		        Indices Total: {ToPrettyNumberString(Stat.RenderedIndicesTotal)}
