@@ -177,7 +177,7 @@ public class MainWindow : NativeWindow
 		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
 		const float scaleMagnitude = 0.9f;
 		ScalePoint scaleFreq = new(perlin, scaleMagnitude, scaleMagnitude, scaleMagnitude);
-		ScaleBias blockScale = new(scaleFreq, scale: 0.05f, bias: 0.5f);
+		ScaleBias blockScale = new(scaleFreq, scale: 0.02f, bias: 0.5f);
 		IModule3D final = blockScale;
 
 		var createChunk = (ChunkIndex chunkIndex) =>
