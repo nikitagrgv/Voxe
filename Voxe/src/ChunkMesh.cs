@@ -28,6 +28,7 @@ public class ChunkMesh : IDisposable
 	private int _vboId;
 	private int _eboId;
 
+	private int _numVertices;
 	private int _numIndices;
 
 	public bool IsValid
@@ -36,8 +37,18 @@ public class ChunkMesh : IDisposable
 		{
 			bool isValid = _vaoId != 0;
 			Debug.Assert(isValid == (_vboId != 0) && isValid == (_eboId != 0));
-			Debug.Assert(isValid || _numIndices == 0);
+			Debug.Assert(isValid || (_numIndices == 0 && _numVertices == 0));
 			return isValid;
+		}
+	}
+
+	public int BuffersMemoryUsage
+	{
+		get
+		{
+			int bytesVertices = Utils.GetSizeOfType<Vertex>() * _numVertices;
+			int bytesIndices = sizeof(uint) * _numIndices;
+			return bytesVertices + bytesIndices;
 		}
 	}
 
@@ -55,12 +66,15 @@ public class ChunkMesh : IDisposable
 		GL.BufferData(BufferTarget.ElementArrayBuffer, indices.GetSizeInBytes(), indices, usage);
 
 		_numIndices = indices.Length;
+		_numVertices = vertices.Length;
 	}
 
 	public void Render()
 	{
 		if (!IsValid || _numIndices == 0)
 			return;
+		Debug.Assert(_numVertices != 0);
+
 		Bind();
 
 		Renderer.DrawElements(PrimitiveType.Triangles, DrawElementsType.UnsignedInt, _numIndices);
