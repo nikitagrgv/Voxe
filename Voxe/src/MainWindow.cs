@@ -8,6 +8,7 @@ using LibNoise;
 using LibNoise.Builder;
 using LibNoise.Modifier;
 using LibNoise.Primitive;
+using LibNoise.Transformer;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -175,7 +176,9 @@ public class MainWindow : NativeWindow
 		_camera.Position = new Vector3(0, 0, 8);
 
 		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
-		ScaleBias blockScale = new(perlin, scale: 0.04f, bias: 0.5f);
+		const float scaleMagnitude = 5f;
+		ScalePoint scaleFreq = new(perlin, scaleMagnitude, scaleMagnitude, scaleMagnitude);
+		ScaleBias blockScale = new(scaleFreq, scale: 0.5f, bias: 0.5f);
 		IModule final = blockScale;
 
 		var createChunk = (ChunkIndex chunkIndex) =>
@@ -209,6 +212,8 @@ public class MainWindow : NativeWindow
 					for (int x = 0; x < Chunk.ChunkWidth; x++)
 					{
 						float heightNormalized = heightMap.GetValue(x, z);
+						Debug.Assert(heightNormalized is >= 0 and <= 1);
+
 						float height = heightNormalized * Chunk.ChunkHeight;
 						int h = (int)height;
 						Block block;
