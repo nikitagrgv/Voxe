@@ -22,7 +22,7 @@ public class ChunkMesh : IDisposable
 		public Vector2 Uv;
 	}
 
-	private readonly static VertexArrayBuilder VaoBuilder = VertexArrayBuilder.FromStruct<Vertex>();
+	private static readonly VertexArrayBuilder VaoBuilder = VertexArrayBuilder.FromStruct<Vertex>();
 
 	private int _vaoId;
 	private int _vboId;
