@@ -234,7 +234,7 @@ public class MainWindow : NativeWindow
 		const int playerStartX = Chunk.ChunkWidth / 2;
 		const int playerStartZ = Chunk.ChunkWidth / 2;
 		int playerStartY = Chunk.ChunkHeight - 1;
-		while (true)
+		while (playerStartY > 0)
 		{
 			Block block = centerChunk.GetBlock(playerStartX, playerStartY, playerStartZ);
 			if (block.TypeId != (int)BasicBlock.Air)
