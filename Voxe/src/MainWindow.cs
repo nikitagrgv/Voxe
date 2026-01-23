@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -176,26 +175,10 @@ public class MainWindow : NativeWindow
 		_camera.Position = new Vector3(0, 0, 8);
 
 		SimplexPerlin perlin = new(seed: 1234, NoiseQuality.Best);
-		const float scaleMagnitude = 0.5f;
+		const float scaleMagnitude = 0.9f;
 		ScalePoint scaleFreq = new(perlin, scaleMagnitude, scaleMagnitude, scaleMagnitude);
-		ScaleBias blockScale = new(scaleFreq, scale: 0.08f, bias: 0.5f);
+		ScaleBias blockScale = new(scaleFreq, scale: 0.05f, bias: 0.5f);
 		IModule3D final = blockScale;
-
-		Image imm = new(200, 200, Image.ImageFormat.Rgb, Color.Green);
-		for (int i = 0; i < 200; i++)
-		{
-			for (int j = 0; j < 200; j++)
-			{
-				float x = (float)i / 32;
-				float z = (float)j / 32;
-				float v = final.GetValue(x, 0, z);
-				Debug.Assert(v is >= 0 and <= 1);
-				int c = (int)(v * 255);
-				Color color = Color.FromArgb(c, c, c, c);
-				imm.SetPixel(i, j, color);
-			}
-		}
-		imm.Save("spam/ORIG.png");
 
 		var createChunk = (ChunkIndex chunkIndex) =>
 		{
