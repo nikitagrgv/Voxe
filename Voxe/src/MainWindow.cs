@@ -341,16 +341,23 @@ public class MainWindow : NativeWindow
 		double dt = Time.DeltaTime;
 		Vector3i blockPosition = VoxelUtils.ToBlockPosition(_camera.Position);
 		ChunkIndex chunkIndex = VoxelUtils.GetChunkIndexByBlock(blockPosition.X, blockPosition.Z);
-		Chunk? chunk = _world.TryGetChunk(chunkIndex);
+		Chunk? playerChunk = _world.TryGetChunk(chunkIndex);
 		Block block = new(BasicBlock.Air);
 
-		if (chunk != null && blockPosition.Y is >= 0 and < Chunk.ChunkHeight)
+		if (playerChunk != null && blockPosition.Y is >= 0 and < Chunk.ChunkHeight)
 		{
 			Vector3 localPosition = VoxelUtils.MapToLocalPosition(blockPosition, chunkIndex);
 			Vector3i blockLocalPosition = VoxelUtils.ToBlockPosition(localPosition);
-			block = chunk.GetBlock(blockLocalPosition.X % Chunk.ChunkWidth,
+			block = playerChunk.GetBlock(blockLocalPosition.X % Chunk.ChunkWidth,
 				blockLocalPosition.Y,
 				blockLocalPosition.Z % Chunk.ChunkWidth);
+		}
+
+		int totalBufferBytes = 0;
+		foreach (Chunk chunk in _world.AllChunks)
+		{
+			if (chunk.Mesh != null)
+				totalBufferBytes += chunk.Mesh.BuffersMemoryUsage;
 		}
 
 		return $"""
@@ -368,6 +375,8 @@ public class MainWindow : NativeWindow
 		        ------- Render -------
 		        Indices: {ToPrettyNumberString(Stat.RenderedIndicesPerFrame)}
 		        Indices Total: {ToPrettyNumberString(Stat.RenderedIndicesTotal)}
+		        ------- Memory -------
+		        GPU Memory: {totalBufferBytes}
 		        """;
 	}
 
