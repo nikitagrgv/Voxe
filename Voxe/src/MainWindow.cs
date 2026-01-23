@@ -278,13 +278,14 @@ public class MainWindow : NativeWindow
 			const int renderRadius = 3;
 			const int generateRadius = 3;
 
-			_world.GetEmptyChunks(new ChunkIndex(0, 0), generateRadius, emptyChunks);
+			ChunkIndex playerChunkIndex = VoxelUtils.GetChunkIndexByBlock(_camera.Position.X, _camera.Position.Z);
+			_world.GetEmptyChunks(playerChunkIndex, generateRadius, emptyChunks);
 			foreach (ChunkIndex chunkIndex in emptyChunks)
 			{
 				createChunk(chunkIndex);
 			}
 
-			_world.GetChunks(new ChunkIndex(0, 0), renderRadius, renderChunks);
+			_world.GetChunks(playerChunkIndex, renderRadius, renderChunks);
 			foreach (Chunk chunk in renderChunks)
 			{
 				if (chunk.Mesh == null)
