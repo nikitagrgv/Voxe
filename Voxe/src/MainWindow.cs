@@ -196,6 +196,9 @@ public class MainWindow : NativeWindow
 				(chunkIndex.Z + 1) * scale);
 			heightMapBuilder.Build();
 
+			Image image = SaveToImage(heightMap);
+			image.Save($"spam/hmap-{chunkIndex.X}-{chunkIndex.Z}.png");
+
 			Chunk chunk = new();
 			chunk.Index = chunkIndex;
 			_world.InitChunk(chunkIndex, chunk);
@@ -313,6 +316,26 @@ public class MainWindow : NativeWindow
 		OnResize(new ResizeEventArgs(ClientSize));
 
 		Console.WriteLine($"Initialized: {stopwatch.Elapsed.TotalSeconds:F2}sec");
+	}
+
+	private static Image SaveToImage(NoiseMap heightMap)
+	{
+		heightMap.MinMax(out float minHeight, out float maxHeight);
+		Image image = new(heightMap.Width, heightMap.Height, Image.ImageFormat.Rgb, Color.White);
+		for (int i = 0; i < heightMap.Height; i++)
+		{
+			for (int j = 0; j < heightMap.Width; j++)
+			{
+				float v = heightMap.GetValue(i, j);
+				v -= minHeight;
+				v /= maxHeight - minHeight;
+				int c = (int)(v * 255);
+				Color color = Color.FromArgb(c, c, c, c);
+				image.SetPixel(i, j, color);
+			}
+		}
+
+		return image;
 	}
 
 	private string GetDebugText()
